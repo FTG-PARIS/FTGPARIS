@@ -787,6 +787,75 @@
   }
 
   /* ═══════════════════════════════════════
+     OUR GUIDES PAGE
+  ═══════════════════════════════════════ */
+  .guides-wrap { max-width:1050px; margin:0 auto; padding:2rem 1rem 3rem; }
+  .guides-title { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:#C9A84C; margin-bottom:0.5rem; }
+  .guides-intro { font-size:0.97rem; line-height:1.7; color:#aaa; margin-bottom:2rem; max-width:680px; }
+  .guides-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.2rem; }
+  .guide-card { background:#2c3440; border:1px solid rgba(201,168,76,0.15); border-radius:8px; display:flex; gap:1rem; padding:1rem; align-items:flex-start; transition:border-color 0.2s; }
+  .guide-card:hover { border-color:rgba(201,168,76,0.4); }
+  .guide-photo { width:72px; height:72px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid rgba(201,168,76,0.3); background:#383E42; }
+  .guide-body { flex:1; min-width:0; }
+  .guide-name { font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:600; color:#C9A84C; margin-bottom:0.3rem; line-height:1.3; }
+  .guide-bio { font-size:0.8rem; line-height:1.6; color:#ccc; margin:0; }
+  .guide-link { color:#C9A84C; text-decoration:none; }
+  .guide-link:hover { text-decoration:underline; }
+  @media(max-width:600px){ .guides-grid{ grid-template-columns:1fr; } }
+
+  /* ═══════════════════════════════════════
+     VOLUNTEERING PAGE
+  ═══════════════════════════════════════ */
+  .vol-page { max-width:780px; margin:0 auto; padding:0 1rem 4rem; }
+  @keyframes volFadeIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  .vol-section { padding:2.2rem 0 0.5rem; animation:volFadeIn 0.6s ease both; }
+  .vol-hero { background:linear-gradient(135deg,#2C343E 0%,#383E42 55%,#2C343E 100%); border-radius:12px; padding:3.5rem 2rem; margin-bottom:0.5rem; text-align:center; position:relative; overflow:hidden; }
+  .vol-hero::before { content:''; position:absolute; top:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(201,163,71,0.09); }
+  .vol-hero::after { content:''; position:absolute; bottom:-60px;right:-30px;width:250px;height:250px;border-radius:50%;background:rgba(201,163,71,0.06); }
+  .vol-hero-sub { font-size:0.82rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(245,240,230,0.6); margin-bottom:1rem; }
+  .vol-hero-h1 { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; color:#C9A347; line-height:1.2; margin-bottom:0.8rem; text-shadow:0 3px 10px rgba(201,163,71,0.25); }
+  .vol-hero-tagline { font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; color:#E0C070; }
+  .vol-h2 { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:600; color:#B8973A; margin-bottom:1rem; line-height:1.3; }
+  .vol-body { font-size:1rem; line-height:1.8; color:#2C343E; margin-bottom:1.1rem; }
+  .vol-truth { background:#FAF6F0; border-left:3px solid #C9A347; padding:1rem 1.2rem; border-radius:0 8px 8px 0; }
+  .vol-name { color:#C9A347; font-weight:600; font-style:italic; }
+  .vol-divider { width:60px; height:2px; background:#B8973A; opacity:0.45; margin:1.8rem 0; }
+  .vol-reality-box { background:#FAF6F0; border:1.5px solid rgba(184,151,58,0.4); border-radius:10px; padding:1.2rem 1.5rem; margin:1.2rem 0; }
+  .vol-reality-label { display:inline-block; font-family:'Playfair Display',serif; font-size:0.72rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#B8973A; border:1px solid #B8973A; padding:0.15rem 0.6rem; border-radius:3px; margin-bottom:0.7rem; }
+  .vol-list { margin:0.5rem 0 1rem 1.2rem; }
+  .vol-list li { font-size:1rem; line-height:1.75; color:#2C343E; margin-bottom:0.4rem; }
+  .vol-quote-wrap { background:linear-gradient(135deg,#2C343E,#383E42); border:1px solid rgba(201,163,71,0.35); border-radius:12px; padding:2rem 2.2rem; margin:1rem 0; text-align:center; }
+  .vol-quote { font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; line-height:1.8; color:#F5F0E6; margin:0 0 0.8rem; }
+  .vol-quote-mark { font-size:2.5rem; color:#E0C070; line-height:0; vertical-align:-0.4em; margin:0 0.2rem; }
+  .vol-quote-attr { font-size:0.88rem; color:rgba(245,240,230,0.65); font-style:normal; }
+  .vol-factbox { background:#FAF6F0; border:1.5px solid #C9A347; border-radius:12px; padding:1.5rem; margin:1.5rem 0; }
+  .vol-factbox-title { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; color:#B8973A; margin-bottom:1rem; }
+  .vol-fact { display:flex; flex-direction:column; gap:0.15rem; margin-bottom:0.9rem; padding-bottom:0.9rem; border-bottom:1px solid rgba(184,151,58,0.2); }
+  .vol-fact:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .vol-fact-q { font-size:0.9rem; font-weight:600; color:#2C343E; }
+  .vol-fact-a { font-size:0.9rem; color:#B8973A; font-weight:700; }
+  .vol-paris-closer { position:relative; border-radius:12px; min-height:420px; margin:2rem 0; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; background-image:url('paris_sunset.jpg'); background-size:cover; background-position:center; }
+  .vol-paris-closer::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.75) 100%); border-radius:12px; }
+  .vol-paris-text { position:relative; z-index:1; font-family:'Playfair Display',serif; font-style:italic; font-size:1.25rem; line-height:2; color:#ffffff; margin:0; padding:2.5rem 2rem; text-shadow:0 4px 12px rgba(0,0,0,0.9); }
+  .vol-paris-text strong { color:#C9A347; font-style:normal; display:block; margin-top:0.8rem; font-size:1.1rem; text-shadow:0 4px 10px rgba(0,0,0,0.85); }
+  .vol-cta-section { padding-top:2rem; }
+  .vol-email { color:#C9A347; font-weight:600; text-decoration:none; }
+  .vol-email:hover { color:#E8B923; text-decoration:underline; }
+  .vol-form-wrap { background:#FAF6F0; border:1.5px solid rgba(201,163,71,0.4); border-radius:12px; padding:2rem; margin-top:2rem; }
+  .vol-form-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:600; color:#B8973A; margin-bottom:1.4rem; text-align:center; }
+  .vol-field { margin-bottom:1.1rem; }
+  .vol-field label { display:block; font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#2C343E; margin-bottom:0.4rem; }
+  .vol-field input, .vol-field textarea { width:100%; padding:0.65rem 0.9rem; background:#FFF8E8; border:1.5px solid rgba(201,163,71,0.45); border-radius:6px; font-family:inherit; font-size:0.95rem; color:#2C343E; box-sizing:border-box; transition:border-color 0.2s; }
+  .vol-field input:focus, .vol-field textarea:focus { outline:none; border-color:#C9A347; }
+  .vol-check-group { display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:0.3rem; }
+  .vol-check { display:flex; align-items:center; gap:0.4rem; font-size:0.92rem; color:#2C343E; cursor:pointer; background:#FFF8E8; border:1.5px solid rgba(201,163,71,0.35); border-radius:6px; padding:0.4rem 0.8rem; transition:border-color 0.2s; }
+  .vol-check:hover { border-color:#C9A347; }
+  .vol-check input { width:auto; padding:0; background:none; border:none; }
+  .vol-submit-btn { background:linear-gradient(135deg,#C9A347,#B8973A); color:#2C343E; border:none; padding:0.9rem 2.5rem; font-family:'DM Sans',system-ui,sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; border-radius:8px; transition:box-shadow 0.25s,transform 0.15s; }
+  .vol-submit-btn:hover { box-shadow:0 0 25px rgba(201,163,71,0.4); transform:translateY(-1px); }
+  @media(max-width:600px){ .vol-hero-h1{font-size:2rem;} .vol-h2{font-size:1.3rem;} .vol-quote{font-size:0.97rem;} }
+
+  /* ═══════════════════════════════════════
      PHOTO QUIZ GAME
   ═══════════════════════════════════════ */
   .game-wrap { max-width: 1100px; margin: 0 auto; padding: 1rem 0 3rem; }
@@ -799,7 +868,42 @@
   .game-replay-btn { padding: 0.3rem 0.8rem; font-size: 0.72rem; white-space: nowrap; }
   .game-trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; align-items: start; }
   .game-card { background: var(--white); border: 1px solid var(--light); border-radius: 6px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,0.07); display: flex; flex-direction: column; }
-  .game-card.is-score { background: var(--forest); border-color: var(--forest); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem 1rem; text-align: center; min-height: 200px; }
+  .game-card.is-score { display: none; }
+  /* ── SCORE OVERLAY ── */
+  @keyframes overlayIn { from { opacity:0; transform:scale(0.88); } to { opacity:1; transform:scale(1); } }
+  @keyframes starFloat { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-6px); } }
+  #gameFinale { display:none; }
+  #scoreOverlayBackdrop {
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(0,0,0,0.12);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    align-items:center; justify-content:center; padding:1rem;
+  }
+  #scoreOverlayBackdrop.visible { display:flex; }
+  #scoreOverlayCard {
+    background:#FFFBF0;
+    border:6px solid #E8B923;
+    outline:2px solid #D4A017;
+    border-radius:16px;
+    max-width:520px; width:92%;
+    padding:2.8rem 2rem 2.2rem;
+    text-align:center;
+    box-shadow:0 30px 90px -15px rgba(0,0,0,0.30);
+    animation:overlayIn 0.4s ease-out both;
+    position:relative;
+  }
+  .sov-header { font-family:'Playfair Display',serif; font-size:0.72rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#D4A017; margin-bottom:1.4rem; }
+  .sov-circle { width:160px; height:160px; border-radius:50%; border:3px solid #E8B923; display:flex; align-items:center; justify-content:center; margin:0 auto 0.4rem; position:relative; }
+  .sov-num { font-family:'Playfair Display',serif; font-size:6.5rem; font-weight:700; color:#E8B923; line-height:1; text-shadow:0 6px 20px rgba(232,185,35,0.30); }
+  .sov-denom { font-size:0.85rem; letter-spacing:0.15em; color:#D4A017; margin-bottom:0.5rem; text-transform:uppercase; }
+  .sov-line { width:60px; height:2px; background:#D4A017; margin:0.8rem auto; }
+  .sov-title { font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:600; color:#1E6B4E; margin-bottom:0.5rem; }
+  .sov-sub { font-size:0.97rem; color:#1F2A2F; line-height:1.65; max-width:360px; margin:0 auto 1.6rem; font-weight:500; }
+  .sov-stars { position:absolute; inset:0; pointer-events:none; overflow:hidden; border-radius:16px; }
+  .sov-star { position:absolute; color:#E8B923; font-size:1rem; animation:starFloat 3s ease-in-out infinite; }
+  .sov-btn { width:100%; height:58px; border:none; border-radius:12px; background:linear-gradient(135deg,#E8B923,#D4A017); color:#1F2A2F; font-family:'DM Sans',system-ui,sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:box-shadow 0.25s, transform 0.15s; margin-top:0.2rem; }
+  .sov-btn:hover { box-shadow:0 0 28px rgba(232,185,35,0.6); transform:translateY(-1px); }
+  @media(max-width:600px){ .sov-num{font-size:4.8rem;} .sov-circle{width:130px;height:130px;} .sov-title{font-size:1.5rem;} #scoreOverlayCard{padding:2rem 1.2rem 1.8rem;} }
   .game-photo-frame { width: 100%; aspect-ratio: 4/3; background: var(--light); overflow: hidden; flex-shrink: 0; }
   .game-photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .game-card-body { padding: 0.75rem; flex: 1; display: flex; flex-direction: column; }
@@ -826,13 +930,7 @@
   .game-btn-gold:hover { background: #c9a42e; }
   .game-btn-outline { background: transparent; color: var(--charcoal); border: 1px solid var(--stone); }
   .game-btn-outline:hover { border-color: var(--charcoal); }
-  .game-score-num { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--gold); line-height: 1; }
-  .game-score-denom { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; margin-bottom: 0.6rem; }
-  .game-score-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #fff; margin-bottom: 0.4rem; line-height: 1.3; }
-  .game-score-sub { color: rgba(255,255,255,0.7); font-size: 0.8rem; line-height: 1.5; }
-  .game-play-again { margin-top: 1rem; background: var(--gold); color: var(--ink); border: none; padding: 0.5rem 1.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 2px; }
-  .game-play-again:hover { background: #c9a42e; }
-  @media (max-width: 700px) { .game-trio { grid-template-columns: 1fr; } .game-card.is-score { min-height: 180px; } }
+  @media (max-width: 700px) { .game-trio { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -889,7 +987,9 @@
   </div>
   <div class="members-tabs">
     <button class="members-tab active" onclick="membersTab('tours', this)">Tour Details</button>
+    <button class="members-tab" onclick="membersTab('guides', this)">Our Guides</button>
     <button class="members-tab" onclick="membersTab('about', this)">About Us</button>
+    <button class="members-tab" onclick="membersTab('volunteer', this)">Volunteering ♥</button>
     <button class="members-tab" onclick="membersTab('game', this)">Remember When</button>
     <button class="members-tab" onclick="membersTab('upload', this)">Tour Planners</button>
   </div>
@@ -933,8 +1033,351 @@
       </div>
     </div>
 
-    <div id="tab-game" style="display:none">
-      <div class="game-wrap">
+    <div id="tab-guides" style="display:none">
+      <div class="guides-wrap">
+        <h2 class="guides-title">Our Guides</h2>
+        <p class="guides-intro">The Friday Tour Group is privileged to work with some of the finest guides in Paris — historians, artists, archaeologists, and passionate experts who bring the city to life.</p>
+        <div class="guides-grid">
+
+          <div class="guide-card">
+            <img src="guides/mary_bartlett.jpg" alt="Mary Bartlett" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Mary Bartlett</h3>
+              <p class="guide-bio">A lifestyle and hospitality consultant with over 20 years of experience living in Paris. Drawing from her background in French social customs and gastronomy, she specializes in the "Art of the Table" and the history of French entertaining.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/debbie_baron.jpg" alt="Debbie Baron" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Debbie Baron</h3>
+              <p class="guide-bio">An expert in French gastronomy and the concept of terroir, Debbie is the director of Domaines &amp; Terroirs. She works directly with traditional producers to master the history, production, and classification of French artisanal foods, with a primary specialty in French cheeses.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/mariska_beekenkamp.jpg" alt="Mariska Beekenkamp-Wladimiroff" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Mariska Beekenkamp-Wladimiroff</h3>
+              <p class="guide-bio">An art historian and educator who earned her BA and MA from the Courtauld Institute of Art in London. Founder of Art Historical London and a specialist in 17th-century Dutch Baroque art, the self-portrait, and the history of the art market.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/chris_boicos.jpg" alt="Chris Boicos" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Chris Boicos</h3>
+              <p class="guide-bio">A professor of art history (MPhil, Courtauld Institute; Sorbonne), founder of Paris Art Studies and director of Chris Boicos Fine Arts. Specializes in 19th- and 20th-century European art, contemporary curation, and modern architecture.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/oriel_caine.jpg" alt="Oriel Caine" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Oriel Caine</h3>
+              <p class="guide-bio">Co-founder of Paris Walks, guide-lecturer with a Master's in History, Art History &amp; French Literature. Co-author of <em>Paris Then and Now</em>. Specializes in the visual history of the city from the medieval period to the present day.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/pascale_chauvel.jpg" alt="Pascale Chauvel" class="guide-photo" onerror="this.style.visibility='hidden'">
+            <div class="guide-body">
+              <h3 class="guide-name">Pascale Chauvel</h3>
+              <p class="guide-bio">A practicing artist and museum guide with a BAC in Arts from the Ecole du Louvre. She has worked for 25 years as a guide in the Parisian national museums, notably the Musée d'Orsay, and paints in pastel, oil, watercolour and ink.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/thomas_emery.jpg" alt="Thomas Emery" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Thomas Emery</h3>
+              <p class="guide-bio">Degrees in geography and history with a passion for architecture. A national tour guide since 2008, working for French National Monuments. Fields of interest include ancient history and 19th- and 20th-century art.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/noha_escartin.jpg" alt="Noha Escartin" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Noha Escartin</h3>
+              <p class="guide-bio">Born in Egypt, Paris resident for 35 years. Studied Egyptology and Physics at AUC, then specialised in Simultaneous Interpretation and Art History. Also teaches at universities including CNAM, Cergy and Nanterre.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/sandy_gogel.jpg" alt="Dr. Sandra Gogel" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Dr. Sandra (Sandy) Gogel</h3>
+              <p class="guide-bio">Founder of La Source Parisienne, an antique consultancy. PhD from the University of Chicago. A recognized expert in antiques and art, known for insider-led visits to the Hôtel Drouot auction house.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/maryellen_gogel.jpg" alt="Mary Ellen Gogel" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Mary Ellen Gogel</h3>
+              <p class="guide-bio">Artist and amateur historian, Paris resident for several decades. Contributor to cultural programs at the American Cathedral and Library. Expertise in religious architecture, Gothic history, and the evolution of writing and manuscripts.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/ellen_hampton.jpg" alt="Ellen Hampton" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Ellen Hampton</h3>
+              <p class="guide-bio">PhD historian, author, and former Sciences Po lecturer. Author of <em>Women of Valor: The Rochambelles on the WWII Front</em>. Specializes in the social history of WWII, the French Resistance, and women in military history.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/thierry_heil.jpg" alt="Thierry Heil" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Thierry Heil</h3>
+              <p class="guide-bio">Licensed guide for over 15 years in Paris and throughout France. A specialist of Paris who combines little-known areas with important historical and cultural facts. Also organizes study abroad programs and first-class stays for international universities.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/ingrid_held.jpg" alt="Ingrid Held" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Ingrid Held</h3>
+              <p class="guide-bio">Graduate of the Ecole du Louvre (Greek archaeology) and Master's in Art History from the Sorbonne. Worked over 10 years at the Musée des Arts Décoratifs as a lecturer and researcher, now a freelance guide and historian.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/lee_hubert.jpg" alt="Lee Hubert" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Lee Hubert</h3>
+              <p class="guide-bio">Paris resident since the 1970s. Official guide for the Wallace Fountains Society, long-time volunteer and community organizer. Specializes in the stories behind Parisian landmarks and the literary history of the city's neighbourhoods.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/eric_kaiser.jpg" alt="Eric John Kaiser" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Eric John Kaiser</h3>
+              <p class="guide-bio">French-American singer-songwriter and guitarist, born and raised in Paris. Six studio albums; performed at the Smithsonian, De Young Museum, and Solidays festival. Lectures on Francophone music at Portland, Oregon, where he now lives.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/amy_kupec_larue.jpg" alt="Amy Kupec-Larue" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Amy Kupec-Larue</h3>
+              <p class="guide-bio">30 years living and working in Paris. Guided the NY Botanical Garden and Garden Club of America on tours through French gardens. Permanent member of the Bagatelle Rose Commission since 2009. Author of the <em>Great Trees of Paris</em> map.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/jacky_libaud.jpg" alt="Jacky Libaud" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Jacky Libaud</h3>
+              <p class="guide-bio">Expert in Islamic garden history and Paris parks guide for the City of Paris since 2001. Founder of "Balades aux Jardins" with 66 different visits through parks and neighbourhoods of Greater Paris. <a href="http://www.baladesauxjardins.fr" target="_blank" class="guide-link">baladesauxjardins.fr</a></p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/ken_nesbitt.jpg" alt="Ken Nesbitt" class="guide-photo" onerror="this.style.visibility='hidden'">
+            <div class="guide-body">
+              <h3 class="guide-name">Ken Nesbitt</h3>
+              <p class="guide-bio">Retired Canadian Air Force officer with a Master's in war studies from the Royal Military College of Canada. Has spent 18 years in Europe providing guided tours of historical battlefields and lectures on military history.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/brad_newfield.jpg" alt="Brad Newfield" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Brad Newfield</h3>
+              <p class="guide-bio">French-American historian, Paris resident since 1994. PhD in History from UCLA. Specializes in Franco-American relations, the American Founding Fathers in Paris, the French Revolution, and American expatriate writers on the Left Bank.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/lynn_rainard.jpg" alt="Lynn Rainard" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Lynn Rainard</h3>
+              <p class="guide-bio">Retired professor of history specializing in US political and cultural developments. Expertise in French-American exchanges and 20th-century political history. Has presented a Café Lecture on French-American relations in Paris.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/merv_rothstein.jpg" alt="Mervyn Rothstein" class="guide-photo" onerror="this.style.visibility='hidden'">
+            <div class="guide-body">
+              <h3 class="guide-name">Mervyn (Merv) Rothstein</h3>
+              <p class="guide-bio">Veteran journalist, 30 years as writer and editor at The New York Times (chief theater reporter). Contributor to Playbill for over three decades, Tony Awards Nominating Committee member. Specializes in performing arts history and cultural journalism.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/elaine_sciolino.jpg" alt="Elaine Sciolino" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Elaine Sciolino</h3>
+              <p class="guide-bio">Celebrated author and former Paris Bureau Chief for The New York Times. Chevalier of the Legion of Honor. Author of <em>The Seine: The River that Made Paris</em> and <em>The Only Street in Paris</em>. <a href="https://elainesciolino.com" target="_blank" class="guide-link">elainesciolino.com</a></p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/chris_spence.jpg" alt="Christopher Spence" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Christopher Spence</h3>
+              <p class="guide-bio">Licensed guide, 26 years in Paris. One of the main guides for Paris Walks; presents virtual talks with London Walks. Writes on Paris history for newspapers and appears in documentaries. Keen amateur fossil hunter.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/jean_traimond.jpg" alt="Jean-Manuel Traimond" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Jean-Manuel Traimond</h3>
+              <p class="guide-bio">Native Parisian, giving tours since 1990. Published author whose works include a Naughty Guide of the Louvre and the Musée d'Orsay, a history of erotic art, and essays on religion and social history. A true man of letters.</p>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <img src="guides/xenia_ventikou.jpg" alt="Xenia Ventikou" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Xenia Ventikou</h3>
+              <p class="guide-bio">Art History and Art Conservation graduate (Greece and London). Former sculpture conservator at the Victoria and Albert Museum. Trained Guide-Conférencier National; joined the Musée des Arts Décoratifs team to share the stories, details and secrets of their collections.</p>
+            </div>
+          </div>
+
+        </div><!-- end guides-grid -->
+      </div><!-- end guides-wrap -->
+    </div>
+
+    <div id="tab-volunteer" style="display:none">
+      <div class="vol-page">
+
+        <!-- HERO -->
+        <div class="vol-hero">
+          <div class="vol-hero-text">
+            <div class="vol-hero-sub">For decades, we've explored Paris together.</div>
+            <h1 class="vol-hero-h1">Volunteering:<br>The Heart of FTG</h1>
+            <p class="vol-hero-tagline">Help us write the next chapter.</p>
+          </div>
+        </div>
+
+        <!-- LEGACY OPENER -->
+        <div class="vol-section">
+          <h2 class="vol-h2">Our Legacy is in Your Hands</h2>
+          <p class="vol-body">For decades, the Friday Tour Group has explored the soul of Paris — and beyond — together. We've stood in hidden crypts and quiet gardens. We've stepped into rooms most visitors never see. We've wandered through museums, archives, cathedrals, back corridors, and heard stories layered with centuries of history.</p>
+          <p class="vol-body">We've learned. We've discovered. We've been amazed — <em>together.</em></p>
+          <p class="vol-body vol-truth">And here is the quiet truth behind every tour we've taken:<br><strong>FTG only exists because of its members.</strong></p>
+        </div>
+
+        <div class="vol-divider"></div>
+
+        <!-- EVERY TOUR -->
+        <div class="vol-section">
+          <h2 class="vol-h2">Every Tour has a Volunteer Behind It</h2>
+          <p class="vol-body">Your annual membership allows us to secure exceptional guides, book venues in advance and get access to exclusive places… But money alone does not run FTG. <strong>People do.</strong></p>
+          <p class="vol-body">Every confirmation email, every booking, every deposit, every curated description and every schedule is handled by a small, dedicated team of volunteers. Currently, our Co-Chairs <span class="vol-name">Paul</span> and <span class="vol-name">Lee</span> and planners <span class="vol-name">Barbara</span> and <span class="vol-name">Dee</span>, with help from our former Co-Chair <span class="vol-name">Nancy</span> — carry the entire load.</p>
+          <div class="vol-reality-box">
+            <span class="vol-reality-label">The Reality</span>
+            <p>They are dedicated; they do it because they love this group. But they are over-stretched. To keep our tours running and our group thriving, <strong>we need to grow this team today.</strong></p>
+          </div>
+        </div>
+
+        <div class="vol-divider"></div>
+
+        <!-- EVERY CONTRIBUTION -->
+        <div class="vol-section">
+          <h2 class="vol-h2">Every Contribution Counts</h2>
+          <p class="vol-body">Most of you already contribute in "small" ways that keep the spirit of the group strong:</p>
+          <ul class="vol-list">
+            <li>Showing up on time with exact change</li>
+            <li>Welcoming a new face with a warm hello</li>
+            <li>Helping with attendance or sharing metro updates on WhatsApp</li>
+            <li>Inviting new friends to join to keep our community growing</li>
+          </ul>
+        </div>
+
+        <div class="vol-divider"></div>
+
+        <!-- STEP UP -->
+        <div class="vol-section">
+          <h2 class="vol-h2">♥ Step Up: Help Make the Magic Happen!</h2>
+          <p class="vol-body">If you have enjoyed our tours and want FTG to continue for years to come, the most meaningful step you can take is to <strong>plan just one or two tours a year.</strong></p>
+          <p class="vol-body" style="font-style:italic; color:#C9A84C; font-family:'Playfair Display',serif; font-size:1.05rem;">"But I've never done this before!"</p>
+          <p class="vol-body">Don't worry — planning a tour is like baking a cake using a tried-and-true recipe:</p>
+          <ul class="vol-list">
+            <li><strong>Expert Guidance:</strong> You'll work alongside one of our experienced guides who know tour planning inside and out.</li>
+            <li><strong>The "Recipe":</strong> We provide a simple template designed by experienced planners to collect every detail.</li>
+            <li><strong>Full Mentorship:</strong> <span class="vol-name">Paul</span>, <span class="vol-name">Lee</span>, and <span class="vol-name">Barbara</span> will mentor you step-by-step. You are never alone.</li>
+            <li><strong>No French Required:</strong> When in doubt, just be polite and keep your favourite translation app on hand!</li>
+          </ul>
+        </div>
+
+        <div class="vol-divider"></div>
+
+        <!-- QUOTE -->
+        <div class="vol-quote-wrap">
+          <blockquote class="vol-quote">
+            <span class="vol-quote-mark">"</span>
+            I planned a tour for a place I'd never been to and knew nothing about. Reading about it online didn't prepare me for the real experience at all. Watching the faces of our members as they arrived at this amazing site filled with history, and witnessing the tour that I had planned unfold seamlessly was <span class="vol-name">pure magic.</span>
+            <span class="vol-quote-mark">"</span>
+          </blockquote>
+          <p class="vol-quote-attr">— <span class="vol-name">Barb Trimpi</span>, Carmes Convent, November 2023</p>
+        </div>
+
+        <div class="vol-divider"></div>
+
+        <!-- QUICK FACT BOX -->
+        <div class="vol-section">
+          <h2 class="vol-h2">Ready to take part?</h2>
+          <p class="vol-body">Whether you can help take attendance this Friday or want to try your hand at planning a tour next fall, we want to hear from you. There's no binding contract — just the opportunity to be the reason the next tour happens.</p>
+          <p class="vol-body">Our current planners — <span class="vol-name">Paul</span>, <span class="vol-name">Lee</span>, and <span class="vol-name">Barbara</span> — have been our anchors. By planning just one tour a year, you give them the chance to simply show up and enjoy a tour as a member again, just like you.</p>
+
+          <div class="vol-factbox">
+            <div class="vol-factbox-title">New Planner? Quick Facts</div>
+            <div class="vol-fact"><span class="vol-fact-q">Do I need to speak French?</span><span class="vol-fact-a">No!</span></div>
+            <div class="vol-fact"><span class="vol-fact-q">Am I on my own?</span><span class="vol-fact-a">Never. You'll have a guide, a template, and a mentor.</span></div>
+            <div class="vol-fact"><span class="vol-fact-q">What if I try it once and it's not for me?</span><span class="vol-fact-a">No problem! There's no binding commitment.</span></div>
+          </div>
+        </div>
+
+        <!-- PARIS CLOSER -->
+        <div class="vol-paris-closer">
+          <p class="vol-paris-text">The buildings will still stand.<br>The masterpieces will still take your breath away.<br>The history will still exist.<br><strong>But without your help, we may not be here to discover it together.</strong></p>
+        </div>
+
+        <!-- CTA + FORM -->
+        <div class="vol-section vol-cta-section">
+          <h2 class="vol-h2" style="text-align:center">"FTG Runs on Volunteers.<br>Be the One Who Makes the Next Tour Happen." ♥</h2>
+          <p class="vol-body" style="text-align:center">Contact us today: <a href="mailto:ftg.membership@gmail.com" class="vol-email">ftg.membership@gmail.com</a><br>Or talk to <span class="vol-name">Barbara</span>, <span class="vol-name">Lee</span>, or <span class="vol-name">Paul</span> at the next tour!</p>
+
+          <div class="vol-form-wrap">
+            <h3 class="vol-form-title">I'm Interested — Tell Me More</h3>
+            <form id="volForm" onsubmit="submitVolForm(event)">
+              <div class="vol-field">
+                <label>Your Name</label>
+                <input type="text" id="volName" required placeholder="Your full name">
+              </div>
+              <div class="vol-field">
+                <label>Email Address</label>
+                <input type="email" id="volEmail" required placeholder="your@email.com">
+              </div>
+              <div class="vol-field">
+                <label>How would you like to help?</label>
+                <div class="vol-check-group">
+                  <label class="vol-check"><input type="checkbox" value="Plan a tour"> Plan a tour</label>
+                  <label class="vol-check"><input type="checkbox" value="Take attendance"> Take attendance</label>
+                  <label class="vol-check"><input type="checkbox" value="Help with admin"> Help with admin/emails</label>
+                  <label class="vol-check"><input type="checkbox" value="Other"> Something else</label>
+                </div>
+              </div>
+              <div class="vol-field">
+                <label>Anything else you'd like to say?</label>
+                <textarea id="volMessage" rows="4" placeholder="Optional message…"></textarea>
+              </div>
+              <div class="vol-field" style="text-align:center">
+                <button type="submit" class="vol-submit-btn" id="volSubmitBtn">Send My Interest ♥</button>
+              </div>
+              <div id="volFormStatus" style="text-align:center;margin-top:0.8rem;font-size:0.9rem;"></div>
+            </form>
+          </div>
+        </div>
+
+      </div><!-- end vol-page -->
+    </div><!-- end tab-volunteer -->
         <div id="gameQuestion" class="game-screen active">
           <div class="game-page-header">
             <span class="game-page-label" id="gamePageLabel">Questions 1–3</span>
@@ -947,6 +1390,7 @@
             <button class="game-nav-arrow" id="gameNextPageBtn" onclick="gameNextPage()" style="display:none">&#8594;</button>
           </div>
         </div>
+          <div id="gameFinale" style="display:none"></div>
       </div>
     </div>
     <div id="tab-upload" style="display:none; background:#1A202C; padding:1.5rem; margin:-0.5rem -2rem -2.5rem;">
@@ -1827,14 +2271,40 @@ function highlightTour(id) {
 }
 
 function membersTab(tab, btn) {
-  ['tours','about','game','upload'].forEach(t => {
+  ['tours','guides','about','volunteer','game','upload'].forEach(t => {
     const el = document.getElementById('tab-'+t);
     if (el) el.style.display = t===tab?'block':'none';
   });
   document.querySelectorAll('.members-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  if (tab==='game') { if(!gameSession.length) gameStart(); } else if (tab==='tours') { setTimeout(() => { observeCards(); updateDaysCountdown(); }, 100); } else if (tab==='upload') { loadSignupLists(); }
+  if (tab==='game') { if(!gameSession.length) gameStart(); document.getElementById('floating-reserve').style.display='none'; } else { document.getElementById('floating-reserve').style.display=''; }
+  if (tab==='tours') { setTimeout(() => { observeCards(); updateDaysCountdown(); }, 100); }
+  else if (tab==='upload') { loadSignupLists(); }
 }
+
+async function submitVolForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('volSubmitBtn');
+  const status = document.getElementById('volFormStatus');
+  const name = document.getElementById('volName').value.trim();
+  const email = document.getElementById('volEmail').value.trim();
+  const checks = [...document.querySelectorAll('#volForm input[type=checkbox]:checked')].map(c=>c.value);
+  const message = document.getElementById('volMessage').value.trim();
+  btn.disabled = true; btn.textContent = 'Sending…';
+  // Send via mailto as fallback (opens email client)
+  const subject = encodeURIComponent('Volunteering Interest: ' + name);
+  const body = encodeURIComponent(
+    'Name: ' + name + '\nEmail: ' + email +
+    '\nHow I can help: ' + (checks.length ? checks.join(', ') : 'Not specified') +
+    '\nMessage: ' + (message || 'None') +
+    '\n\n[Sent from the FTG Volunteering page]'
+  );
+  window.location.href = 'mailto:ftg.membership@gmail.com?subject=' + subject + '&body=' + body;
+  status.style.color = '#1E6B4E';
+  status.textContent = '✓ Your email app will open with a pre-filled message — just click Send! 🌿';
+  btn.disabled = false; btn.textContent = 'Send My Interest ♥';
+}
+
 
 function renderGallery() {
   const grid = document.getElementById('gallery-grid');
@@ -1867,7 +2337,47 @@ function gameBuildSession(){
   if(picked.length<10){const used=new Set(picked.map(q=>q.photo));picked=[...picked,...gameShuffle(GAME_QUESTIONS.filter(q=>!used.has(q.photo)))];}
   return picked.slice(0,10);
 }
+function showScoreOverlay(show){
+  const backdrop=document.getElementById('scoreOverlayBackdrop');
+  if(!show){ backdrop.classList.remove('visible'); return; }
+  const s=gameScore;
+  const grades=[
+    [9,11,'Expert! 🏆','You\'re ready to start guiding your own tours!'],
+    [7,9,'Super Star! ⭐','You get around!'],
+    [6,7,'Well done! 👏','Keep coming back!'],
+    [-1,6,'Good try! 👟','Put on your comfy shoes and get touring!']
+  ];
+  const [,,title,sub]=grades.find(([lo,hi])=>s>=lo&&s<hi)||grades[grades.length-1];
+  document.getElementById('sovNum').textContent=s;
+  document.getElementById('sovTitle').textContent=title;
+  document.getElementById('sovSub').textContent=sub;
+  // Sprinkle stars
+  const starsEl=document.getElementById('sovStars');
+  starsEl.innerHTML='';
+  const positions=[[8,12],[80,8],[92,20],[5,75],[88,70],[15,88],[75,85]];
+  positions.forEach(([left,top],i)=>{
+    const star=document.createElement('span');
+    star.className='sov-star';
+    star.textContent='★';
+    star.style.left=left+'%'; star.style.top=top+'%';
+    star.style.animationDelay=(i*0.45)+'s';
+    star.style.fontSize=(0.7+Math.random()*0.6)+'rem';
+    star.style.opacity=(0.4+Math.random()*0.5).toFixed(2);
+    starsEl.appendChild(star);
+  });
+  // Reset animation
+  const card=document.getElementById('scoreOverlayCard');
+  card.style.animation='none';
+  card.offsetHeight; // reflow
+  card.style.animation='';
+  backdrop.classList.add('visible');
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('scoreOverlayBackdrop'))
+    showScoreOverlay(false);
+}
 function gameStart(){
+  showScoreOverlay(false);
   gameSession=gameBuildSession();
   gamePage=0; gameScore=0;
   gameAnswered=new Array(10).fill(null); // null=unanswered, {chosen,ok}=answered
@@ -1968,33 +2478,8 @@ function gameRenderPage(){
     trio.appendChild(card);
   });
 
-  // Score card on last page
-  if(isLastPage){
-    const sc=document.createElement('div');
-    sc.className='game-card is-score';
-    sc.id='gameScoreCard';
-    const allAnswered = gameAnswered.slice(0,10).every(a=>a!==null);
-    if(allAnswered){
-      const s=gameScore;
-      const grades=[
-        [9,11,'Expert! 🏆','You\'re ready to start guiding your own tours!'],
-        [7,9,'Super Star! ⭐','You get around!'],
-        [6,7,'Well done! 👏','Keep coming back!'],
-        [-1,6,'Good try! 👟','Put on your comfy shoes and get touring!']
-      ];
-      const [,,title,sub]=grades.find(([lo,hi])=>s>=lo&&s<hi)||grades[grades.length-1];
-      sc.innerHTML=
-        '<div class="game-score-num">'+s+'</div>'+
-        '<div class="game-score-denom">out of 10</div>'+
-        '<div class="game-score-title">'+title+'</div>'+
-        '<div class="game-score-sub">'+sub+'</div>'+
-        '<button class="game-play-again" onclick="gameStart()">▶ Play Again</button>';
-    } else {
-      sc.innerHTML=
-        '<div style="color:rgba(255,255,255,0.6);font-size:0.85rem;line-height:1.8">Answer all<br>questions to<br>see your score!</div>';
-    }
-    trio.appendChild(sc);
-  }
+  // Hide overlay when navigating pages
+  if(!isLastPage) showScoreOverlay(false);
 
   // Arrow button
   const nextBtn = document.getElementById('gameNextPageBtn');
@@ -2040,25 +2525,9 @@ function gameAnswer(globalIdx, chosen, correct, choices, card, body){
   const nextBtn=document.getElementById('gameNextPageBtn');
   nextBtn.style.display=(allOnPageAnswered&&!isLastPage)?'flex':'none';
 
-  // If last page, refresh score card
+  // Show overlay when last question is answered
   if(isLastPage && gameAnswered.slice(0,10).every(a=>a!==null)){
-    const sc=document.getElementById('gameScoreCard');
-    if(sc){
-      const s=gameScore;
-      const grades=[
-        [9,11,'Expert! 🏆','You\'re ready to start guiding your own tours!'],
-        [7,9,'Super Star! ⭐','You get around!'],
-        [6,7,'Well done! 👏','Keep coming back!'],
-        [-1,6,'Good try! 👟','Put on your comfy shoes and get touring!']
-      ];
-      const [,,title,sub]=grades.find(([lo,hi])=>s>=lo&&s<hi)||grades[grades.length-1];
-      sc.innerHTML=
-        '<div class="game-score-num">'+s+'</div>'+
-        '<div class="game-score-denom">out of 10</div>'+
-        '<div class="game-score-title">'+title+'</div>'+
-        '<div class="game-score-sub">'+sub+'</div>'+
-        '<button class="game-play-again" onclick="gameStart()">▶ Play Again</button>';
-    }
+    setTimeout(()=>showScoreOverlay(true), 600);
   }
 }
 
@@ -2517,5 +2986,21 @@ async function submitVisitorsForm(e) {
   }
 }
 </script>
+
+<!-- SCORE OVERLAY -->
+<div id="scoreOverlayBackdrop" onclick="handleOverlayClick(event)">
+  <div id="scoreOverlayCard">
+    <div class="sov-stars" id="sovStars"></div>
+    <div class="sov-header">Question 10 Complete</div>
+    <div class="sov-circle">
+      <span class="sov-num" id="sovNum">0</span>
+    </div>
+    <div class="sov-denom">out of 10</div>
+    <div class="sov-line"></div>
+    <div class="sov-title" id="sovTitle"></div>
+    <div class="sov-sub" id="sovSub"></div>
+    <button class="sov-btn" onclick="gameStart()">▶ Play Again</button>
+  </div>
+</div>
 </body>
 </html>
