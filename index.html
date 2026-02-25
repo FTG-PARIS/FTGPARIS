@@ -1,21 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Current Date and Time</title>
-    <script>
-        function updateDateTime() {
-            const options = { timeZone: 'Europe/Paris', hour12: false };
-            const now = new Date();
-            const dateTime = now.toLocaleString('fr-FR', options);
-            document.getElementById('dateTime').textContent = dateTime;
-        }
-        setInterval(updateDateTime, 1000);
-    </script>
-</head>
-<body>
-    <h1>Current Date and Time in Paris</h1>
-    <div id="dateTime"></div>
-</body>
-</html>
+.mobile-optimization {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+
+@media (max-width: 768px) {
+    .mobile-optimization {
+        font-size: 12px;
+        padding: 5px;
+    }
+}
