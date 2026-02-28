@@ -1542,6 +1542,7 @@ const VENDOME_SQUARE_IMG = '';
 
 const BRIDGES_IMG = 'photos/photo35.jpg';
 const POIRET_FASHION_IMG = 'photos/photo11.jpg';
+const MEUDON_IMG = 'photos/MeudonMay22.jpg';
 
 const tours = [
   // SEPTEMBER 2025
@@ -1945,19 +1946,19 @@ const tours = [
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Palais-Royal">Wikipedia: Palais-Royal</a>',
     desc:'The history of the Palais Royal is amazing. As an architectural space, it is the quintessence of French neo-classical values, which have very ancient Latin roots. Built by Cardinal Richelieu in 1628, it was later the place of residence of many royals. In 1780 the space was enclosed by the Duc d\'Orléans, and shops, cafés, restaurants, and other attractions were created. So this lovely space also holds a more ambiguous story about the very lucrative activities of prostitution and gambling. At the time of the Revolution it became a veritable forum where patriots and radicals met and debated before becoming a space for various administrations in the 19th century. Join Ingrid Held who will make this incredible space and its delightful gardens come alive.' },
 
-  { date:'2026-05-22', name:'FTG Full Day Tour – Save the Date', month:'May', type:'walking', emoji:'📅',
-    meet_time:'TBD', start_time:'TBD', finish_time:'',
-    meeting:'TBD',
-    transport:'TBD',
-    guide:'TBD',
-    cost_regular:'TBD', cost_waitlist:'TBD', cost_guest:'TBD',
-    note:'',
-    limit:'TBD', walk_level:'TBD',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
-    read_ahead:'',
-    desc:'Save the Date — Plan for a Full Day Tour. Details to be announced.' },
+  { date:'2026-05-22', photo_url: MEUDON_IMG, name:'An Afternoon in Meudon', month:'May', type:'walking', emoji:'🔭',
+    meet_time:'13h15', start_time:'13h30', finish_time:'~17h00 near RER station',
+    meeting:'Gare de Bellevue, Meudon',
+    transport:'Train: N - Gare de Bellevue, Meudon · Tram: T2 - Bellevue · Bus: 169 - Bellevue',
+    guide:'Thierry HEIL',
+    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
+    note:'(includes guide and entrance fees)',
+    limit:'20', walk_level:'Medium walk with uphill sections — will be a long walk',
+    walk_dots: [true,true,true,true,false],
+    tour_planner:'Barbara TRIMPI',
+    day_contact:'Paul GAVORA 06 73 31 98 92',
+    read_ahead:'<a href="https://observatoiredeparis.psl.eu/le-chateau-de-meudon.html">Observatoire de Paris: Château de Meudon</a> · <a href="https://musee.meudon.fr/">Musée d\'Art et d\'Histoire de Meudon</a>',
+    desc:'Join us as we explore the town of Meudon, just southwest of Paris, with our guide Thierry Heil. Our tour, starting at Gare Bellevue, will allow us to take a close look at some unique experimental modern homes from the 1950s, including works by Jean Prouvé and André Bloc, pioneers of prefabrication and sculptural concrete which they tested on these steep plots overlooking Paris. From there we climb to the site of the Château de Meudon, acquired in 1695 for Louis XIV\'s son and destroyed during the Franco-Prussian War in 1871. Today, the Meudon Observatory, home to the Grande Coupole telescope, now crowns the terrace, offering expansive views over Paris and the Seine valley. We will then descend through former royal hunting grounds before concluding our tour in the town center at the Musée d\'Art et d\'Histoire de Meudon, which features works by Rodin, Carpeaux, and 19th-century regional artists.' },
 
   { date:'2026-05-29', photo_url: CHATEAU_SCEAUX_IMG, name:'Walking Garden Tour & Season-Ending Luncheon – Parc de Sceaux', month:'May', type:'walking', emoji:'🌸',
     meet_time:'10h15', start_time:'10h30', finish_time:'',
@@ -2099,7 +2100,8 @@ function renderPublicCalendar() {
     const group = document.createElement('div');
     group.className = 'month-group';
     group.dataset.month = month;
-    group.innerHTML = '<div class="month-label">' + month + ' <span>' + mt.length + ' event' + (mt.length>1?'s':'') + '</span></div><div class="tours-list"></div>';
+    const monthYear = new Date(mt[0].date).getFullYear();
+    group.innerHTML = '<div class="month-label">' + month + ' ' + monthYear + ' <span>' + mt.length + ' event' + (mt.length>1?'s':'') + '</span></div><div class="tours-list"></div>';
     const list = group.querySelector('.tours-list');
     mt.forEach(t => {
       const d = new Date(t.date);
@@ -2174,7 +2176,8 @@ function renderMemberTours() {
     if (!mt.length) return;
     const h = document.createElement('div');
     h.className = 'members-month-head';
-    h.innerHTML = month + ' <span>' + mt.length + ' event' + (mt.length>1?'s':'') + '</span>';
+    const mYear = new Date(mt[0].date).getFullYear();
+    h.innerHTML = month + ' ' + mYear + ' <span>' + mt.length + ' event' + (mt.length>1?'s':'') + '</span>';
     list.appendChild(h);
     mt.forEach(t => {
       const d = new Date(t.date);
