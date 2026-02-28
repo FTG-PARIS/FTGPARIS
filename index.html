@@ -789,6 +789,22 @@
     .members-content { padding: 1.5rem; }
     .detail-section { grid-template-columns: 1fr; }
     .quiz-divider { margin: 1rem -1.5rem; }
+
+    /* ── NAV: shrink buttons on mobile ── */
+    .nav-member-btn { padding: 0.35rem 0.7rem; font-size: 0.7rem; }
+    .visitors-nav-btn { padding: 0.35rem 0.7rem; font-size: 0.7rem; }
+
+    /* ── SLIDE CARDS: stack vertically on mobile ── */
+    .slide-top { grid-template-columns: 1fr; height: auto; }
+    .slide-photo-panel { height: 200px; border-right: none; border-bottom: 1px solid #D4AF37; }
+    .slide-body { grid-template-columns: 1fr; }
+    .slide-logistics { border-right: none; border-bottom: 1px solid #ede9e0; }
+    .slide-description { padding: 1.2rem; }
+    .slide-desc-text { font-size: 0.92rem; max-width: 100%; }
+    .slide-bottom-strip { max-width: 100%; }
+
+    /* ── PUBLIC TOUR ROWS: fix text overlap ── */
+    .tour-row-name { font-size: 0.95rem; line-height: 1.3; }
   }
   @media(max-width: 480px) {
     .tour-row { grid-template-columns: 60px 1fr; gap: 0.5rem; }
@@ -2022,6 +2038,8 @@ function showPage(name) {
   document.getElementById('btn-members').style.display = onMembers ? 'none' : '';
   document.getElementById('btn-home').style.display = onMembers ? '' : 'none';
   document.querySelector('nav').style.background = onMembers ? '#2d3748' : 'var(--purple)';
+  const vBtn = document.querySelector('.visitors-nav-btn');
+  if (vBtn) vBtn.style.display = onMembers ? 'none' : '';
   const fn = document.getElementById('footer-name');
   if (fn) fn.textContent = onMembers ? 'Friday Tour Group' : 'Fridays in Paris';
   const nt = document.getElementById('nav-site-title');
