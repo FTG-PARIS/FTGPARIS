@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FTG Planner Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1A3A2A;
+    --anthracite: #2d3748;
+    --gold: #D4AF37;
+    --gold-light: #e8c76a;
+    --eggshell: #F8F6F2;
+    --stone: #8a7f72;
+    --warm-border: #e0dbd2;
+    --admin-bg: #fdf6e3;
+    --admin-border: #e8c76a;
+    --red: #c0392b;
+    --green: #1E6B4E;
+    --white: #ffffff;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 12px rgba(26,58,42,0.08);
+    --shadow-lg: 0 8px 32px rgba(26,58,42,0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--eggshell);
+    color: var(--anthracite);
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN SCREEN ── */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--forest);
+    background-image: radial-gradient(ellipse at 30% 20%, rgba(212,175,55,0.12) 0%, transparent 60%),
+                      radial-gradient(ellipse at 80% 80%, rgba(212,175,55,0.07) 0%, transparent 50%);
+  }
+  .login-box {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+  .login-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--stone);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .login-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--forest);
+    margin-bottom: 0.3rem;
+  }
+  .login-subtitle {
+    font-size: 0.85rem;
+    color: var(--stone);
+    margin-bottom: 2rem;
+  }
+  .login-field { margin-bottom: 1rem; text-align: left; }
+  .login-field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--stone); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+  .login-field input {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 1.5px solid var(--warm-border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--anthracite);
+    background: var(--eggshell);
+    transition: border-color 0.2s;
+  }
+  .login-field input:focus { outline: none; border-color: var(--gold); background: var(--white); }
+  .login-btn {
+    width: 100%; padding: 0.85rem;
+    background: var(--forest);
+    color: var(--gold);
+    border: none; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-top: 0.5rem;
+  }
+  .login-btn:hover { background: #0f2418; }
+  .login-btn:active { transform: scale(0.98); }
+  #login-error { color: var(--red); font-size: 0.85rem; margin-top: 0.75rem; min-height: 1.2em; }
+
+  /* ── MAIN APP ── */
+  #app { display: none; }
+
+  /* ── TOP NAV ── */
+  .top-nav {
+    background: var(--forest);
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 1.15rem;
+    letter-spacing: 0.05em;
+  }
+  .nav-brand span { color: rgba(255,255,255,0.5); font-size: 0.8rem; font-family: 'DM Sans', sans-serif; margin-left: 0.7rem; font-weight: 300; }
+  .nav-right { display: flex; align-items: center; gap: 1rem; }
+  .nav-user {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+  .nav-user strong { color: var(--gold-light); }
+  .nav-logout {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .nav-logout:hover { background: rgba(255,255,255,0.18); color: var(--white); }
+
+  /* ── MAIN LAYOUT ── */
+  .main-wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* ── VIEW TOGGLE (Dashboard / Editor) ── */
+  #dashboard-view, #editor-view { display: none; }
+  #dashboard-view.active, #editor-view.active { display: block; }
+
+  /* ── DASHBOARD ── */
+  .dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.8rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .dash-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--forest);
+  }
+  .dash-title span { font-size: 0.9rem; font-family: 'DM Sans', sans-serif; color: var(--stone); font-weight: 400; margin-left: 0.5rem; }
+  .btn-new {
+    background: var(--forest);
+    color: var(--gold);
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.4rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-new:hover { background: #0f2418; }
+
+  /* Admin planner filter tabs */
+  .admin-filter {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    border: 1.5px solid var(--warm-border);
+    background: var(--white);
+    color: var(--stone);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--forest);
+    color: var(--gold);
+    border-color: var(--forest);
+  }
+
+  .drafts-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--stone);
+    font-size: 0.95rem;
+  }
+  .drafts-empty .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.4; }
+
+  /* Draft cards */
+  .drafts-grid { display: grid; gap: 1rem; }
+  .draft-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1.5px solid var(--warm-border);
+    padding: 1.2rem 1.4rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 1rem;
+    align-items: center;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .draft-card:hover { box-shadow: var(--shadow-lg); border-color: var(--gold); }
+  .draft-card-left {}
+  .draft-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--forest);
+    margin-bottom: 0.25rem;
+  }
+  .draft-card-meta {
+    font-size: 0.78rem;
+    color: var(--stone);
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .draft-card-meta .meta-planner {
+    background: var(--eggshell);
+    border-radius: 4px;
+    padding: 0.1rem 0.5rem;
+    font-weight: 500;
+  }
+  .status-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .status-draft { background: #e8f0fe; color: #1a56db; }
+  .status-submitted { background: #def7ec; color: #03543f; }
+  .status-ready { background: #fdf6b2; color: #8e4b10; }
+
+  .draft-card-actions { display: flex; gap: 0.5rem; align-items: center; }
+  .btn-edit, .btn-delete {
+    border: none; border-radius: 6px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .btn-edit { background: var(--forest); color: var(--gold); }
+  .btn-edit:hover { background: #0f2418; }
+  .btn-delete { background: #fde8e8; color: var(--red); }
+  .btn-delete:hover { background: #fbd5d5; }
+
+  /* ── EDITOR ── */
+  .editor-topbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+    flex-wrap: wrap;
+  }
+  .btn-back {
+    background: none;
+    border: 1.5px solid var(--warm-border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--stone);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .btn-back:hover { border-color: var(--forest); color: var(--forest); }
+  .editor-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--forest);
+    flex: 1;
+  }
+  .editor-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+  .btn-save, .btn-submit {
+    border: none; border-radius: 8px;
+    padding: 0.6rem 1.3rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-save { background: var(--eggshell); color: var(--forest); border: 1.5px solid var(--warm-border); }
+  .btn-save:hover { background: var(--warm-border); }
+  .btn-submit { background: var(--gold); color: var(--forest); }
+  .btn-submit:hover { background: var(--gold-light); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .save-indicator {
+    font-size: 0.78rem;
+    color: var(--green);
+    font-style: italic;
+    align-self: center;
+  }
+
+  /* ── FORM SECTIONS ── */
+  .form-section {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1.5px solid var(--warm-border);
+    padding: 1.8rem;
+    margin-bottom: 1.4rem;
+    box-shadow: var(--shadow);
+  }
+  .form-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--forest);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 2px solid var(--warm-border);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .form-section-title .section-num {
+    width: 26px; height: 26px;
+    background: var(--forest);
+    color: var(--gold);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Admin section */
+  .form-section.admin-section {
+    background: var(--admin-bg);
+    border-color: var(--admin-border);
+  }
+  .form-section.admin-section .form-section-title {
+    color: #7a5c00;
+    border-bottom-color: var(--admin-border);
+  }
+  .form-section.admin-section .section-num {
+    background: #b8860b;
+    color: var(--white);
+  }
+  .admin-label {
+    display: inline-block;
+    background: #b8860b;
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+
+  /* ── FORM FIELDS ── */
+  .fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.4rem;
+  }
+  .fields-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+  .fields-grid.one-col { grid-template-columns: 1fr; }
+  .field-full { grid-column: 1 / -1; }
+
+  .field { display: flex; flex-direction: column; gap: 0.35rem; }
+  .field label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--stone);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  .field label .req { color: var(--red); margin-left: 2px; }
+  .field label .hint {
+    font-weight: 400;
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #aaa;
+    margin-left: 0.3rem;
+    font-size: 0.72rem;
+  }
+  .field input, .field select, .field textarea {
+    padding: 0.65rem 0.9rem;
+    border: 1.5px solid var(--warm-border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--anthracite);
+    background: var(--eggshell);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: var(--white);
+  }
+  .field textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  .field .word-count { font-size: 0.72rem; color: var(--stone); text-align: right; margin-top: 0.2rem; }
+  .field .word-count.over { color: var(--red); font-weight: 600; }
+
+  /* Tour type selector */
+  .type-selector { display: flex; gap: 0.8rem; }
+  .type-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border: 2px solid var(--warm-border);
+    border-radius: 10px;
+    background: var(--eggshell);
+    color: var(--stone);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .type-btn:hover { border-color: var(--forest); color: var(--forest); }
+  .type-btn.selected { background: var(--forest); color: var(--gold); border-color: var(--forest); }
+
+  /* Checkboxes row */
+  .checks-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.3rem; }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--eggshell);
+    border: 1.5px solid var(--warm-border);
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--anthracite);
+    transition: all 0.15s;
+  }
+  .check-item:hover { border-color: var(--forest); }
+  .check-item input[type=checkbox] { accent-color: var(--forest); width: 14px; height: 14px; }
+  .check-item.checked { background: #e8f5ee; border-color: var(--green); color: var(--green); }
+
+  /* Walk level dots */
+  .walk-dots-row { display: flex; gap: 0.5rem; margin-top: 0.3rem; align-items: center; }
+  .walk-dot {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 2px solid var(--warm-border);
+    background: var(--eggshell);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .walk-dot.on { background: var(--gold); border-color: var(--gold); }
+  .walk-dot-label { font-size: 0.78rem; color: var(--stone); margin-left: 0.5rem; font-style: italic; }
+
+  /* TBD checkbox */
+  .tbd-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; }
+  .tbd-row label { font-size: 0.8rem; color: var(--stone); font-weight: 400; text-transform: none; letter-spacing: 0; cursor: pointer; }
+  .tbd-row input { accent-color: var(--forest); }
+
+  /* Read ahead links */
+  .links-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .link-row { display: flex; gap: 0.5rem; align-items: center; }
+  .link-row input { flex: 1; }
+  .link-row .link-num { font-size: 0.75rem; color: var(--stone); font-weight: 600; min-width: 18px; }
+
+  /* Zoom auto-fill note */
+  .autofill-note {
+    font-size: 0.78rem;
+    color: var(--green);
+    font-style: italic;
+    margin-top: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  /* Status bar */
+  #status-bar {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--anthracite);
+    color: var(--white);
+    padding: 0.7rem 1.2rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 999;
+    max-width: 320px;
+  }
+  #status-bar.show { opacity: 1; transform: translateY(0); }
+  #status-bar.success { background: var(--green); }
+  #status-bar.error { background: var(--red); }
+
+  /* New draft modal */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow-lg);
+  }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--forest);
+    margin-bottom: 1.2rem;
+  }
+  .modal-actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; justify-content: flex-end; }
+  .btn-cancel-modal {
+    background: none; border: 1.5px solid var(--warm-border);
+    border-radius: 8px; padding: 0.6rem 1.2rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    color: var(--stone); cursor: pointer;
+  }
+  .btn-cancel-modal:hover { border-color: var(--stone); }
+  .btn-create {
+    background: var(--forest); color: var(--gold);
+    border: none; border-radius: 8px; padding: 0.6rem 1.4rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    font-weight: 600; cursor: pointer;
+  }
+  .btn-create:hover { background: #0f2418; }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .fields-grid { grid-template-columns: 1fr; }
+    .fields-grid.three-col { grid-template-columns: 1fr; }
+    .top-nav { padding: 0.7rem 1rem; }
+    .main-wrap { padding: 1.2rem 1rem; }
+    .form-section { padding: 1.2rem; }
+    .draft-card { grid-template-columns: 1fr; }
+    .draft-card-actions { justify-content: flex-start; }
+    .editor-topbar { flex-direction: column; align-items: flex-start; }
+    .type-selector { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Friday Tour Group</div>
+    <div class="login-title">Planner Tool</div>
+    <div class="login-subtitle">Sign in to access your tour templates</div>
+    <div class="login-field">
+      <label>Your Name</label>
+      <input type="text" id="login-name" placeholder="e.g. Paul" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div id="login-error"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN APP
+══════════════════════════════════════════ -->
+<div id="app">
+  <!-- Top nav -->
+  <nav class="top-nav">
+    <div class="nav-brand">FTG Planner Tool <span>Friday Tour Group</span></div>
+    <div class="nav-right">
+      <div class="nav-user">Signed in as <strong id="nav-username"></strong></div>
+      <button class="nav-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="main-wrap">
+
+    <!-- ── DASHBOARD ── -->
+    <div id="dashboard-view">
+      <div class="dash-header">
+        <div class="dash-title">My Drafts <span id="drafts-count"></span></div>
+        <div style="display:flex;gap:0.7rem;align-items:center;">
+          <button class="btn-new" onclick="openNewModal()">＋ New Template</button>
+          <button onclick="clearAllDrafts()" style="background:none;border:1.5px solid var(--warm-border);border-radius:8px;padding:0.6rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--stone);cursor:pointer;" title="Clear all saved drafts from this browser">🗑 Clear All Drafts</button>
+        </div>
+      </div>
+
+      <!-- Admin planner filter (admin only) -->
+      <div class="admin-filter" id="admin-filter" style="display:none;">
+        <button class="filter-btn active" onclick="filterByPlanner('all', this)">All Planners</button>
+        <button class="filter-btn" onclick="filterByPlanner('Paul', this)">Paul</button>
+        <button class="filter-btn" onclick="filterByPlanner('Barb', this)">Barb</button>
+        <button class="filter-btn" onclick="filterByPlanner('Lee', this)">Lee</button>
+        <button class="filter-btn" onclick="filterByPlanner('Dee', this)">Dee</button>
+        <button class="filter-btn" onclick="filterByPlanner('Planner1', this)">Planner 1</button>
+        <button class="filter-btn" onclick="filterByPlanner('Planner2', this)">Planner 2</button>
+      </div>
+
+      <div id="drafts-list"></div>
+    </div>
+
+    <!-- ── EDITOR ── -->
+    <div id="editor-view">
+      <div class="editor-topbar">
+        <button class="btn-back" onclick="backToDashboard()">← Back to Drafts</button>
+        <div class="editor-title" id="editor-title">New Template</div>
+        <div class="editor-actions">
+          <span class="save-indicator" id="save-indicator"></span>
+          <button class="btn-save" onclick="saveDraft()">💾 Save Draft</button>
+          <button class="btn-submit" id="submit-btn" onclick="submitTemplate()">✉ Submit to Barb</button>
+        </div>
+      </div>
+
+      <form id="tour-form" onsubmit="return false;">
+
+        <!-- SECTION 1: Tour Type & Basic Info -->
+        <div class="form-section">
+          <div class="form-section-title"><span class="section-num">1</span> Tour Type &amp; Basic Information</div>
+          <div class="fields-grid one-col" style="margin-bottom:1rem;">
+            <div class="field">
+              <label>Tour Type <span class="req">*</span></label>
+              <div class="type-selector">
+                <button type="button" class="type-btn" id="type-walk" onclick="selectTourType('walk')">🚶 Walk</button>
+                <button type="button" class="type-btn" id="type-museum" onclick="selectTourType('museum')">🏛 Museum</button>
+                <button type="button" class="type-btn" id="type-zoom" onclick="selectTourType('zoom')">💻 Zoom / Video</button>
+              </div>
+            </div>
+          </div>
+          <div class="fields-grid">
+            <div class="field">
+              <label>Tour Date <span class="req">*</span> <span class="hint">dd-MMM-YYYY e.g. 12-Sep-2025</span></label>
+              <input type="text" id="f-date" placeholder="dd-MMM-YYYY" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Tour Title <span class="req">*</span></label>
+              <input type="text" id="f-title" placeholder="Tour title" oninput="onFieldChange()">
+            </div>
+            <div class="field field-full">
+              <label>Description <span class="req">*</span> <span class="hint">150 words max</span></label>
+              <textarea id="f-description" rows="5" placeholder="Write the tour description here…" oninput="onDescInput()"></textarea>
+              <div class="word-count" id="desc-count">0 / 150 words</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: Times (hidden for zoom - auto-filled) -->
+        <div class="form-section" id="section-times">
+          <div class="form-section-title"><span class="section-num">2</span> Times</div>
+          <div class="fields-grid three-col">
+            <div class="field">
+              <label>Meet Time <span class="req">*</span> <span class="hint">hh h mm</span></label>
+              <input type="text" id="f-meet" placeholder="hh h mm" oninput="onFieldChange()">
+              <div class="tbd-row" id="zoom-meet-note" style="display:none;">
+                <div class="autofill-note">✓ Auto-filled: 16 h 45 (Thursday)</div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Start Time <span class="hint">hh h mm</span></label>
+              <input type="text" id="f-start" placeholder="hh h mm" oninput="onFieldChange()">
+              <div class="tbd-row">
+                <input type="checkbox" id="f-times-tbd" onchange="toggleTimesTBD()">
+                <label for="f-times-tbd">TBD — times not yet known (sets Meet &amp; Start to TBD)</label>
+              </div>
+            </div>
+            <div class="field" id="field-finish">
+              <label>Finish Time <span class="hint">optional — or Return time if train</span></label>
+              <input type="text" id="f-finish" placeholder="leave blank if not known" oninput="onFieldChange()">
+            </div>
+          </div>
+          <div id="zoom-times-note" style="display:none; margin-top:0.8rem;">
+            <div class="autofill-note">✓ Zoom defaults: Meet 16h45 · Start 17h00 · Finish 18h15. These are pre-filled but you can override them above.</div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Meeting Place & Transport (hidden for zoom) -->
+        <div class="form-section" id="section-meeting">
+          <div class="form-section-title"><span class="section-num">3</span> Meeting Place &amp; Transport</div>
+          <div class="fields-grid one-col">
+            <div class="field">
+              <label>Meeting Place <span class="req">*</span> <span class="hint">be specific — address, metro exit, door, etc.</span></label>
+              <input type="text" id="f-meeting" placeholder="Address, metro exit, museum door, etc." oninput="onFieldChange()">
+            </div>
+          </div>
+          <div class="fields-grid" style="margin-top:1rem;">
+            <div class="field">
+              <label>Métro <span class="hint">line number &amp; stop name</span></label>
+              <input type="text" id="f-metro" placeholder="e.g. M9 – Alma-Marceau" oninput="onFieldChange()">
+            </div>
+            <div class="field" id="field-rer">
+              <label>RER <span class="hint">letter &amp; stop name</span></label>
+              <input type="text" id="f-rer" placeholder="e.g. C, Pont d'Alma" oninput="onFieldChange()">
+            </div>
+            <div class="field" id="field-bus">
+              <label>Bus <span class="hint">numbers &amp; stop</span></label>
+              <input type="text" id="f-bus" placeholder="e.g. 63, 72, 93" oninput="onFieldChange()">
+            </div>
+            <div class="field" id="field-transport-other">
+              <label>Other Transport</label>
+              <input type="text" id="f-transport-other" placeholder="e.g. walking from Gare de Lyon" oninput="onFieldChange()">
+            </div>
+          </div>
+          <div id="zoom-meeting-note" style="display:none; margin-top:0.8rem;">
+            <div class="autofill-note">✓ Zoom defaults pre-filled: Meeting place and transport are standard for all video tours.</div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: Walk Level & Limit (hidden for zoom) -->
+        <div class="form-section" id="section-walklevel">
+          <div class="form-section-title"><span class="section-num">4</span> Walk Level &amp; Limit</div>
+          <div class="fields-grid">
+            <div class="field">
+              <label>Walk Level</label>
+              <select id="f-walk-level" onchange="onWalkLevelChange()">
+                <option value="">— Select —</option>
+                <option value="Easy walk, few staircases">Easy walk, few staircases</option>
+                <option value="Medium walk">Medium walk</option>
+                <option value="Difficult walk, staircases, hills or rough trail">Difficult walk, staircases, hills or rough trail</option>
+              </select>
+              <div class="walk-dots-row" id="walk-dots-row">
+                <div class="walk-dot" id="wd0" onclick="toggleDot(0)"></div>
+                <div class="walk-dot" id="wd1" onclick="toggleDot(1)"></div>
+                <div class="walk-dot" id="wd2" onclick="toggleDot(2)"></div>
+                <div class="walk-dot" id="wd3" onclick="toggleDot(3)"></div>
+                <div class="walk-dot" id="wd4" onclick="toggleDot(4)"></div>
+                <span class="walk-dot-label" id="walk-dot-label"></span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Participant Limit</label>
+              <input type="number" id="f-limit" placeholder="e.g. 25" min="1" max="99" oninput="onFieldChange()">
+              <div class="tbd-row">
+                <input type="checkbox" id="f-no-limit" onchange="toggleNoLimit()">
+                <label for="f-no-limit">No maximum limit</label>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;">
+            <div style="font-size:0.75rem;font-weight:600;color:var(--stone);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.5rem;">WEAR COMFORTABLE WALKING SHOES!! Carry umbrella just in case of rain.</div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: What's Included (hidden for zoom) -->
+        <div class="form-section" id="section-includes">
+          <div class="form-section-title"><span class="section-num">5</span> What's Included / Not Included <span style="font-size:0.78rem;font-weight:400;color:var(--stone);font-family:'DM Sans',sans-serif;">(for your reference — not shown publicly)</span></div>
+          <div class="fields-grid">
+            <div class="field">
+              <label>Cost Includes (tick all that apply)</label>
+              <div class="checks-row" id="includes-checks">
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="includes" value="Guide fees"> Guide fees</label>
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="includes" value="Entrance fees"> Entrance fees</label>
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="includes" value="Atelier fees"> Atelier fees</label>
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="includes" value="Bus"> Bus</label>
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="includes" value="Train ticket"> Train ticket</label>
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="includes" value="Lunch"> Lunch</label>
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="includes" value="Dessert / coffee, tea"> Dessert/coffee/tea</label>
+              </div>
+              <input type="text" id="f-includes-other" placeholder="Other: specify…" style="margin-top:0.5rem;" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Does NOT Include <span class="hint">only tick if relevant</span></label>
+              <div class="checks-row" id="excludes-checks">
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="excludes" value="Entrance fees"> Entrance fees</label>
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="excludes" value="Train ticket"> Train ticket</label>
+                <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" name="excludes" value="Lunch"> Lunch</label>
+              </div>
+              <input type="text" id="f-excludes-other" placeholder="Other: specify…" style="margin-top:0.5rem;" oninput="onFieldChange()">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 6: Costs (public) -->
+        <div class="form-section">
+          <div class="form-section-title"><span class="section-num" id="costs-section-num">6</span> Costs <span style="font-size:0.78rem;font-weight:400;color:var(--stone);font-family:'DM Sans',sans-serif;">(shown on website)</span></div>
+          <div class="fields-grid">
+            <div class="field">
+              <label>Regular Members (RM) <span class="hint" id="rm-default-hint">default: 10€ museum / 0€ walk</span></label>
+              <input type="text" id="f-cost-rm" placeholder="10" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Waitlist Members (WL) <span class="hint" id="wl-default-hint">default: 20€ museum / 15€ walk</span></label>
+              <input type="text" id="f-cost-wl" placeholder="20" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Guests <span class="hint">default: 25€</span></label>
+              <input type="text" id="f-cost-guest" placeholder="25" oninput="onFieldChange()">
+            </div>
+            <div class="field" id="field-noshow">
+              <label>No Show Fee <span class="hint" id="noshow-default-hint">default: 15€ walk / 20€ museum</span></label>
+              <input type="text" id="f-cost-noshow" placeholder="15" oninput="onFieldChange()">
+            </div>
+          </div>
+          <div class="tbd-row" style="margin-top:0.5rem;">
+            <input type="checkbox" id="f-costs-tbd" onchange="toggleCostsTBD()">
+            <label for="f-costs-tbd">Costs not yet available — mark as TBD</label>
+          </div>
+        </div>
+
+        <!-- SECTION 7: Guide, Planner, Photo -->
+        <div class="form-section">
+          <div class="form-section-title"><span class="section-num" id="guide-section-num">7</span> Guide, Tour Planner &amp; Photo</div>
+          <div class="fields-grid">
+            <div class="field">
+              <label>Tour Guide <span class="req">*</span> <span class="hint">Prénom NOM</span></label>
+              <input type="text" id="f-guide" placeholder="Prénom NOM" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Tour Planner <span class="req">*</span> <span class="hint">Prénom NOM</span></label>
+              <input type="text" id="f-planner" placeholder="Prénom NOM" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Day-of Contact <span class="hint">default: Paul GAVORA 06 73 31 98 92</span></label>
+              <input type="text" id="f-contact" placeholder="Paul GAVORA 06 73 31 98 92" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Photo Filename <span class="hint">e.g. photo22.jpg — prepare &amp; email separately</span></label>
+              <input type="text" id="f-photo" placeholder="e.g. photos/photo22.jpg" oninput="onFieldChange()">
+            </div>
+            <div class="field field-full">
+              <label>Photo Attribution</label>
+              <input type="text" id="f-photo-attr" placeholder="© Photographer name / source" oninput="onFieldChange()">
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 8: Read Ahead Links -->
+        <div class="form-section">
+          <div class="form-section-title"><span class="section-num" id="readahead-section-num">8</span> Read Ahead Links <span style="font-size:0.78rem;font-weight:400;color:var(--stone);font-family:'DM Sans',sans-serif;">(optional, up to 3)</span></div>
+          <div class="links-list">
+            <div class="link-row"><span class="link-num">1.</span><input type="url" id="f-link1" placeholder="https://…" oninput="onFieldChange()"></div>
+            <div class="link-row"><span class="link-num">2.</span><input type="url" id="f-link2" placeholder="https://…" oninput="onFieldChange()"></div>
+            <div class="link-row"><span class="link-num">3.</span><input type="url" id="f-link3" placeholder="https://…" oninput="onFieldChange()"></div>
+          </div>
+        </div>
+
+        <!-- SECTION 9: ADMIN ONLY -->
+        <div class="form-section admin-section">
+          <div class="form-section-title">
+            <span class="section-num" id="admin-section-num">9</span>
+            Cost Data <span class="admin-label">Admin Only</span>
+            <span style="font-size:0.78rem;font-weight:400;color:#7a5c00;font-family:'DM Sans',sans-serif;margin-left:0.3rem;">— not shown on website</span>
+          </div>
+          <div class="fields-grid" id="admin-walk-fields">
+            <div class="field">
+              <label>Guide Fee — Walk</label>
+              <input type="text" id="f-admin-guide-walk" placeholder="€" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Guide Fee — Museum</label>
+              <input type="text" id="f-admin-guide-museum" placeholder="€" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Guide Fee — Full Day</label>
+              <input type="text" id="f-admin-guide-fullday" placeholder="€" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Museum Group Fee</label>
+              <input type="text" id="f-admin-museum-group" placeholder="€" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Per Person Entry Fee</label>
+              <input type="text" id="f-admin-museum-pp" placeholder="€" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Restaurant Deposit</label>
+              <input type="text" id="f-admin-restaurant-deposit" placeholder="€" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Restaurant Est. Total</label>
+              <input type="text" id="f-admin-restaurant-total" placeholder="€" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Headset Costs</label>
+              <input type="text" id="f-admin-headsets" placeholder="€" oninput="onFieldChange()">
+            </div>
+            <div class="field">
+              <label>Extra Tour Fees</label>
+              <input type="text" id="f-admin-extra" placeholder="€" oninput="onFieldChange()">
+            </div>
+          </div>
+          <div id="admin-zoom-fields" style="display:none;">
+            <div class="fields-grid">
+              <div class="field">
+                <label>Guide Fee — Video</label>
+                <input type="text" id="f-admin-guide-zoom" placeholder="€" oninput="onFieldChange()">
+              </div>
+            </div>
+          </div>
+          <div class="field" style="margin-top:1rem;">
+            <label>Notes — deposits, group rules, special conditions <span class="hint">150 words max</span></label>
+            <textarea id="f-admin-notes" rows="4" placeholder="Notes for Admin about this tour's logistics, deposits, booking rules, etc." oninput="onAdminNotesInput()"></textarea>
+            <div class="word-count" id="admin-notes-count">0 / 150 words</div>
+          </div>
+        </div>
+
+      </form><!-- end #tour-form -->
+    </div><!-- end #editor-view -->
+
+  </div><!-- end .main-wrap -->
+</div><!-- end #app -->
+
+<!-- New Draft Modal -->
+<div class="modal-overlay" id="new-modal">
+  <div class="modal-box">
+    <div class="modal-title">Create New Template</div>
+    <div class="field" style="margin-bottom:1rem;">
+      <label>Tour Type <span class="req">*</span></label>
+      <div class="type-selector">
+        <button type="button" class="type-btn" id="modal-type-walk" onclick="selectModalType('walk')">🚶 Walk / Museum</button>
+        <button type="button" class="type-btn" id="modal-type-zoom" onclick="selectModalType('zoom')">💻 Zoom / Video</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Tour Title (optional — you can fill this in later)</label>
+      <input type="text" id="modal-title" placeholder="e.g. Russian Heritage in Paris">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel-modal" onclick="closeNewModal()">Cancel</button>
+      <button class="btn-create" onclick="createNewDraft()">Create Template →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Status bar -->
+<div id="status-bar"></div>
+
+<script>
+// ════════════════════════════════════════════════
+// USERS & AUTH
+// ════════════════════════════════════════════════
+const USERS = {
+  'paul':     { password: 'paulFTG2026!',     displayName: 'Paul',     isAdmin: false },
+  'barb':     { password: 'isntitPLae1!',     displayName: 'Barb',     isAdmin: true  },
+  'lee':      { password: 'leeFTG2026!',      displayName: 'Lee',      isAdmin: false },
+  'dee':      { password: 'deeFTG2026!',      displayName: 'Dee',      isAdmin: false },
+  'planner1': { password: 'planner1FTG2026!', displayName: 'Planner 1',isAdmin: false },
+  'planner2': { password: 'planner2FTG2026!', displayName: 'Planner 2',isAdmin: false },
+};
+
+let currentUser = null; // { username, displayName, isAdmin }
+let currentDraftId = null;
+let currentTourType = null;
+let modalTourType = null;
+let walkDots = [false, false, false, false, false];
+let autoSaveTimer = null;
+
+function doLogin() {
+  const nameInput = document.getElementById('login-name').value.trim().toLowerCase();
+  const passInput = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  const user = USERS[nameInput];
+  if (!user || user.password !== passInput) {
+    errEl.textContent = 'Incorrect name or password. Please try again.';
+    document.getElementById('login-password').value = '';
+    return;
+  }
+  currentUser = { username: nameInput, displayName: user.displayName, isAdmin: user.isAdmin };
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('nav-username').textContent = user.displayName;
+  if (user.isAdmin) document.getElementById('admin-filter').style.display = 'flex';
+  // Warn if running from local file — drafts won't persist
+  if (window.location.protocol === 'file:') {
+    setTimeout(() => showStatus('⚠ You are viewing this file locally. Drafts will NOT save. Upload to GitHub Pages first.', 'error'), 500);
+  }
+  renderDashboard();
+}
+
+// Allow Enter key on login
+document.getElementById('login-password').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('login-name').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-password').focus(); });
+
+function doLogout() {
+  currentUser = null;
+  currentDraftId = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-name').value = '';
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+// ════════════════════════════════════════════════
+// LOCAL STORAGE HELPERS
+// ════════════════════════════════════════════════
+function clearAllDrafts() {
+  if (confirm('Clear ALL saved drafts from this browser? This cannot be undone.')) {
+    localStorage.removeItem('ftg_drafts');
+    renderDashboard();
+    showStatus('All drafts cleared.', 'success');
+  }
+}
+
+function getAllDrafts() {
+  try {
+    const raw = localStorage.getItem('ftg_drafts');
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+function saveDrafts(drafts) {
+  try {
+    localStorage.setItem('ftg_drafts', JSON.stringify(drafts));
+  } catch(e) {
+    showStatus('⚠ Could not save — drafts only persist on the live GitHub Pages site, not from a local file.', 'error');
+  }
+}
+function getUserDrafts(username) {
+  const all = getAllDrafts();
+  return Object.values(all).filter(d => d.planner === username);
+}
+function getDraft(id) {
+  return getAllDrafts()[id] || null;
+}
+function upsertDraft(draft) {
+  const all = getAllDrafts();
+  all[draft.id] = draft;
+  saveDrafts(all);
+}
+function deleteDraftById(id) {
+  const all = getAllDrafts();
+  delete all[id];
+  saveDrafts(all);
+}
+function generateId() {
+  return 'draft_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
+}
+
+// ════════════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════════════
+let activeFilterPlanner = 'all';
+
+function renderDashboard() {
+  showView('dashboard');
+  const all = getAllDrafts();
+  let drafts;
+  if (currentUser.isAdmin) {
+    drafts = activeFilterPlanner === 'all'
+      ? Object.values(all)
+      : Object.values(all).filter(d => d.planner === activeFilterPlanner);
+  } else {
+    drafts = Object.values(all).filter(d => d.planner === currentUser.username);
+  }
+  drafts.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+
+  const countEl = document.getElementById('drafts-count');
+  countEl.textContent = drafts.length ? `(${drafts.length})` : '';
+
+  const listEl = document.getElementById('drafts-list');
+  if (!drafts.length) {
+    listEl.innerHTML = '<div class="drafts-empty"><div class="empty-icon">📋</div>No drafts yet. Click <strong>+ New Template</strong> to get started.</div>';
+    return;
+  }
+
+  listEl.innerHTML = '';
+  drafts.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'draft-card';
+    const updatedStr = d.updatedAt ? new Date(d.updatedAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+    const statusBadge = `<span class="status-badge status-${d.status || 'draft'}">${d.status || 'Draft'}</span>`;
+    const plannerBadge = currentUser.isAdmin ? `<span class="meta-planner">${d.plannerDisplay || d.planner}</span>` : '';
+    card.innerHTML = `
+      <div class="draft-card-left">
+        <div class="draft-card-name">${d.title || '(Untitled)'}</div>
+        <div class="draft-card-meta">
+          ${plannerBadge}
+          ${statusBadge}
+          <span>${d.tourType === 'zoom' ? '💻 Zoom' : d.tourType === 'museum' ? '🏛 Museum' : '🚶 Walk'}</span>
+          <span>${d.date || 'No date'}</span>
+          <span>Saved: ${updatedStr}</span>
+        </div>
+      </div>
+      <div class="draft-card-actions">
+        <button class="btn-edit" onclick="openDraft('${d.id}')">Edit</button>
+        <button class="btn-delete" onclick="confirmDelete('${d.id}')">Delete</button>
+      </div>`;
+    listEl.appendChild(card);
+  });
+}
+
+function filterByPlanner(planner, btn) {
+  activeFilterPlanner = planner;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDashboard();
+}
+
+function confirmDelete(id) {
+  const d = getDraft(id);
+  if (!d) return;
+  if (confirm(`Delete "${d.title || 'this draft'}"? This cannot be undone.`)) {
+    deleteDraftById(id);
+    renderDashboard();
+    showStatus('Draft deleted.', 'success');
+  }
+}
+
+// ════════════════════════════════════════════════
+// NEW DRAFT MODAL
+// ════════════════════════════════════════════════
+function openNewModal() {
+  modalTourType = null;
+  document.getElementById('modal-title').value = '';
+  document.querySelectorAll('#new-modal .type-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('new-modal').classList.add('open');
+}
+function closeNewModal() {
+  document.getElementById('new-modal').classList.remove('open');
+}
+function selectModalType(type) {
+  modalTourType = type;
+  document.getElementById('modal-type-walk').classList.toggle('selected', type === 'walk');
+  document.getElementById('modal-type-zoom').classList.toggle('selected', type === 'zoom');
+}
+function createNewDraft() {
+  if (!modalTourType) { alert('Please select a tour type.'); return; }
+  const title = document.getElementById('modal-title').value.trim();
+  const id = generateId();
+  const draft = {
+    id, planner: currentUser.username, plannerDisplay: currentUser.displayName,
+    tourType: modalTourType, title: title || '',
+    date: '', status: 'draft', createdAt: Date.now(), updatedAt: Date.now(),
+    fields: {}
+  };
+  upsertDraft(draft);
+  closeNewModal();
+  openDraft(id);
+}
+
+// ════════════════════════════════════════════════
+// EDITOR
+// ════════════════════════════════════════════════
+function openDraft(id) {
+  const draft = getDraft(id);
+  if (!draft) return;
+  currentDraftId = id;
+  currentTourType = draft.tourType;
+  walkDots = draft.fields.walkDots || [false,false,false,false,false];
+  showView('editor');
+  document.getElementById('editor-title').textContent = draft.title || 'Untitled Template';
+  populateForm(draft);
+  applyTourTypeUI(currentTourType);
+  updateWalkDots();
+}
+
+function populateForm(draft) {
+  const f = draft.fields || {};
+  // Always reset disabled state before populating
+  ['f-meet','f-start','f-cost-rm','f-cost-wl','f-cost-guest','f-cost-noshow'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = false;
+  });
+  ['walk','museum','zoom'].forEach(t => {
+    document.getElementById('type-' + t).classList.toggle('selected', draft.tourType === t);
+  });
+  setVal('f-date', draft.date || f.date || '');
+  setVal('f-title', draft.title || '');
+  setVal('f-description', f.description || '');
+  updateDescCount();
+  setVal('f-meet', f.meet || '');
+  setVal('f-start', f.start || '');
+  const timesTbd = !!f.timesTbd;
+  document.getElementById('f-times-tbd').checked = timesTbd;
+  document.getElementById('f-meet').disabled = timesTbd;
+  document.getElementById('f-start').disabled = timesTbd;
+  setVal('f-finish', f.finish || '');
+  setVal('f-meeting', f.meeting || '');
+  setVal('f-metro', f.metro || '');
+  setVal('f-rer', f.rer || '');
+  setVal('f-bus', f.bus || '');
+  setVal('f-transport-other', f.transportOther || '');
+  document.getElementById('f-walk-level').value = f.walkLevel || '';
+  walkDots = f.walkDots || [false,false,false,false,false];
+  setVal('f-limit', f.limit || '');
+  document.getElementById('f-no-limit').checked = !!f.noLimit;
+  // Includes checkboxes
+  document.querySelectorAll('input[name="includes"]').forEach(cb => {
+    cb.checked = (f.includes || []).includes(cb.value);
+    cb.closest('.check-item').classList.toggle('checked', cb.checked);
+  });
+  setVal('f-includes-other', f.includesOther || '');
+  document.querySelectorAll('input[name="excludes"]').forEach(cb => {
+    cb.checked = (f.excludes || []).includes(cb.value);
+    cb.closest('.check-item').classList.toggle('checked', cb.checked);
+  });
+  setVal('f-excludes-other', f.excludesOther || '');
+  document.getElementById('f-costs-tbd').checked = !!f.costsTbd;
+  setVal('f-cost-rm', f.costRm || '');
+  setVal('f-cost-wl', f.costWl || '');
+  setVal('f-cost-guest', f.costGuest || '');
+  setVal('f-cost-noshow', f.costNoshow || '');
+  setVal('f-guide', f.guide || '');
+  setVal('f-planner', f.plannerName || '');
+  setVal('f-contact', f.contact || '');
+  setVal('f-photo', f.photo || '');
+  setVal('f-photo-attr', f.photoAttr || '');
+  setVal('f-link1', f.link1 || '');
+  setVal('f-link2', f.link2 || '');
+  setVal('f-link3', f.link3 || '');
+  // Admin
+  setVal('f-admin-guide-walk', f.adminGuideWalk || '');
+  setVal('f-admin-guide-museum', f.adminGuideMuseum || '');
+  setVal('f-admin-guide-fullday', f.adminGuideFullday || '');
+  setVal('f-admin-guide-zoom', f.adminGuideZoom || '');
+  setVal('f-admin-museum-group', f.adminMuseumGroup || '');
+  setVal('f-admin-museum-pp', f.adminMuseumPp || '');
+  setVal('f-admin-restaurant-deposit', f.adminRestDeposit || '');
+  setVal('f-admin-restaurant-total', f.adminRestTotal || '');
+  setVal('f-admin-headsets', f.adminHeadsets || '');
+  setVal('f-admin-extra', f.adminExtra || '');
+  setVal('f-admin-notes', f.adminNotes || '');
+  updateAdminNotesCount();
+  document.getElementById('submit-btn').disabled = draft.status === 'submitted';
+}
+
+function collectForm() {
+  const includes = [...document.querySelectorAll('input[name="includes"]:checked')].map(cb => cb.value);
+  const excludes = [...document.querySelectorAll('input[name="excludes"]:checked')].map(cb => cb.value);
+  return {
+    date: val('f-date'),
+    description: val('f-description'),
+    meet: val('f-meet'),
+    start: val('f-start'),
+    timesTbd: document.getElementById('f-times-tbd').checked,
+    finish: val('f-finish'),
+    meeting: val('f-meeting'),
+    metro: val('f-metro'),
+    rer: val('f-rer'),
+    bus: val('f-bus'),
+    transportOther: val('f-transport-other'),
+    walkLevel: val('f-walk-level'),
+    walkDots: [...walkDots],
+    limit: val('f-limit'),
+    noLimit: document.getElementById('f-no-limit').checked,
+    includes, excludes,
+    includesOther: val('f-includes-other'),
+    excludesOther: val('f-excludes-other'),
+    costsTbd: document.getElementById('f-costs-tbd').checked,
+    costRm: val('f-cost-rm'),
+    costWl: val('f-cost-wl'),
+    costGuest: val('f-cost-guest'),
+    costNoshow: val('f-cost-noshow'),
+    guide: val('f-guide'),
+    plannerName: val('f-planner'),
+    contact: val('f-contact'),
+    photo: val('f-photo'),
+    photoAttr: val('f-photo-attr'),
+    link1: val('f-link1'),
+    link2: val('f-link2'),
+    link3: val('f-link3'),
+    adminGuideWalk: val('f-admin-guide-walk'),
+    adminGuideMuseum: val('f-admin-guide-museum'),
+    adminGuideFullday: val('f-admin-guide-fullday'),
+    adminGuideZoom: val('f-admin-guide-zoom'),
+    adminMuseumGroup: val('f-admin-museum-group'),
+    adminMuseumPp: val('f-admin-museum-pp'),
+    adminRestDeposit: val('f-admin-restaurant-deposit'),
+    adminRestTotal: val('f-admin-restaurant-total'),
+    adminHeadsets: val('f-admin-headsets'),
+    adminExtra: val('f-admin-extra'),
+    adminNotes: val('f-admin-notes'),
+  };
+}
+
+function saveDraft() {
+  if (!currentDraftId) return;
+  const all = getAllDrafts();
+  const draft = all[currentDraftId];
+  if (!draft) return;
+  const title = val('f-title');
+  const date = val('f-date');
+  draft.title = title;
+  draft.date = date;
+  draft.fields = collectForm();
+  draft.updatedAt = Date.now();
+  upsertDraft(draft);
+  // Update editor title
+  document.getElementById('editor-title').textContent = title || '(Untitled — please add a Tour Title)';
+  // Build a human-readable name for the status message
+  const draftName = [date, title].filter(Boolean).join(' — ') || 'Untitled draft';
+  showSaveIndicator('Saved ✓');
+  showStatus('Draft saved: ' + draftName, 'success');
+}
+
+function onFieldChange() {
+  // Auto-save after 3 seconds of inactivity — silently, no indicator
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(() => {
+    if (currentDraftId) {
+      const all = getAllDrafts();
+      const draft = all[currentDraftId];
+      if (!draft) return;
+      draft.title = val('f-title');
+      draft.date = val('f-date');
+      draft.fields = collectForm();
+      draft.updatedAt = Date.now();
+      upsertDraft(draft);
+      // Update editor title silently
+      const t = val('f-title');
+      if (t) document.getElementById('editor-title').textContent = t;
+    }
+  }, 3000);
+}
+
+function showSaveIndicator(msg) {
+  const el = document.getElementById('save-indicator');
+  el.textContent = msg;
+  setTimeout(() => { el.textContent = ''; }, 3000);
+}
+
+function backToDashboard() {
+  saveDraft();
+  currentDraftId = null;
+  currentTourType = null;
+  renderDashboard();
+}
+
+// ════════════════════════════════════════════════
+// TOUR TYPE UI
+// ════════════════════════════════════════════════
+function selectTourType(type) {
+  if (!currentDraftId) return;
+  currentTourType = type;
+  ['walk','museum','zoom'].forEach(t => {
+    document.getElementById('type-' + t).classList.toggle('selected', t === type);
+  });
+  // Update draft
+  const all = getAllDrafts();
+  if (all[currentDraftId]) {
+    all[currentDraftId].tourType = type;
+    saveDrafts(all);
+  }
+  applyTourTypeUI(type);
+  onFieldChange();
+}
+
+function applyTourTypeUI(type) {
+  const isZoom = type === 'zoom';
+  const isMuseum = type === 'museum';
+
+  // Show/hide walk-only sections
+  document.getElementById('section-walklevel').style.display = isZoom ? 'none' : '';
+  document.getElementById('section-includes').style.display = isZoom ? 'none' : '';
+  document.getElementById('field-noshow').style.display = isZoom ? 'none' : '';
+
+  // For Zoom: hide RER, Bus, Other transport (not relevant)
+  document.getElementById('field-rer').style.display = isZoom ? 'none' : '';
+  document.getElementById('field-bus').style.display = isZoom ? 'none' : '';
+  document.getElementById('field-transport-other').style.display = isZoom ? 'none' : '';
+
+  // Metro label changes for Zoom
+  const metroLabel = document.querySelector('label[for="f-metro"]') ||
+    document.getElementById('f-metro').closest('.field').querySelector('label');
+  if (metroLabel) {
+    metroLabel.innerHTML = isZoom
+      ? 'How to Connect'
+      : 'Métro <span class="hint">line number &amp; stop name</span>';
+  }
+
+  // Zoom auto-fill notes
+  document.getElementById('zoom-times-note').style.display = isZoom ? '' : 'none';
+  document.getElementById('zoom-meet-note').style.display = isZoom ? '' : 'none';
+  document.getElementById('zoom-meeting-note').style.display = isZoom ? '' : 'none';
+
+  // Admin fields
+  document.getElementById('admin-walk-fields').style.display = isZoom ? 'none' : '';
+  document.getElementById('admin-zoom-fields').style.display = isZoom ? '' : 'none';
+
+  // Cost defaults hints
+  document.getElementById('rm-default-hint').textContent =
+    isMuseum ? 'default: 10€' : isZoom ? 'default: 0€' : 'default: 0€ (outdoor walk)';
+  document.getElementById('wl-default-hint').textContent =
+    isMuseum ? 'default: 20€' : isZoom ? 'default: 0€' : 'default: 15€';
+  document.getElementById('noshow-default-hint').textContent =
+    isMuseum ? 'default: 20€' : 'default: 15€';
+
+  // Zoom: auto-fill ONLY zoom-specific fixed values (if fields are empty)
+  if (isZoom) {
+    if (!val('f-meet'))    setVal('f-meet',    '16 h 45');
+    if (!val('f-start'))   setVal('f-start',   '17 h 00');
+    if (!val('f-finish'))  setVal('f-finish',  '18 h 15');
+    if (!val('f-meeting')) setVal('f-meeting', 'All video tours are live online on Thursdays starting at 16h45.');
+    if (!val('f-metro'))   setVal('f-metro',   'World-Wide-Web — of course! Log-in link sent by email before the event.');
+    if (!val('f-contact')) setVal('f-contact', 'ftg.membership@gmail.com');
+    if (!val('f-cost-rm'))    setVal('f-cost-rm',    '0');
+    if (!val('f-cost-wl'))    setVal('f-cost-wl',    '0');
+    if (!val('f-cost-guest')) setVal('f-cost-guest', '20');
+  }
+  // Walk/Museum: if switching back from Zoom, clear the Zoom-specific auto-fills
+  if (!isZoom) {
+    if (val('f-meet')    === '16 h 45') setVal('f-meet', '');
+    if (val('f-start')   === '17 h 00') setVal('f-start', '');
+    if (val('f-finish')  === '18 h 15') setVal('f-finish', '');
+    if (val('f-meeting') === 'All video tours are live online on Thursdays starting at 16h45.') setVal('f-meeting', '');
+    if (val('f-metro')   === 'World-Wide-Web — of course! Log-in link sent by email before the event.') setVal('f-metro', '');
+    if (val('f-contact') === 'ftg.membership@gmail.com') setVal('f-contact', '');
+    if (val('f-cost-guest') === '20') setVal('f-cost-guest', '');
+    if (val('f-cost-rm')    === '0')  setVal('f-cost-rm', '');
+    if (val('f-cost-wl')    === '0')  setVal('f-cost-wl', '');
+  }
+}
+
+// ════════════════════════════════════════════════
+// WALK DOTS
+// ════════════════════════════════════════════════
+function toggleDot(i) {
+  walkDots[i] = !walkDots[i];
+  updateWalkDots();
+  onFieldChange();
+}
+function updateWalkDots() {
+  for (let i = 0; i < 5; i++) {
+    document.getElementById('wd'+i).classList.toggle('on', walkDots[i]);
+  }
+  const count = walkDots.filter(Boolean).length;
+  const labels = ['','Easy','Easy–Medium','Medium','Medium–Difficult','Difficult'];
+  document.getElementById('walk-dot-label').textContent = labels[count] || '';
+}
+function onWalkLevelChange() {
+  const v = val('f-walk-level');
+  if (v.includes('Easy')) walkDots = [true,false,false,false,false];
+  else if (v.includes('Medium')) walkDots = [true,true,true,false,false];
+  else if (v.includes('Difficult')) walkDots = [true,true,true,true,true];
+  else walkDots = [false,false,false,false,false];
+  updateWalkDots();
+  onFieldChange();
+}
+
+// ════════════════════════════════════════════════
+// MISC FORM HELPERS
+// ════════════════════════════════════════════════
+function toggleTimesTBD() {
+  const cb = document.getElementById('f-times-tbd');
+  const meet = document.getElementById('f-meet');
+  const start = document.getElementById('f-start');
+  if (cb.checked) {
+    meet.value = 'TBD'; meet.disabled = true;
+    start.value = 'TBD'; start.disabled = true;
+  } else {
+    meet.value = ''; meet.disabled = false;
+    start.value = ''; start.disabled = false;
+  }
+  onFieldChange();
+}
+function toggleNoLimit() {
+  const cb = document.getElementById('f-no-limit');
+  const inp = document.getElementById('f-limit');
+  inp.disabled = cb.checked;
+  if (cb.checked) inp.value = '';
+  onFieldChange();
+}
+function toggleCostsTBD() {
+  const cb = document.getElementById('f-costs-tbd');
+  ['f-cost-rm','f-cost-wl','f-cost-guest','f-cost-noshow'].forEach(id => {
+    const el = document.getElementById(id);
+    el.disabled = cb.checked;
+    if (cb.checked) el.value = 'TBD';
+  });
+  onFieldChange();
+}
+function toggleCheck(label) {
+  const cb = label.querySelector('input[type=checkbox]');
+  setTimeout(() => {
+    label.classList.toggle('checked', cb.checked);
+    onFieldChange();
+  }, 0);
+}
+
+// ════════════════════════════════════════════════
+// WORD COUNTERS
+// ════════════════════════════════════════════════
+function countWords(str) {
+  return str.trim() ? str.trim().split(/\s+/).length : 0;
+}
+function onDescInput() {
+  updateDescCount();
+  onFieldChange();
+}
+function updateDescCount() {
+  const n = countWords(val('f-description'));
+  const el = document.getElementById('desc-count');
+  el.textContent = n + ' / 150 words';
+  el.classList.toggle('over', n > 150);
+}
+function onAdminNotesInput() {
+  updateAdminNotesCount();
+  onFieldChange();
+}
+function updateAdminNotesCount() {
+  const n = countWords(val('f-admin-notes'));
+  const el = document.getElementById('admin-notes-count');
+  el.textContent = n + ' / 150 words';
+  el.classList.toggle('over', n > 150);
+}
+
+// ════════════════════════════════════════════════
+// SUBMIT TO BARB
+// ════════════════════════════════════════════════
+async function submitTemplate() {
+  if (!currentDraftId) return;
+  saveDraft();
+  const draft = getDraft(currentDraftId);
+  if (!draft) return;
+
+  const f = draft.fields || {};
+  if (!draft.title) { alert('Please fill in the Tour Title before submitting.'); return; }
+  if (!draft.date) { alert('Please fill in the Tour Date before submitting.'); return; }
+  if (!f.guide) { alert('Please fill in the Tour Guide before submitting.'); return; }
+
+  if (!confirm(`Submit "${draft.title}" to Barb? This will send an email with all template details.`)) return;
+
+  const isZoom = draft.tourType === 'zoom';
+  const transport = [f.metro, f.rer ? 'RER: '+f.rer : '', f.bus ? 'Bus: '+f.bus : '', f.transportOther].filter(Boolean).join(' · ');
+  const includes = [...(f.includes||[]), f.includesOther].filter(Boolean).join(', ');
+  const excludes = [...(f.excludes||[]), f.excludesOther].filter(Boolean).join(', ');
+  const links = [f.link1, f.link2, f.link3].filter(Boolean).join('\n');
+
+  const body = [
+    '=== NEW TOUR TEMPLATE — Friday Tour Group ===',
+    '',
+    'Submitted by: ' + draft.plannerDisplay,
+    'Submitted: ' + new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    '',
+    '── PUBLIC INFORMATION ──',
+    '',
+    'Tour Type: ' + (isZoom ? 'Zoom/Video' : draft.tourType === 'museum' ? 'Museum' : 'Walk'),
+    'Tour Date: ' + draft.date,
+    'Tour Title: ' + draft.title,
+    '',
+    'Description:',
+    f.description || '—',
+    '',
+    'Times:',
+    '  Meet: ' + (f.meet || '—'),
+    '  Start: ' + (f.startTbd ? 'TBD' : f.start || '—'),
+    '  Finish: ' + (f.finish || '—'),
+    '',
+    isZoom ? '' : 'Meeting Place: ' + (f.meeting || '—'),
+    isZoom ? '' : 'Transport: ' + (transport || '—'),
+    isZoom ? '' : 'Walk Level: ' + (f.walkLevel || '—'),
+    isZoom ? '' : 'Walk Dots: ' + (f.walkDots||[]).map((d,i)=>d?'●':'○').join(' '),
+    isZoom ? '' : 'Limit: ' + (f.noLimit ? 'No limit' : f.limit || '—'),
+    isZoom ? '' : 'Includes: ' + (includes || '—'),
+    isZoom ? '' : 'Does NOT include: ' + (excludes || 'N/A'),
+    '',
+    'Costs:',
+    '  Regular Members: ' + (f.costsTbd ? 'TBD' : f.costRm || '—') + '€',
+    '  Waitlist Members: ' + (f.costsTbd ? 'TBD' : f.costWl || '—') + '€',
+    '  Guests: ' + (f.costsTbd ? 'TBD' : f.costGuest || '—') + '€',
+    isZoom ? '' : '  No Show: ' + (f.costsTbd ? 'TBD' : f.costNoshow || '—') + '€',
+    '',
+    'Tour Guide: ' + (f.guide || '—'),
+    'Tour Planner: ' + (f.plannerName || '—'),
+    'Day-of Contact: ' + (f.contact || '—'),
+    'Photo: ' + (f.photo || '—'),
+    'Photo Attribution: ' + (f.photoAttr || '—'),
+    '',
+    'Read Ahead Links:',
+    links || '—',
+    '',
+    '── ADMIN ONLY (not for website) ──',
+    '',
+    isZoom ? 'Guide Fee (Video): ' + (f.adminGuideZoom || '—') : [
+      'Guide Fee — Walk: ' + (f.adminGuideWalk || '—'),
+      'Guide Fee — Museum: ' + (f.adminGuideMuseum || '—'),
+      'Guide Fee — Full Day: ' + (f.adminGuideFullday || '—'),
+      'Museum Group Fee: ' + (f.adminMuseumGroup || '—'),
+      'Per Person Entry Fee: ' + (f.adminMuseumPp || '—'),
+      'Restaurant Deposit: ' + (f.adminRestDeposit || '—'),
+      'Restaurant Est. Total: ' + (f.adminRestTotal || '—'),
+      'Headset Costs: ' + (f.adminHeadsets || '—'),
+      'Extra Tour Fees: ' + (f.adminExtra || '—'),
+    ].join('\n'),
+    '',
+    'Notes:',
+    f.adminNotes || '—',
+  ].filter(l => l !== null).join('\n');
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    const resp = await fetch('https://formsubmit.co/ajax/fridaysinparis@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: 'FTG Tour Template: ' + draft.title + ' (' + draft.date + ') — from ' + draft.plannerDisplay,
+        _replyto: 'no-reply@ftgparis.org',
+        _captcha: 'false',
+        message: body
+      })
+    });
+    const data = await resp.json();
+    if (data.success === 'true' || data.success === true) {
+      // Mark as submitted
+      const all = getAllDrafts();
+      all[currentDraftId].status = 'submitted';
+      saveDrafts(all);
+      btn.textContent = '✓ Submitted';
+      btn.style.background = 'var(--green)';
+      btn.style.color = '#fff';
+      showStatus('Template submitted to Barb! ✓', 'success');
+    } else {
+      throw new Error('Server error');
+    }
+  } catch(err) {
+    btn.disabled = false;
+    btn.textContent = '✉ Submit to Barb';
+    showStatus('Could not send. Please try again or contact Barb directly.', 'error');
+  }
+}
+
+// ════════════════════════════════════════════════
+// UTILITIES
+// ════════════════════════════════════════════════
+function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function setVal(id, v) { const el = document.getElementById(id); if (el) el.value = v; }
+
+function showView(name) {
+  document.getElementById('dashboard-view').classList.toggle('active', name === 'dashboard');
+  document.getElementById('editor-view').classList.toggle('active', name === 'editor');
+}
+
+function showStatus(msg, type) {
+  const bar = document.getElementById('status-bar');
+  bar.textContent = msg;
+  bar.className = 'show ' + (type || '');
+  setTimeout(() => { bar.className = ''; }, 3500);
+}
+</script>
+</body>
+</html>
