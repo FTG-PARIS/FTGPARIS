@@ -784,7 +784,6 @@
     .nav-links { display: flex; }
     .home-hero { padding: 2.5rem 1.5rem 2rem; }
     .season-bar, .calendar-section { padding-left: 1.2rem; padding-right: 1.2rem; }
-    .tour-row { grid-template-columns: 70px 70px 1fr; gap: 0.5rem; padding: 0.6rem 0.8rem; }
     .tour-type-icon { display: none; }
     .members-content { padding: 1.5rem; }
     .detail-section { grid-template-columns: 1fr; }
@@ -794,6 +793,14 @@
     .nav-member-btn { padding: 0.35rem 0.7rem; font-size: 0.7rem; }
     .visitors-nav-btn { padding: 0.35rem 0.7rem; font-size: 0.7rem; }
 
+    /* ── PUBLIC CALENDAR: fix overlap ── */
+    .tour-row { grid-template-columns: 64px 1fr; gap: 0.6rem; padding: 0.6rem 0.8rem; align-items: center; }
+    .tour-photo { display: none; }
+    .tour-date-badge { width: 60px; height: 60px; border-radius: 6px; flex-direction: column; gap: 0; }
+    .tour-date-badge .day-num { font-size: 1.6rem; line-height: 1; }
+    .tour-date-badge .day-mo { font-size: 0.6rem; margin-top: 2px; }
+    .tour-row-name { font-size: 0.95rem; line-height: 1.3; }
+
     /* ── SLIDE CARDS: stack vertically on mobile ── */
     .slide-top { grid-template-columns: 1fr; height: auto; }
     .slide-photo-panel { height: 200px; border-right: none; border-bottom: 1px solid #D4AF37; }
@@ -802,14 +809,9 @@
     .slide-description { padding: 1.2rem; }
     .slide-desc-text { font-size: 0.92rem; max-width: 100%; }
     .slide-bottom-strip { max-width: 100%; }
-
-    /* ── PUBLIC TOUR ROWS: fix text overlap ── */
-    .tour-row-name { font-size: 0.95rem; line-height: 1.3; }
   }
   @media(max-width: 480px) {
-    .tour-row { grid-template-columns: 60px 1fr; gap: 0.5rem; }
-    .tour-photo { display: none; }
-    .tour-row-name { font-size: 1rem; }
+    .tour-row-name { font-size: 0.9rem; }
   }
 
   /* ═══════════════════════════════════════
@@ -2026,13 +2028,14 @@ function walkLevelHTML(dots, label) {
   return html;
 }
 
-function showPage(name) {
+function showPage(name, fromPopState) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
   const navEl = document.getElementById('nav-' + name);
   if (navEl) navEl.classList.add('active');
   window.scrollTo(0,0);
+  if (!fromPopState) history.pushState({ page: name }, '', '#' + name);
   if (name === 'members') { renderMemberTours(); setTimeout(() => { heroHeight=0; observeCards(); updateDaysCountdown(); }, 100); }
   const onMembers = (name === 'members');
   document.getElementById('btn-members').style.display = onMembers ? 'none' : '';
@@ -2046,6 +2049,15 @@ function showPage(name) {
   if (nt) nt.textContent = onMembers ? 'Friday Tour Group' : 'Fridays in Paris';
   return false;
 }
+
+// Handle browser back/forward button
+window.addEventListener('popstate', function(e) {
+  const page = (e.state && e.state.page) ? e.state.page : 'home';
+  if (page === 'members' && !isLoggedIn) { showPage('home', true); return; }
+  showPage(page, true);
+});
+// Set initial history state
+history.replaceState({ page: 'home' }, '', '#home');
 
 function openLoginModal() {
   if (isLoggedIn) { showPage('members'); return; }
