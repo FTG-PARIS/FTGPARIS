@@ -633,13 +633,13 @@
 
       <!-- Admin planner filter (admin only) -->
       <div class="admin-filter" id="admin-filter" style="display:none;">
-        <button class="filter-btn active" onclick="filterByPlanner('all', this)">All Planners</button>
-        <button class="filter-btn" onclick="filterByPlanner('Paul', this)">Paul</button>
-        <button class="filter-btn" onclick="filterByPlanner('Barb', this)">Barb</button>
-        <button class="filter-btn" onclick="filterByPlanner('Lee', this)">Lee</button>
-        <button class="filter-btn" onclick="filterByPlanner('Dee', this)">Dee</button>
-        <button class="filter-btn" onclick="filterByPlanner('Planner1', this)">Planner 1</button>
-        <button class="filter-btn" onclick="filterByPlanner('Planner2', this)">Planner 2</button>
+        <button class="filter-btn active" id="filter-all" onclick="filterByPlanner('all', this)">All Planners</button>
+        <button class="filter-btn" onclick="filterByPlanner('paul', this)">Paul</button>
+        <button class="filter-btn" onclick="filterByPlanner('barb', this)">Barb</button>
+        <button class="filter-btn" onclick="filterByPlanner('lee', this)">Lee</button>
+        <button class="filter-btn" onclick="filterByPlanner('dee', this)">Dee</button>
+        <button class="filter-btn" onclick="filterByPlanner('planner1', this)">Planner 1</button>
+        <button class="filter-btn" onclick="filterByPlanner('planner2', this)">Planner 2</button>
       </div>
 
       <div id="drafts-list"></div>
@@ -735,6 +735,14 @@
             <div class="field" id="field-rer">
               <label>RER <span class="hint">letter &amp; stop name</span></label>
               <input type="text" id="f-rer" placeholder="e.g. C, Pont d'Alma" oninput="onFieldChange()">
+            </div>
+            <div class="field" id="field-train">
+              <label>Train <span class="hint">line &amp; station name</span></label>
+              <input type="text" id="f-train" placeholder="e.g. N – Gare de Bellevue, Meudon" oninput="onFieldChange()">
+            </div>
+            <div class="field" id="field-tram">
+              <label>Tram <span class="hint">line &amp; stop name</span></label>
+              <input type="text" id="f-tram" placeholder="e.g. T2 – Bellevue" oninput="onFieldChange()">
             </div>
             <div class="field" id="field-bus">
               <label>Bus <span class="hint">numbers &amp; stop</span></label>
@@ -1005,7 +1013,12 @@ function doLogin() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('nav-username').textContent = user.displayName;
-  if (user.isAdmin) document.getElementById('admin-filter').style.display = 'flex';
+  if (user.isAdmin) {
+    document.getElementById('admin-filter').style.display = 'flex';
+    activeFilterPlanner = 'all';
+  } else {
+    activeFilterPlanner = nameInput;
+  }
   // Warn if running from local file — drafts won't persist
   if (window.location.protocol === 'file:') {
     setTimeout(() => showStatus('⚠ You are viewing this file locally. Drafts will NOT save. Upload to GitHub Pages first.', 'error'), 500);
@@ -1214,6 +1227,8 @@ function populateForm(draft) {
   setVal('f-meeting', f.meeting || '');
   setVal('f-metro', f.metro || '');
   setVal('f-rer', f.rer || '');
+  setVal('f-train', f.train || '');
+  setVal('f-tram', f.tram || '');
   setVal('f-bus', f.bus || '');
   setVal('f-transport-other', f.transportOther || '');
   document.getElementById('f-walk-level').value = f.walkLevel || '';
@@ -1273,6 +1288,8 @@ function collectForm() {
     meeting: val('f-meeting'),
     metro: val('f-metro'),
     rer: val('f-rer'),
+    train: val('f-train'),
+    tram: val('f-tram'),
     bus: val('f-bus'),
     transportOther: val('f-transport-other'),
     walkLevel: val('f-walk-level'),
@@ -1392,6 +1409,8 @@ function applyTourTypeUI(type) {
 
   // For Zoom: hide RER, Bus, Other transport (not relevant)
   document.getElementById('field-rer').style.display = isZoom ? 'none' : '';
+  document.getElementById('field-train').style.display = isZoom ? 'none' : '';
+  document.getElementById('field-tram').style.display = isZoom ? 'none' : '';
   document.getElementById('field-bus').style.display = isZoom ? 'none' : '';
   document.getElementById('field-transport-other').style.display = isZoom ? 'none' : '';
 
@@ -1557,7 +1576,14 @@ async function submitTemplate() {
   if (!confirm(`Submit "${draft.title}" to Barb? This will send an email with all template details.`)) return;
 
   const isZoom = draft.tourType === 'zoom';
-  const transport = [f.metro, f.rer ? 'RER: '+f.rer : '', f.bus ? 'Bus: '+f.bus : '', f.transportOther].filter(Boolean).join(' · ');
+  const transport = [
+    f.metro ? 'Métro: ' + f.metro : '',
+    f.rer ? 'RER: ' + f.rer : '',
+    f.train ? 'Train: ' + f.train : '',
+    f.tram ? 'Tram: ' + f.tram : '',
+    f.bus ? 'Bus: ' + f.bus : '',
+    f.transportOther || ''
+  ].filter(Boolean).join(' · ');
   const includes = [...(f.includes||[]), f.includesOther].filter(Boolean).join(', ');
   const excludes = [...(f.excludes||[]), f.excludesOther].filter(Boolean).join(', ');
   const links = [f.link1, f.link2, f.link3].filter(Boolean).join('\n');
