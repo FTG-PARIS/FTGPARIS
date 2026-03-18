@@ -1565,16 +1565,20 @@
 
         <!-- Sub-tabs -->
         <div class="planner-subtabs">
-          <button class="planner-subtab active" id="pst-signup"   onclick="plannerSubTabSwitch('signup')">📋 Sign-up Sheet</button>
+          <button class="planner-subtab active" id="pst-signup"     onclick="plannerSubTabSwitch('signup')">📋 Sign-up Sheet</button>
           <button class="planner-subtab"         id="pst-attendance" onclick="plannerSubTabSwitch('attendance')">📝 Attendance Sheet</button>
-          <button class="planner-subtab"         id="pst-mobile"  onclick="plannerSubTabSwitch('mobile')">📱 Mobile Attendance</button>
+          <button class="planner-subtab"         id="pst-mobile"    onclick="plannerSubTabSwitch('mobile')">📱 Mobile Attendance</button>
+          <button class="planner-subtab"         id="pst-tool"      onclick="plannerSubTabSwitch('tool')">🗂 Planner Tool</button>
         </div>
 
         <!-- SUB-TAB: Sign-up Sheet -->
         <div id="planner-sub-signup">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;flex-wrap:wrap;gap:0.5rem;">
             <div style="color:rgba(255,255,255,0.6);font-size:0.85rem;">Member sign-ups from the website. Admins can confirm names and mark tours ready.</div>
-            <button class="signup-refresh-btn" onclick="loadSignupLists()">&#8635; Refresh</button>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+              <button class="signup-refresh-btn" onclick="loadSignupLists()">&#8635; Refresh</button>
+              <button id="admin-add-btn" class="ready-tour-btn" style="display:none;font-size:0.82rem;padding:0.35rem 0.9rem;" onclick="openAdminAddModal()">+ Add Person</button>
+            </div>
           </div>
           <div id="signup-lists-container">
             <div class="signup-loading">Loading signup lists…</div>
@@ -1599,9 +1603,50 @@
           </div>
         </div>
 
+        <!-- SUB-TAB: Planner Tool -->
+        <div id="planner-sub-tool" style="display:none;">
+          <div style="background:#2d3748;border-radius:10px;padding:1.5rem;text-align:center;">
+            <div style="font-family:'Playfair Display',serif;color:#D4AF37;font-size:1.2rem;margin-bottom:0.5rem;">🗂 Tour Planner Templates</div>
+            <p style="color:rgba(255,255,255,0.65);font-size:0.9rem;margin-bottom:1.2rem;">Use the Planner Tool to create, edit and export tour templates. Your drafts are saved automatically in your browser.</p>
+            <a href="planner.html" target="_blank"
+               style="display:inline-block;padding:0.7rem 1.8rem;background:#D4AF37;color:#000;font-weight:700;border-radius:6px;text-decoration:none;font-size:1rem;">
+              Open Planner Tool ↗
+            </a>
+            <p style="color:rgba(255,255,255,0.35);font-size:0.78rem;margin-top:1rem;">Opens in a new tab. Use your planner password to log in.</p>
+          </div>
+        </div>
+
       </div><!-- end planner-workspace -->
     </div><!-- end tab-upload -->
 
+  </div>
+</div>
+
+<!-- ADMIN ADD PERSON MODAL -->
+<div class="planner-modal-overlay" id="admin-add-modal">
+  <div class="planner-modal" style="max-width:420px;">
+    <div style="font-family:'Playfair Display',serif;color:#D4AF37;font-size:1.1rem;margin-bottom:0.4rem;">+ Add Person to Tour</div>
+    <p>Select a member and tour. Their details will auto-fill from the Roster.</p>
+    <label style="color:rgba(255,255,255,0.7);font-size:0.85rem;display:block;margin-bottom:0.3rem;">Member</label>
+    <select id="add-member-select" style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid #3a4455;background:#0f1419;color:#fff;font-size:0.95rem;margin-bottom:0.75rem;" onchange="adminAddSelectMember(this)">
+      <option value="">— Select member —</option>
+    </select>
+    <label style="color:rgba(255,255,255,0.7);font-size:0.85rem;display:block;margin-bottom:0.3rem;">Tour</label>
+    <select id="add-tour-select" style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid #3a4455;background:#0f1419;color:#fff;font-size:0.95rem;margin-bottom:0.75rem;">
+      <option value="">— Select tour —</option>
+    </select>
+    <div id="add-member-info" style="display:none;background:#1a202c;border-radius:6px;padding:0.6rem 0.8rem;margin-bottom:0.75rem;font-size:0.85rem;color:rgba(255,255,255,0.7);"></div>
+    <label style="color:rgba(255,255,255,0.7);font-size:0.85rem;display:block;margin-bottom:0.3rem;">Guests</label>
+    <select id="add-guests" style="width:100%;padding:0.6rem;border-radius:6px;border:1px solid #3a4455;background:#0f1419;color:#fff;font-size:0.95rem;margin-bottom:1rem;">
+      <option value="0">No guests</option>
+      <option value="1">1 guest</option>
+      <option value="2">2 guests</option>
+      <option value="3">3 guests</option>
+      <option value="4">4 guests</option>
+    </select>
+    <button class="planner-login-btn" onclick="adminAddPersonSubmit()">Add to Tour →</button>
+    <div id="add-person-status" style="font-size:0.85rem;margin-top:0.5rem;min-height:1.2em;text-align:center;"></div>
+    <button class="planner-cancel-btn" onclick="closeAdminAddModal()">Cancel</button>
   </div>
 </div>
 
@@ -1635,33 +1680,30 @@
   <div id="reserve-modal">
     <button class="rm-close" onclick="closeReserveModal(null)" title="Close">&times;</button>
     <h2>Reserve a Spot 🌿</h2>
-    <p class="rm-intro">Select the tours you'd like to join. You can sign up for as many as you like!</p>
+    <p class="rm-intro">Select your name from the list. Your details will fill in automatically.</p>
     <form id="reserve-form" onsubmit="submitReserveForm(event)">
       <div class="rm-row">
-        <div class="rm-field">
-          <label for="rm-firstname">First Name *</label>
-          <input type="text" id="rm-firstname" required placeholder="First name">
-        </div>
-        <div class="rm-field">
-          <label for="rm-lastname">Last Name *</label>
-          <input type="text" id="rm-lastname" required placeholder="Last name">
+        <div class="rm-field" style="flex:1;">
+          <label for="rm-member-select">Your Name *</label>
+          <select id="rm-member-select" required onchange="rosterSelectMember(this)">
+            <option value="">— Loading members… —</option>
+          </select>
         </div>
       </div>
-      <div class="rm-row">
+      <div class="rm-row" id="rm-details-row" style="display:none;">
         <div class="rm-field">
-          <label for="rm-email">Your Email *</label>
-          <input type="email" id="rm-email" required placeholder="your@email.com">
+          <label>First Name</label>
+          <input type="text" id="rm-firstname" readonly style="background:#f5f3ef;color:#666;">
+        </div>
+        <div class="rm-field">
+          <label>Last Name</label>
+          <input type="text" id="rm-lastname" readonly style="background:#f5f3ef;color:#666;">
         </div>
       </div>
-      <div class="rm-row">
+      <div class="rm-row" id="rm-email-row" style="display:none;">
         <div class="rm-field">
-          <label>Membership Type *</label>
-          <div class="rm-type-group" id="rm-type-group">
-            <button type="button" class="rm-type-btn" onclick="selectMemberType(this,'Regular Member')">Regular Member</button>
-            <button type="button" class="rm-type-btn" onclick="selectMemberType(this,'Waitlist Member')">Waitlist Member</button>
-            <button type="button" class="rm-type-btn" onclick="selectMemberType(this,'Video Member')">Video Member</button>
-          </div>
-          <input type="hidden" id="rm-member-type">
+          <label for="rm-email">Email *</label>
+          <input type="email" id="rm-email" required placeholder="Confirm your email">
         </div>
         <div class="rm-field" style="max-width:160px;">
           <label for="rm-guests">Guests (max 4)</label>
@@ -1674,9 +1716,19 @@
           </select>
         </div>
       </div>
-      <div class="rm-section-head">Choose your tours</div>
+      <div class="rm-row" id="rm-type-row" style="display:none;">
+        <div class="rm-field">
+          <label>Membership Type</label>
+          <div id="rm-type-display" style="padding:0.5rem 0;color:#444;font-weight:600;font-size:0.95rem;"></div>
+          <input type="hidden" id="rm-member-type">
+        </div>
+      </div>
+      <div id="rm-not-found" style="display:none;padding:0.5rem;background:#fff3cd;border-radius:6px;color:#856404;font-size:0.85rem;margin-bottom:0.5rem;">
+        ⚠️ Your name is not on the member list. Please contact <strong>ftg.membership@gmail.com</strong> to sign up.
+      </div>
+      <div class="rm-section-head" id="rm-tours-head" style="display:none;">Choose your tours</div>
       <div class="rm-tour-list" id="rm-tour-list"></div>
-      <button type="submit" class="rm-submit" id="rm-submit-btn">Reserve My Spot(s)</button>
+      <button type="submit" class="rm-submit" id="rm-submit-btn" style="display:none;">Reserve My Spot(s)</button>
       <div id="rm-status"></div>
     </form>
   </div>
@@ -2918,28 +2970,114 @@ renderPublicCalendar();
 // --- RESERVE A SPOT ---
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJBdRlRB9XZ9WxZpb-k-JncP9KOF3tmP4tby3uCSg67ESojWU3wnMuQjh3tac4PMdk/exec';
 
+// Roster cache
+let rosterMembers = [];
+let rosterLoaded = false;
+
+async function loadRoster() {
+  if (rosterLoaded) return;
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=getroster');
+    const data = await resp.json();
+    if (data.success && data.members) {
+      rosterMembers = data.members;
+      rosterLoaded = true;
+    }
+  } catch(e) {
+    console.warn('Roster load failed:', e);
+  }
+}
+
 function openReserveModal() {
   buildTourChecklist();
   document.getElementById('reserve-modal-overlay').classList.add('open');
+  // Reset form state
+  document.getElementById('rm-details-row').style.display = 'none';
+  document.getElementById('rm-email-row').style.display = 'none';
+  document.getElementById('rm-type-row').style.display = 'none';
+  document.getElementById('rm-tours-head').style.display = 'none';
+  document.getElementById('rm-submit-btn').style.display = 'none';
+  document.getElementById('rm-not-found').style.display = 'none';
+  document.getElementById('rm-status').textContent = '';
+  // Populate dropdown
+  const sel = document.getElementById('rm-member-select');
+  if (rosterMembers.length === 0) {
+    sel.innerHTML = '<option value="">— Loading… —</option>';
+    loadRoster().then(() => populateRosterDropdown());
+  } else {
+    populateRosterDropdown();
+  }
 }
+
+function populateRosterDropdown() {
+  const sel = document.getElementById('rm-member-select');
+  sel.innerHTML = '<option value="">— Select your name —</option>';
+  rosterMembers.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.memberId;
+    opt.textContent = m.lastName + ', ' + m.firstName;
+    opt.dataset.first = m.firstName;
+    opt.dataset.last = m.lastName;
+    opt.dataset.email = m.email;
+    opt.dataset.membership = m.membership;
+    sel.appendChild(opt);
+  });
+}
+
+function rosterSelectMember(sel) {
+  const notFound = document.getElementById('rm-not-found');
+  const detailsRow = document.getElementById('rm-details-row');
+  const emailRow = document.getElementById('rm-email-row');
+  const typeRow = document.getElementById('rm-type-row');
+  const toursHead = document.getElementById('rm-tours-head');
+  const submitBtn = document.getElementById('rm-submit-btn');
+
+  if (!sel.value) {
+    detailsRow.style.display = 'none';
+    emailRow.style.display = 'none';
+    typeRow.style.display = 'none';
+    toursHead.style.display = 'none';
+    submitBtn.style.display = 'none';
+    notFound.style.display = 'none';
+    return;
+  }
+
+  const opt = sel.options[sel.selectedIndex];
+  const firstName = opt.dataset.first || '';
+  const lastName = opt.dataset.last || '';
+  const email = opt.dataset.email || '';
+  const membership = opt.dataset.membership || '';
+
+  // Map membership type to display label
+  const typeMap = {RM:'Regular Member', WL:'Waitlist Member', VM:'Video Member'};
+  const typeLabel = typeMap[membership] || membership;
+  const typeDisplay = membership === 'RM' ? '🔵 Regular Member' : membership === 'WL' ? '🟢 Waitlist Member' : '🟠 Video Member';
+
+  document.getElementById('rm-firstname').value = firstName;
+  document.getElementById('rm-lastname').value = lastName;
+  document.getElementById('rm-email').value = email;
+  document.getElementById('rm-member-type').value = typeLabel;
+  document.getElementById('rm-type-display').textContent = typeDisplay;
+
+  detailsRow.style.display = '';
+  emailRow.style.display = '';
+  typeRow.style.display = '';
+  toursHead.style.display = '';
+  submitBtn.style.display = '';
+  notFound.style.display = 'none';
+}
+
 function closeReserveModal(e) {
   if (e && e.target !== document.getElementById('reserve-modal-overlay')) return;
   document.getElementById('reserve-modal-overlay').classList.remove('open');
 }
+
 function selectMemberType(btn, type) {
   document.querySelectorAll('.rm-type-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   document.getElementById('rm-member-type').value = type;
-  // Only scroll to tours once name and email are also filled
-  const name = (document.getElementById('rm-firstname').value.trim() + ' ' + document.getElementById('rm-lastname').value.trim()).trim();
-  const email = document.getElementById('rm-email').value.trim();
-  if (name && email) {
-    setTimeout(() => {
-      const firstFuture = document.querySelector('.rm-tour-item:not(.rm-past)');
-      if (firstFuture) firstFuture.scrollIntoView({behavior:'smooth', block:'start'});
-    }, 150);
-  }
 }
+
 function buildTourChecklist() {
   const container = document.getElementById('rm-tour-list');
   container.innerHTML = '';
@@ -3042,18 +3180,123 @@ function plannerLogout() {
   document.getElementById('planner-login-prompt').style.display = 'block';
 }
 
+// --- ADMIN ADD PERSON ---
+function openAdminAddModal() {
+  if (!plannerUser || plannerUser.role !== 'admin') return;
+  // Populate member dropdown from roster
+  const sel = document.getElementById('add-member-select');
+  sel.innerHTML = '<option value="">— Select member —</option>';
+  rosterMembers.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.memberId;
+    opt.textContent = m.lastName + ', ' + m.firstName;
+    opt.dataset.first = m.firstName;
+    opt.dataset.last = m.lastName;
+    opt.dataset.email = m.email;
+    opt.dataset.membership = m.membership;
+    sel.appendChild(opt);
+  });
+  // Populate tour dropdown — future tours only
+  const tourSel = document.getElementById('add-tour-select');
+  tourSel.innerHTML = '<option value="">— Select tour —</option>';
+  const today = new Date(); today.setHours(0,0,0,0);
+  tours.forEach(t => {
+    if (t.cancelled) return;
+    const td = new Date(t.date); td.setHours(0,0,0,0);
+    if (td < today) return;
+    const opt = document.createElement('option');
+    opt.value = t.date + '|' + t.name;
+    const dateStr = td.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    opt.textContent = dateStr + ' — ' + t.name;
+    tourSel.appendChild(opt);
+  });
+  document.getElementById('add-member-info').style.display = 'none';
+  document.getElementById('add-person-status').textContent = '';
+  document.getElementById('add-guests').value = '0';
+  document.getElementById('admin-add-modal').classList.add('open');
+}
+
+function closeAdminAddModal() {
+  document.getElementById('admin-add-modal').classList.remove('open');
+}
+
+function adminAddSelectMember(sel) {
+  const info = document.getElementById('add-member-info');
+  if (!sel.value) { info.style.display = 'none'; return; }
+  const opt = sel.options[sel.selectedIndex];
+  const typeMap = {RM:'Regular Member', WL:'Waitlist Member', VM:'Video Member'};
+  const typeLabel = typeMap[opt.dataset.membership] || opt.dataset.membership;
+  info.style.display = 'block';
+  info.innerHTML = '📧 ' + (opt.dataset.email || '—') + ' &nbsp;·&nbsp; ' + typeLabel;
+}
+
+async function adminAddPersonSubmit() {
+  const memberSel = document.getElementById('add-member-select');
+  const tourSel = document.getElementById('add-tour-select');
+  const status = document.getElementById('add-person-status');
+  if (!memberSel.value) { status.style.color='#e74c3c'; status.textContent='Please select a member.'; return; }
+  if (!tourSel.value)   { status.style.color='#e74c3c'; status.textContent='Please select a tour.'; return; }
+
+  const opt = memberSel.options[memberSel.selectedIndex];
+  const tourParts = tourSel.value.split('|');
+  const tourDate = tourParts[0];
+  const tourName = tourParts.slice(1).join('|');
+  const typeMap = {RM:'Regular Member', WL:'Waitlist Member', VM:'Video Member'};
+  const memberType = typeMap[opt.dataset.membership] || opt.dataset.membership;
+  const guests = document.getElementById('add-guests').value;
+
+  status.style.color = 'rgba(255,255,255,0.6)';
+  status.textContent = 'Adding…';
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'signup',
+        firstName: opt.dataset.first,
+        lastName:  opt.dataset.last,
+        email:     opt.dataset.email,
+        memberType: memberType,
+        guests:    guests,
+        tours:     [tourDate + '|' + tourName]
+      })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      status.style.color = '#27ae60';
+      status.textContent = '✓ Added successfully!';
+      setTimeout(() => {
+        closeAdminAddModal();
+        loadSignupLists();
+      }, 1200);
+    } else {
+      status.style.color = '#e74c3c';
+      status.textContent = data.error || 'Error adding person.';
+    }
+  } catch(err) {
+    status.style.color = '#e74c3c';
+    status.textContent = 'Connection error. Please try again.';
+  }
+}
+
 function showPlannerWorkspace() {
   document.getElementById('planner-login-prompt').style.display = 'none';
   document.getElementById('planner-workspace').style.display = 'block';
   const badge = document.getElementById('planner-user-badge');
   badge.textContent = plannerUser.name + (plannerUser.role === 'admin' ? ' ★ Admin' : ' — Planner');
+  // Show Add Person button for admins only
+  const addBtn = document.getElementById('admin-add-btn');
+  if (addBtn) addBtn.style.display = plannerUser.role === 'admin' ? '' : 'none';
+  // Preload roster for Add Person modal
+  loadRoster();
   plannerSubTabSwitch('signup');
 }
 
 function plannerSubTabSwitch(tab) {
   plannerSubTab = tab;
-  ['signup','attendance','mobile'].forEach(t => {
-    document.getElementById('planner-sub-'+t).style.display = t===tab ? 'block' : 'none';
+  ['signup','attendance','mobile','tool'].forEach(t => {
+    const el = document.getElementById('planner-sub-'+t);
+    if (el) el.style.display = t===tab ? 'block' : 'none';
     const btn = document.getElementById('pst-'+t);
     if (btn) btn.classList.toggle('active', t===tab);
   });
