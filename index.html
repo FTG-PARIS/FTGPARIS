@@ -3526,13 +3526,27 @@ function buildSignupTable(signups, tourDate, tourName, daysOut) {
   return html;
 }
 
-function adminConfirmSignup(btn, email, tourDate, tourName) {
-  // Local UI update — in future will write to Apps Script
-  btn.textContent = '✓ Confirmed';
-  btn.className = 'confirmed-badge';
-  btn.onclick = null;
-  const td = btn.closest('td');
-  if (td) td.innerHTML = '✓ Confirmed <span class="confirmed-badge">✓ Confirmed</span>';
+async function adminConfirmSignup(btn, email, tourDate, tourName) {
+  if (!plannerUser || plannerUser.role !== 'admin') return;
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action:'confirm', email, tourDate, tourName })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      const td = btn.closest('td');
+      if (td) td.innerHTML = '<span class="confirmed-badge">✓ Confirmed</span>';
+      setTimeout(() => loadSignupLists(), 800);
+    } else {
+      btn.disabled = false; btn.textContent = '✓ Confirm';
+      alert(data.error || 'Could not confirm. Please try again.');
+    }
+  } catch(err) {
+    btn.disabled = false; btn.textContent = '✓ Confirm';
+    alert('Could not connect. Please try again.');
+  }
 }
 
 function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
@@ -3558,17 +3572,22 @@ function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
   btn.disabled = true;
 }
 async function requestCancel(email, tourDate, tourName, btn) {
-  if (!confirm('Request cancellation for ' + tourName + '?\n\nYour name will remain on the list but marked as "Cancel Requested".')) return;
-  btn.disabled = true; btn.textContent = 'Sending…';
+  const isAdmin = plannerUser && plannerUser.role === 'admin';
+  const confirmMsg = isAdmin
+    ? 'Remove ' + tourName + ' signup?\n\nThis will permanently delete this row from the sheet.'
+    : 'Request cancellation for ' + tourName + '?\n\nYour name will remain on the list but marked as "Cancel Requested".';
+  if (!confirm(confirmMsg)) return;
+  btn.disabled = true; btn.textContent = 'Removing…';
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action:'cancel', email, tourDate, tourName })
+      body: JSON.stringify({ action: 'cancel', email, tourDate, tourName, isAdmin: isAdmin })
     });
     const data = await resp.json();
     if (data.success) {
-      btn.textContent = '✓ Requested'; btn.style.color = 'green'; btn.style.borderColor = 'green';
-      setTimeout(() => loadSignupLists(), 1500);
+      btn.textContent = isAdmin ? '✓ Removed' : '✓ Requested';
+      btn.style.color = 'green'; btn.style.borderColor = 'green';
+      setTimeout(() => loadSignupLists(), 1000);
     } else if (data.tooLate) {
       btn.textContent = 'Too late'; btn.disabled = false; alert(data.error);
     } else {
