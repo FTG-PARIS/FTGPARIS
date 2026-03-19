@@ -3819,7 +3819,7 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
       '<td>' + (s.invitedBy ? '<span style="font-size:0.8rem;color:#CE93D8;">of ' + s.invitedBy + '</span>' : (s.guests > 0 ? '+' + s.guests + ' guest' + (s.guests>1?'s':'') : '—')) + '</td>' +
       '<td>' + s.signupDate + '</td>' +
       '<td>' + s.status + (isAdmin && !isCancelled && !isConfirmed ?
-        ' <button class="confirm-btn" onclick="adminConfirmSignup(this,\''+s.email.replace(/'/g,"\\'")+'\',\''+tourDate+'\',\''+tourName.replace(/'/g,"\\'")+'\')">✓ Confirm</button>' :
+        ' <button class="confirm-btn" onclick="adminConfirmSignup(this,\''+s.email.replace(/'/g,"\\'")+'\',\''+tourDate+'\',\''+tourName.replace(/'/g,"\\'")+'\',\''+( s.firstName||'').replace(/'/g,"\\'")+'\',\''+( s.lastName||'').replace(/'/g,"\\'")+'\')">✓ Confirm</button>' :
         (isConfirmed ? ' <span class="confirmed-badge">✓ Confirmed</span>' : '')) +
       '</td><td>';
     if (!isCancelled) {
@@ -3862,13 +3862,13 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
   return html;
 }
 
-async function adminConfirmSignup(btn, email, tourDate, tourName) {
+async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, lastName) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
   btn.disabled = true; btn.textContent = 'Saving…';
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action:'confirm', email, tourDate, tourName })
+      body: JSON.stringify({ action:'confirm', email, tourDate, tourName, firstName: firstName||'', lastName: lastName||'' })
     });
     const data = await resp.json();
     if (data.success) {
