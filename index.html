@@ -3962,7 +3962,7 @@ async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, las
 
 function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
-  // Scrape the rendered table — include confirmed members AND all non-cancelled guests
+  // Scrape the rendered table
   const rows = btn.closest('div').previousElementSibling
     ? btn.closest('div').previousElementSibling.querySelectorAll('tbody tr')
     : [];
@@ -3975,15 +3975,37 @@ function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
     const isGuest = row.getAttribute('data-isguest') === '1';
     // Include confirmed members and all non-cancelled guests
     if (status !== 'Confirmed' && !isGuest) return;
+    const firstName = cells[0].textContent.trim();
+    const lastName  = cells[1].textContent.trim();
+    const email     = cells[2].textContent.trim();
+    const memberType = cells[3].textContent.trim();
+    // How many guests did this member bring?
+    const guestCell = cells[4].textContent.trim();
+    const guestMatch = guestCell.match(/\+(\d+)/);
+    const guestCount = guestMatch ? parseInt(guestMatch[1]) : 0;
     signups.push({
-      firstName: cells[0].textContent.trim(),
-      lastName: cells[1].textContent.trim(),
-      email: cells[2].textContent.trim(),
-      membershipType: cells[3].textContent.trim(),
-      memberType: cells[3].textContent.trim(),
-      guests: cells[4].textContent.trim().replace('+','') || '0',
+      firstName, lastName, email,
+      membershipType: memberType,
+      memberType: memberType,
+      guests: guestCount,
       status: isGuest ? 'Signed Up' : 'Confirmed'
     });
+    // Synthesise a row for each guest this member brought
+    if (guestCount > 0 && !isGuest) {
+      const initials = (firstName.charAt(0) + lastName.charAt(0)).toUpperCase();
+      for (let g = 1; g <= guestCount; g++) {
+        signups.push({
+          firstName: initials + "'s Guest" + (guestCount > 1 ? g : ''),
+          lastName:  initials + "'s Guest" + (guestCount > 1 ? g : ''),
+          email:     email,
+          membershipType: 'Guest',
+          memberType:     'Guest',
+          invitedBy: firstName + ' ' + lastName,
+          guests: 0,
+          status: 'Signed Up'
+        });
+      }
+    }
   });
   markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups);
   btn.textContent = '✅ Ready! Opening attendance view…';
