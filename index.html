@@ -3701,6 +3701,10 @@ async function loadSignupLists() {
       const key = t.date + '|' + t.name;
       const signups = (grouped[key] || { rows: [] }).rows;
       const confirmed = signups.filter(s => s.status === 'Confirmed').length;
+      const totalActive = signups.filter(s => s.status.indexOf('Cancel') === -1).length;
+      const countLabel = confirmed > 0
+        ? confirmed + ' confirmed' + (totalActive > confirmed ? ' / ' + totalActive + ' signed up' : '')
+        : totalActive + ' signed up';
       const tourDate = new Date(t.date);
       const dateStr = tourDate.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'long'});
       const daysOut = Math.round((tourDate - today) / (1000*60*60*24));
@@ -3710,16 +3714,16 @@ async function loadSignupLists() {
         '<div class="signup-tour-head" onclick="this.nextElementSibling.classList.toggle(\'open\')">' +
           '<div><div class="signup-tour-title">' + t.name + '</div>' +
           '<div class="signup-tour-meta">' + dateStr + '</div></div>' +
-          '<span class="signup-tour-count">' + confirmed + ' signed up</span>' +
+          '<span class="signup-tour-count">' + countLabel + '</span>' +
         '</div>' +
-        '<div class="signup-tour-body">' + buildSignupTable(signups, t.date, t.name, daysOut) + '</div>';
+        '<div class="signup-tour-body">' + buildSignupTable(signups, t.date, t.name, daysOut, t) + '</div>';
       container.appendChild(block);
     });
   } catch(err) {
     container.innerHTML = '<div class="signup-loading">Could not load signups. Please check your connection.</div>';
   }
 }
-function buildSignupTable(signups, tourDate, tourName, daysOut) {
+function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
   if (signups.length === 0) return '<div class="signup-empty">No signups yet.</div>';
   const tooLate = daysOut <= 10;
   const isAdmin = plannerUser && plannerUser.role === 'admin';
@@ -3757,12 +3761,19 @@ function buildSignupTable(signups, tourDate, tourName, daysOut) {
   // Admin: Ready for Tour Day button
   if (isAdmin) {
     const confirmedSignups = signups.filter(s => s.status === 'Confirmed');
+    const activeSignups = signups.filter(s => s.status.indexOf('Cancel') === -1);
+    const countInfo = confirmedSignups.length + ' confirmed of ' + activeSignups.length + ' signed up';
     const safeDate = tourDate.replace(/'/g,"\\'");
     const safeName = tourName.replace(/'/g,"\\'");
     const sigJson = JSON.stringify(confirmedSignups).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     html += '<div style="margin-top:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">';
-    html += '<span style="color:rgba(255,255,255,0.5);font-size:0.8rem;">'+confirmedSignups.length+' confirmed</span>';
-    html += '<button class="ready-tour-btn" onclick="adminReadyForTourDay(\''+safeName+'\',\''+safeDate+'\',10,20,25,this)">📱 Mark Ready for Tour Day</button>';
+    html += '<span style="color:rgba(255,255,255,0.5);font-size:0.8rem;">'+countInfo+'</span>';
+    // Parse numeric fees from tour data (e.g. "10€" → 10)
+    const parseFee = s => { const m = (s||'').match(/\d+/); return m ? parseInt(m[0]) : 0; };
+    const rmFee  = tourObj ? parseFee(tourObj.cost_regular)  : 10;
+    const wlFee  = tourObj ? parseFee(tourObj.cost_waitlist) : 20;
+    const gstFee = tourObj ? parseFee(tourObj.cost_guest)    : 25;
+    html += '<button class="ready-tour-btn" onclick="adminReadyForTourDay(\''+safeName+'\',\''+safeDate+'\','+rmFee+','+wlFee+','+gstFee+',this)">📱 Mark Ready for Tour Day</button>';
     html += '</div>';
   }
 
