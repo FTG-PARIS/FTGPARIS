@@ -3366,9 +3366,14 @@ function plannerSubTabSwitch(tab) {
 function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
   attendanceTourInfo = {name: tourName, date: tourDate, rmFee: rmFee, wlFee: wlFee, guestFee: guestFee};
-  // Build attendanceData from confirmed signups
+  // Build attendanceData from confirmed signups + all non-cancelled guests
   attendanceData = signups
-    .filter(s => s.status === 'Confirmed' && s.status !== 'Cancelled')
+    .filter(s => {
+      const isCancelled = (s.status || '').indexOf('Cancel') !== -1;
+      if (isCancelled) return false;
+      const isGuest = (s.membershipType || s.memberType || s.type || '').includes('Guest');
+      return s.status === 'Confirmed' || isGuest;
+    })
     .map(s => {
       const mtype = s.membershipType || s.type || 'WL';
       const fee = mtype.includes('Regular') ? rmFee : mtype.includes('Video') ? wlFee : wlFee;
@@ -3612,6 +3617,9 @@ function renderMobileAttendance() {
           <span class="mob-diff-display-label">Difference</span>
           <span class="mob-diff-display-val" id="mob-diff-val">—</span>
         </div>
+        <button id="mob-submit-att-btn"
+                onclick="submitAttendance()"
+                style="margin-top:1rem;width:100%;padding:0.85rem;background:#D4AF37;color:#1A3A2A;font-weight:800;font-size:1rem;border:none;border-radius:8px;cursor:pointer;letter-spacing:0.05em;">💾 Submit Attendance</button>
       </div>
     </div>`;
 
@@ -3758,6 +3766,72 @@ function mobWalkinTick(n) {
   mobUpdateTotals();
 }
 
+// --- SUBMIT ATTENDANCE TO APPS SCRIPT (writes to Attendance_History tab) ---
+async function submitAttendance() {
+  if (!plannerUser || plannerUser.role !== 'admin') return;
+  const ti = attendanceTourInfo;
+  if (!ti.name) { alert('No tour loaded.'); return; }
+  if (!confirm('Submit attendance for ' + ti.name + ' (' + ti.date + ')?\n\nThis will save the record to the Attendance_History tab. Paul can review before updating the master roster.')) return;
+
+  const btn = document.getElementById('mob-submit-att-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Saving…'; }
+
+  // Build rows for registered attendees
+  const rows = attendanceData.map((p, i) => {
+    const arrivedBtn = document.getElementById('mob-arrive-btn-'+i);
+    const arrived = arrivedBtn && arrivedBtn.classList.contains('tapped') ? 'Y' : 'N';
+    const feeTick = document.getElementById('mob-fee-tick-'+i);
+    const feeDiffInput = document.querySelector('#mob-fee-diff-'+i+' .mob-diff-input');
+    let feePaid = 0;
+    if (feeTick && feeTick.classList.contains('ticked')) feePaid = p.fee;
+    else if (feeDiffInput && feeDiffInput.value) feePaid = parseFloat(feeDiffInput.value)||0;
+    const unexpAmt = document.getElementById('mob-unexp-amt-'+i);
+    const unexpReason = document.getElementById('mob-unexp-reason-'+i);
+    const extraTick = document.getElementById('mob-extra-tick-'+i);
+    const extraDiffInput = document.querySelector('#mob-extra-diff-'+i+' .mob-diff-input');
+    let extraPaid = 0;
+    let extraReason = p.extraReason || '';
+    if (extraTick && extraTick.classList.contains('ticked')) extraPaid = p.extraDue||0;
+    else if (extraDiffInput && extraDiffInput.value) extraPaid = parseFloat(extraDiffInput.value)||0;
+    if (unexpAmt && unexpAmt.value) { extraPaid += parseFloat(unexpAmt.value)||0; if (unexpReason && unexpReason.value) extraReason = (extraReason ? extraReason+'; ' : '') + unexpReason.value; }
+    return { date: ti.date, tourName: ti.name, firstName: p.firstName, lastName: p.lastName,
+             memberId: p.id||'', type: p.type, arrived, feePaid, extraPaid, extraReason };
+  });
+
+  // Walk-ins
+  [1,2,3].forEach(n => {
+    const first = (document.getElementById('wi'+n+'-first')||{}).value||'';
+    const last  = (document.getElementById('wi'+n+'-last')||{}).value||'';
+    const type  = (document.getElementById('wi'+n+'-type')||{}).value||'';
+    if (!first && !last) return;
+    const tick  = document.getElementById('wi'+n+'-tick');
+    const feeEl = document.getElementById('wi'+n+'-fee');
+    const feePaid = (tick && tick.classList.contains('ticked')) ? (parseFloat((feeEl||{}).textContent.replace('€',''))||0) : 0;
+    const extra = parseFloat((document.getElementById('wi'+n+'-extra')||{}).value)||0;
+    const reason = (document.getElementById('wi'+n+'-reason')||{}).value||'';
+    rows.push({ date: ti.date, tourName: ti.name, firstName: first, lastName: last,
+                memberId: 'WALKIN', type: type||'Guest', arrived: 'Y', feePaid, extraPaid: extra, extraReason: reason });
+  });
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'saveattendance', rows })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      if (btn) { btn.textContent = '✅ Saved!'; }
+      alert('Attendance saved to Attendance_History tab.\n' + rows.length + ' rows written.\n\nPaul can now audit the money and update the master roster.');
+    } else {
+      if (btn) { btn.disabled = false; btn.textContent = '💾 Submit Attendance'; }
+      alert('Error saving: ' + (data.error || 'Unknown error'));
+    }
+  } catch(err) {
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Submit Attendance'; }
+    alert('Could not connect. Please check connection and try again.');
+  }
+}
+
 // --- TOUR PLANNERS SIGNUP LISTS ---
 async function loadSignupLists() {
   const container = document.getElementById('signup-lists-container');
@@ -3885,27 +3959,31 @@ async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, las
   }
 }
 
-function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
+async function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
-  // Gather confirmed signups from the current rendered table
-  const rows = btn.closest('div').previousElementSibling ? btn.closest('div').previousElementSibling.querySelectorAll('tbody tr:not(.cancelled-signup)') : [];
-  const signups = [];
-  rows.forEach(row => {
-    const cells = row.querySelectorAll('td');
-    if (cells.length >= 7) {
-      signups.push({
-        firstName: cells[0].textContent.trim(),
-        lastName: cells[1].textContent.trim(),
-        email: cells[2].textContent.trim(),
-        membershipType: cells[3].textContent.trim(),
-        guests: cells[4].textContent.trim().replace('+','') || '0',
-        status: 'Confirmed'
+  btn.textContent = '⏳ Loading…';
+  btn.disabled = true;
+  try {
+    // Re-fetch live data from Apps Script so we get full signup objects
+    // including guests, phone numbers, and correct statuses
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=getlist');
+    const data = await resp.json();
+    let signups = [];
+    if (data.success) {
+      signups = (data.signups || []).filter(s => {
+        const matchDate = (s.tourDate || '').trim() === tourDate.trim();
+        const matchName = (s.tourName || '').trim() === tourName.trim();
+        const notCancelled = (s.status || '').indexOf('Cancel') === -1;
+        return matchDate && matchName && notCancelled;
       });
     }
-  });
-  markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups);
-  btn.textContent = '✅ Ready! Opening attendance view…';
-  btn.disabled = true;
+    markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups);
+    btn.textContent = '✅ Ready! Opening attendance view…';
+  } catch(err) {
+    btn.textContent = '❌ Error — try again';
+    btn.disabled = false;
+    alert('Could not load signup data. Please check your connection and try again.');
+  }
 }
 async function requestCancel(email, tourDate, tourName, btn) {
   const isAdmin = plannerUser && plannerUser.role === 'admin';
