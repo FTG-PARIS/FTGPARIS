@@ -3887,7 +3887,8 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
   signups.forEach((s, idx) => {
     const isCancelled = s.status.indexOf('Cancel') !== -1;
     const isConfirmed = s.status === 'Confirmed';
-    html += '<tr class="' + (isCancelled ? 'cancelled-signup' : '') + '">' +
+    const isGuest = (s.memberType || '').includes('Guest');
+    html += '<tr class="' + (isCancelled ? 'cancelled-signup' : '') + '" data-isguest="' + (isGuest ? '1' : '0') + '" data-status="' + s.status + '">' +
       '<td>' + (s.firstName || '') + '</td><td>' + (s.lastName || '') + '</td><td>' + s.email + '</td>' +
       '<td>' + (s.memberType === 'Guest' ? '<span style="color:#CE93D8">Guest</span>' : s.memberType) + '</td>' +
       '<td>' + (s.invitedBy ? '<span style="font-size:0.8rem;color:#CE93D8;">of ' + s.invitedBy + '</span>' : (s.guests > 0 ? '+' + s.guests + ' guest' + (s.guests>1?'s':'') : '—')) + '</td>' +
@@ -3959,31 +3960,34 @@ async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, las
   }
 }
 
-async function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
+function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
-  btn.textContent = '⏳ Loading…';
+  // Scrape the rendered table — include confirmed members AND all non-cancelled guests
+  const rows = btn.closest('div').previousElementSibling
+    ? btn.closest('div').previousElementSibling.querySelectorAll('tbody tr')
+    : [];
+  const signups = [];
+  rows.forEach(row => {
+    if (row.classList.contains('cancelled-signup')) return;
+    const cells = row.querySelectorAll('td');
+    if (cells.length < 7) return;
+    const status = row.getAttribute('data-status') || cells[6].textContent.trim();
+    const isGuest = row.getAttribute('data-isguest') === '1';
+    // Include confirmed members and all non-cancelled guests
+    if (status !== 'Confirmed' && !isGuest) return;
+    signups.push({
+      firstName: cells[0].textContent.trim(),
+      lastName: cells[1].textContent.trim(),
+      email: cells[2].textContent.trim(),
+      membershipType: cells[3].textContent.trim(),
+      memberType: cells[3].textContent.trim(),
+      guests: cells[4].textContent.trim().replace('+','') || '0',
+      status: isGuest ? 'Signed Up' : 'Confirmed'
+    });
+  });
+  markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups);
+  btn.textContent = '✅ Ready! Opening attendance view…';
   btn.disabled = true;
-  try {
-    // Re-fetch live data from Apps Script so we get full signup objects
-    // including guests, phone numbers, and correct statuses
-    const resp = await fetch(APPS_SCRIPT_URL + '?action=getlist');
-    const data = await resp.json();
-    let signups = [];
-    if (data.success) {
-      signups = (data.signups || []).filter(s => {
-        const matchDate = (s.tourDate || '').trim() === tourDate.trim();
-        const matchName = (s.tourName || '').trim() === tourName.trim();
-        const notCancelled = (s.status || '').indexOf('Cancel') === -1;
-        return matchDate && matchName && notCancelled;
-      });
-    }
-    markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups);
-    btn.textContent = '✅ Ready! Opening attendance view…';
-  } catch(err) {
-    btn.textContent = '❌ Error — try again';
-    btn.disabled = false;
-    alert('Could not load signup data. Please check your connection and try again.');
-  }
 }
 async function requestCancel(email, tourDate, tourName, btn) {
   const isAdmin = plannerUser && plannerUser.role === 'admin';
