@@ -1706,16 +1706,16 @@
           <input type="email" id="rm-email" required placeholder="Confirm your email">
         </div>
         <div class="rm-field" style="max-width:160px;">
-          <label for="rm-guests">Guests (max 4)</label>
-          <select id="rm-guests">
+          <label for="rm-guests">Guests (max 3)</label>
+          <select id="rm-guests" onchange="updateGuestFields()">
             <option value="0">No guests</option>
             <option value="1">1 guest</option>
             <option value="2">2 guests</option>
             <option value="3">3 guests</option>
-            <option value="4">4 guests</option>
           </select>
         </div>
       </div>
+      <div id="rm-guest-fields" style="display:none;margin-bottom:0.8rem;"></div>
       <div class="rm-row" id="rm-type-row" style="display:none;">
         <div class="rm-field">
           <label>Membership Type</label>
@@ -2979,16 +2979,18 @@ async function loadRoster() {
   try {
     const resp = await fetch(APPS_SCRIPT_URL + '?action=getroster');
     const data = await resp.json();
-    if (data.success && data.members) {
+    if (data.success && data.members && data.members.length > 0) {
       rosterMembers = data.members;
       rosterLoaded = true;
+    } else {
+      console.warn('Roster returned empty or error:', JSON.stringify(data));
     }
   } catch(e) {
     console.warn('Roster load failed:', e);
   }
 }
 
-function openReserveModal() {
+async function openReserveModal() {
   buildTourChecklist();
   document.getElementById('reserve-modal-overlay').classList.add('open');
   // Reset form state
@@ -2999,18 +3001,19 @@ function openReserveModal() {
   document.getElementById('rm-submit-btn').style.display = 'none';
   document.getElementById('rm-not-found').style.display = 'none';
   document.getElementById('rm-status').textContent = '';
-  // Populate dropdown
+  // Populate dropdown — await roster if not yet loaded
   const sel = document.getElementById('rm-member-select');
-  if (rosterMembers.length === 0) {
-    sel.innerHTML = '<option value="">— Loading… —</option>';
-    loadRoster().then(() => populateRosterDropdown());
-  } else {
-    populateRosterDropdown();
-  }
+  sel.innerHTML = '<option value="">— Loading members… —</option>';
+  if (!rosterLoaded) await loadRoster();
+  populateRosterDropdown();
 }
 
 function populateRosterDropdown() {
   const sel = document.getElementById('rm-member-select');
+  if (rosterMembers.length === 0) {
+    sel.innerHTML = '<option value="">— Name list unavailable — please try again —</option>';
+    return;
+  }
   sel.innerHTML = '<option value="">— Select your name —</option>';
   rosterMembers.forEach(m => {
     const opt = document.createElement('option');
@@ -3101,6 +3104,39 @@ function buildTourChecklist() {
     container.appendChild(item);
   });
 }
+function updateGuestFields() {
+  const n = parseInt(document.getElementById('rm-guests').value) || 0;
+  const container = document.getElementById('rm-guest-fields');
+  if (n === 0) { container.style.display = 'none'; container.innerHTML = ''; return; }
+  container.style.display = 'block';
+  let html = '<div style="font-size:0.82rem;color:#666;margin-bottom:0.4rem;font-weight:600;">Guest names (required)</div>';
+  for (let i = 1; i <= n; i++) {
+    html += `<div style="display:flex;gap:0.5rem;margin-bottom:0.5rem;flex-wrap:wrap;">
+      <div style="flex:1;min-width:120px;">
+        <label style="font-size:0.78rem;color:#888;">Guest ${i} First Name *</label>
+        <input type="text" id="rm-guest-first-${i}" required placeholder="First name"
+               style="width:100%;padding:0.45rem 0.6rem;border:1px solid #ddd;border-radius:5px;font-size:0.9rem;">
+      </div>
+      <div style="flex:1;min-width:120px;">
+        <label style="font-size:0.78rem;color:#888;">Guest ${i} Last Name *</label>
+        <input type="text" id="rm-guest-last-${i}" required placeholder="Last name"
+               style="width:100%;padding:0.45rem 0.6rem;border:1px solid #ddd;border-radius:5px;font-size:0.9rem;">
+      </div>
+      <div style="flex:1;min-width:140px;">
+        <label style="font-size:0.78rem;color:#888;">Email (optional)</label>
+        <input type="email" id="rm-guest-email-${i}" placeholder="email@example.com"
+               style="width:100%;padding:0.45rem 0.6rem;border:1px solid #ddd;border-radius:5px;font-size:0.9rem;">
+      </div>
+      <div style="flex:1;min-width:120px;">
+        <label style="font-size:0.78rem;color:#888;">Phone (optional)</label>
+        <input type="text" id="rm-guest-phone-${i}" placeholder="06 xx xx xx xx"
+               style="width:100%;padding:0.45rem 0.6rem;border:1px solid #ddd;border-radius:5px;font-size:0.9rem;">
+      </div>
+    </div>`;
+  }
+  container.innerHTML = html;
+}
+
 async function submitReserveForm(e) {
   e.preventDefault();
   const btn = document.getElementById('rm-submit-btn');
@@ -3111,15 +3147,32 @@ async function submitReserveForm(e) {
   const name = firstName + ' ' + lastName;
   const email = document.getElementById('rm-email').value.trim();
   const memberType = document.getElementById('rm-member-type').value;
-  const guests = document.getElementById('rm-guests').value;
+  const guestCount = parseInt(document.getElementById('rm-guests').value) || 0;
   const selectedTours = Array.from(document.querySelectorAll('input[name="rm-tour"]:checked')).map(cb => cb.value);
   if (!memberType) { status.style.color='#c0392b'; status.textContent='Please select your membership type.'; return; }
   if (selectedTours.length === 0) { status.style.color='#c0392b'; status.textContent='Please select at least one tour.'; return; }
+  // Collect guest info
+  const guestList = [];
+  for (let i = 1; i <= guestCount; i++) {
+    const gFirst = (document.getElementById('rm-guest-first-'+i)||{}).value || '';
+    const gLast  = (document.getElementById('rm-guest-last-'+i)||{}).value || '';
+    if (!gFirst.trim() || !gLast.trim()) {
+      status.style.color='#c0392b';
+      status.textContent='Please enter a name for Guest ' + i + '.';
+      return;
+    }
+    guestList.push({
+      firstName: gFirst.trim(), lastName: gLast.trim(),
+      email: (document.getElementById('rm-guest-email-'+i)||{}).value || '',
+      phone: (document.getElementById('rm-guest-phone-'+i)||{}).value || '',
+      invitedBy: firstName + ' ' + lastName
+    });
+  }
   btn.disabled = true; btn.textContent = 'Sending…';
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action:'signup', firstName, lastName, name, email, memberType, guests, tours: selectedTours })
+      body: JSON.stringify({ action:'signup', firstName, lastName, name, email, memberType, guests: guestCount, guestList, tours: selectedTours })
     });
     const data = await resp.json();
     if (data.success) {
@@ -3181,21 +3234,29 @@ function plannerLogout() {
 }
 
 // --- ADMIN ADD PERSON ---
-function openAdminAddModal() {
+async function openAdminAddModal() {
   if (!plannerUser || plannerUser.role !== 'admin') return;
-  // Populate member dropdown from roster
+  // Open modal immediately so user sees it
+  document.getElementById('admin-add-modal').classList.add('open');
+  // Populate member dropdown — await roster if not yet loaded
   const sel = document.getElementById('add-member-select');
-  sel.innerHTML = '<option value="">— Select member —</option>';
-  rosterMembers.forEach(m => {
-    const opt = document.createElement('option');
-    opt.value = m.memberId;
-    opt.textContent = m.lastName + ', ' + m.firstName;
-    opt.dataset.first = m.firstName;
-    opt.dataset.last = m.lastName;
-    opt.dataset.email = m.email;
-    opt.dataset.membership = m.membership;
-    sel.appendChild(opt);
-  });
+  sel.innerHTML = '<option value="">— Loading members… —</option>';
+  if (!rosterLoaded) await loadRoster();
+  if (rosterMembers.length === 0) {
+    sel.innerHTML = '<option value="">— No members found (check Roster sheet) —</option>';
+  } else {
+    sel.innerHTML = '<option value="">— Select member —</option>';
+    rosterMembers.forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m.memberId;
+      opt.textContent = m.lastName + ', ' + m.firstName;
+      opt.dataset.first = m.firstName;
+      opt.dataset.last = m.lastName;
+      opt.dataset.email = m.email;
+      opt.dataset.membership = m.membership;
+      sel.appendChild(opt);
+    });
+  }
   // Populate tour dropdown — future tours only
   const tourSel = document.getElementById('add-tour-select');
   tourSel.innerHTML = '<option value="">— Select tour —</option>';
@@ -3213,7 +3274,6 @@ function openAdminAddModal() {
   document.getElementById('add-member-info').style.display = 'none';
   document.getElementById('add-person-status').textContent = '';
   document.getElementById('add-guests').value = '0';
-  document.getElementById('admin-add-modal').classList.add('open');
 }
 
 function closeAdminAddModal() {
@@ -3316,10 +3376,13 @@ function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups
         id: s.memberId || '',
         firstName: s.firstName || '',
         lastName: s.lastName || '',
-        type: mtype.includes('Regular') ? 'RM' : mtype.includes('Video') ? 'VM' : 'WL',
-        fee: fee,
+        type: mtype.includes('Guest') ? 'Guest' : mtype.includes('Regular') ? 'RM' : mtype.includes('Video') ? 'VM' : 'WL',
+        fee: mtype.includes('Guest') ? guestFee : fee,
         extraDue: 0,
         extraReason: '',
+        email: s.email || '',
+        phone: s.phone || s.mobile || '',
+        invitedBy: s.invitedBy || '',
         guests: parseInt(s.guests) || 0
       };
     })
@@ -3405,10 +3468,27 @@ function renderMobileAttendance() {
         <input class="mob-diff-reason" type="text" placeholder="reason">
       </div>` : '';
 
+    // Contact info block — phone and email for quick reference
+    const guestTag = p.type === 'Guest' ? `<div style="font-size:0.72rem;color:#CE93D8;margin-top:0.15rem;">Guest of ${p.invitedBy||'member'}</div>` : '';
+    const contactBlock = `
+      <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:0.5rem 0.7rem;margin-bottom:0.6rem;font-size:0.82rem;">
+        ${p.phone ? `<div>📞 <a href="tel:${p.phone}" style="color:#81C784;text-decoration:none;">${p.phone}</a></div>` : '<div style="color:rgba(255,255,255,0.3);">📞 No phone on file</div>'}
+        ${p.email ? `<div>✉️ <a href="mailto:${p.email}" style="color:#81C784;text-decoration:none;">${p.email}</a></div>` : ''}
+        ${p.type === 'Guest' ? `
+          <div style="margin-top:0.4rem;color:rgba(255,255,255,0.5);font-size:0.78rem;">Update guest contact:</div>
+          <input type="text" placeholder="Phone" value="${p.phone||''}"
+                 style="width:100%;margin-top:0.2rem;padding:0.3rem;background:#1a202c;border:1px solid #3a4455;border-radius:4px;color:#fff;font-size:0.82rem;"
+                 onchange="attendanceData[${i}].phone=this.value">
+          <input type="email" placeholder="Email" value="${p.email||''}"
+                 style="width:100%;margin-top:0.2rem;padding:0.3rem;background:#1a202c;border:1px solid #3a4455;border-radius:4px;color:#fff;font-size:0.82rem;"
+                 onchange="attendanceData[${i}].email=this.value">
+        ` : ''}
+      </div>`;
+
     return `
       <div class="mob-person" id="mob-person-${i}">
         <div class="mob-person-head" onclick="mobToggleBody(${i})">
-          <div class="mob-person-name">${p.lastName}, ${p.firstName}</div>
+          <div class="mob-person-name">${p.lastName}, ${p.firstName}${guestTag}</div>
           <div class="mob-person-meta">
             <div class="mob-person-type">${typeLabel}</div>
             <div class="mob-person-fee">€${p.fee}</div>
@@ -3417,6 +3497,7 @@ function renderMobileAttendance() {
                   onclick="event.stopPropagation();mobArrive(${i})">Arrived</button>
         </div>
         <div class="mob-person-body" id="mob-body-${i}">
+          ${contactBlock}
           <div class="mob-pay-row">
             <span class="mob-pay-label">Tour fee</span>
             <span class="mob-pay-amount">€${p.fee}</span>
@@ -3728,13 +3809,14 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
   const tooLate = daysOut <= 10;
   const isAdmin = plannerUser && plannerUser.role === 'admin';
 
-  let html = '<table class="signup-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Type</th><th>Guests</th><th>Signed Up</th><th>Status</th><th></th></tr></thead><tbody>';
+  let html = '<table class="signup-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Type</th><th>Guests/Guest of</th><th>Signed Up</th><th>Status</th><th></th></tr></thead><tbody>';
   signups.forEach((s, idx) => {
     const isCancelled = s.status.indexOf('Cancel') !== -1;
     const isConfirmed = s.status === 'Confirmed';
     html += '<tr class="' + (isCancelled ? 'cancelled-signup' : '') + '">' +
-      '<td>' + (s.firstName || '') + '</td><td>' + (s.lastName || '') + '</td><td>' + s.email + '</td><td>' + s.memberType + '</td>' +
-      '<td>' + (s.guests > 0 ? '+' + s.guests : '—') + '</td>' +
+      '<td>' + (s.firstName || '') + '</td><td>' + (s.lastName || '') + '</td><td>' + s.email + '</td>' +
+      '<td>' + (s.memberType === 'Guest' ? '<span style="color:#CE93D8">Guest</span>' : s.memberType) + '</td>' +
+      '<td>' + (s.invitedBy ? '<span style="font-size:0.8rem;color:#CE93D8;">of ' + s.invitedBy + '</span>' : (s.guests > 0 ? '+' + s.guests + ' guest' + (s.guests>1?'s':'') : '—')) + '</td>' +
       '<td>' + s.signupDate + '</td>' +
       '<td>' + s.status + (isAdmin && !isCancelled && !isConfirmed ?
         ' <button class="confirm-btn" onclick="adminConfirmSignup(this,\''+s.email.replace(/'/g,"\\'")+'\',\''+tourDate+'\',\''+tourName.replace(/'/g,"\\'")+'\')">✓ Confirm</button>' :
