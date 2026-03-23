@@ -83,12 +83,13 @@
   .vm-field textarea { resize: vertical; min-height: 80px; }
   .vm-radio-group { display: flex; gap: 1.5rem; align-items: center; margin-top: 0.3rem; }
   .vm-radio-group label { font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.93rem; display: flex; align-items: center; gap: 0.4rem; }
-  .vm-check-group { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; margin-top: 0.3rem; }
-  .vm-check-group label { font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.93rem; display: flex; align-items: center; gap: 0.4rem; }
+  .vm-check-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem 1.2rem; margin-top: 0.3rem; }
+  .vm-check-group label { font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 0.93rem; display: flex; align-items: flex-start; gap: 0.4rem; line-height: 1.3; }
+  .vm-check-group label input[type="checkbox"] { flex-shrink: 0; margin-top: 0.15rem; }
   .vm-section-label { font-size: 0.82rem; font-weight: 600; color: var(--ink); text-transform: uppercase; letter-spacing: 0.04em; margin: 1rem 0 0.4rem; }
   .vm-cond { margin-bottom: 1rem; }
   .vm-submit {
-    background: var(--forest); color: var(--white); border: none;
+    background: #1A3A2A; color: #ffffff; border: none;
     padding: 0.75rem 2rem; font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
     font-weight: 600; cursor: pointer; margin-top: 1.2rem; width: 100%;
     letter-spacing: 0.03em; transition: background 0.2s;
@@ -2197,15 +2198,15 @@ const tours = [
 
   { date:'2026-05-22', photo_url: MEUDON_IMG, name:'An Afternoon in Meudon', month:'May', type:'walking', emoji:'🔭',
     meet_time:'13h15', start_time:'13h30', finish_time:'~17h00 near RER station',
-    meeting:'Gare de Bellevue, Meudon',
-    transport:'Train: N - Gare de Bellevue, Meudon · Tram: T2 - Bellevue · Bus: 169 - Bellevue',
+    meeting:'Transilien Station: Gare de Bellevue, Meudon - Pl du Souvenir Français',
+    transport:'Train: Transilien N - Montparnasse to Gare de Bellevue · Tram: T2 - Meudon-sur-Seine, then 12 min walk to Gare · Bus: 169 - From M9 Pont de Sèvres to the Gare, or from M8 Balard to the Gare',
     guide:'Thierry HEIL',
     cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
     note:'(includes guide and entrance fees)',
     limit:'20', walk_level:'Medium walk with uphill sections — will be a long walk',
     walk_dots: [true,true,true,true,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92',
+    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
     read_ahead:'<a href="https://observatoiredeparis.psl.eu/le-chateau-de-meudon.html">Observatoire de Paris: Château de Meudon</a> · <a href="https://musee.meudon.fr/">Musée d\'Art et d\'Histoire de Meudon</a>',
     desc:'Join us as we explore the town of Meudon, just southwest of Paris, with our guide Thierry Heil. Our tour, starting at Gare Bellevue, will allow us to take a close look at some unique experimental modern homes from the 1950s, including works by Jean Prouvé and André Bloc, pioneers of prefabrication and sculptural concrete which they tested on these steep plots overlooking Paris. From there we climb to the site of the Château de Meudon, acquired in 1695 for Louis XIV\'s son and destroyed during the Franco-Prussian War in 1871. Today, the Meudon Observatory, home to the Grande Coupole telescope, now crowns the terrace, offering expansive views over Paris and the Seine valley. We will then descend through former royal hunting grounds before concluding our tour in the town center at the Musée d\'Art et d\'Histoire de Meudon, which features works by Rodin, Carpeaux, and 19th-century regional artists.' },
 
@@ -2557,7 +2558,7 @@ function renderMemberTours() {
           // FOOTER
           + '<div class="slide-footer">'
           + '<div class="slide-footer-guide">Tour Planner: <strong>' + t.tour_planner + '</strong></div>'
-          + '<div class="slide-footer-contact">&#128222; Day-of Contact: Paul Gavora &mdash; 06 73 31 98 92</div>'
+          + '<div class="slide-footer-contact">&#128222; Day-of Contact: ' + (t.day_contact||'Paul GAVORA 06 73 31 98 92') + '</div>'
           + '</div>';
 
       } else {
@@ -2569,7 +2570,7 @@ function renderMemberTours() {
         '<div class="detail-section"><div class="detail-section-label">Cost</div><div class="detail-section-value"><div class="costs-grid"><div class="cost-item"><div class="ci-label">Regular Members</div><div class="ci-val">' + t.cost_regular + '</div></div><div class="cost-item"><div class="ci-label">Waitlist Members</div><div class="ci-val">' + t.cost_waitlist + '</div></div><div class="cost-item"><div class="ci-label">Guests</div><div class="ci-val">' + t.cost_guest + '</div></div><div class="cost-item"><div class="ci-label">No Show Fee</div><div class="ci-val">' + (t.no_show||'10€') + '</div></div></div><div class="no-show-note">Limit: ' + (t.limit||'N/A') + ' participants.</div></div></div>' +
         '<div class="detail-desc-section"><div class="detail-desc">' + t.desc + '</div>' + (t.note?'<div class="detail-note">&#8505; ' + t.note + '</div>':'') + '</div>' +
         '<div class="detail-guide-section"><div class="guide-photo">' + t.emoji + '</div><div class="guide-info"><h4>Guide: ' + t.guide + '</h4><div class="planner">Tour Planner: ' + t.tour_planner + '</div></div></div>' +
-        '<div class="detail-contact">&#128222; <strong>Day-of Contact:</strong>&nbsp; Paul Gavora &mdash; 06 73 31 98 92</div></div>';
+        '<div class="detail-contact">&#128222; <strong>Day-of Contact:</strong>&nbsp; ' + (t.day_contact||'Paul GAVORA 06 73 31 98 92') + '</div></div>';
       }
       list.appendChild(card);
     });
@@ -4097,7 +4098,7 @@ async function requestCancel(email, tourDate, tourName, btn) {
 
       <div class="vm-field" style="margin-bottom:1rem;">
         <label for="vm-tours">Tours / visits on our calendar that interest you</label>
-        <input type="text" id="vm-tours" placeholder="List any tour names from the calendar">
+        <textarea id="vm-tours" rows="3" placeholder="List any tour names from the calendar (one per line or separated by commas)"></textarea>
       </div>
 
       <div class="vm-field" style="margin-bottom:1rem;">
