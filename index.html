@@ -837,6 +837,75 @@
 
   .detail-guide-section { padding: 1rem 1.4rem; display: flex; align-items: flex-start; gap: 1rem; }
   .guide-photo { width: 52px; height: 52px; border-radius: 50%; background: var(--light); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+
+  /* ═══════════════════════════════════════
+     OUR GUIDES PAGE
+  ═══════════════════════════════════════ */
+  .guides-wrap { max-width:1050px; margin:0 auto; padding:2rem 1rem 3rem; }
+  .guides-title { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:#C9A84C; margin-bottom:0.5rem; }
+  .guides-intro { font-size:0.97rem; line-height:1.7; color:#aaa; margin-bottom:2rem; max-width:680px; }
+  .guides-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.2rem; }
+  .guide-card { background:#2c3440; border:1px solid rgba(201,168,76,0.15); border-radius:8px; display:flex; gap:1rem; padding:1rem; align-items:flex-start; transition:border-color 0.2s; }
+  .guide-card:hover { border-color:rgba(201,168,76,0.4); }
+  .guide-photo { width:72px; height:72px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid rgba(201,168,76,0.3); background:#383E42; }
+  .guide-body { flex:1; min-width:0; }
+  .guide-name { font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:600; color:#C9A84C; margin-bottom:0.3rem; line-height:1.3; }
+  .guide-bio { font-size:0.8rem; line-height:1.6; color:#ccc; margin:0; }
+  .guide-link { color:#C9A84C; text-decoration:none; }
+  .guide-link:hover { text-decoration:underline; }
+  @media(max-width:600px){ .guides-grid{ grid-template-columns:1fr; } }
+
+  /* ═══════════════════════════════════════
+     VOLUNTEERING PAGE
+  ═══════════════════════════════════════ */
+  .vol-page { max-width:780px; margin:0 auto; padding:0 1rem 4rem; }
+  @keyframes volFadeIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  .vol-section { padding:2.2rem 0 0.5rem; animation:volFadeIn 0.6s ease both; }
+  .vol-hero { background:linear-gradient(135deg,#EEF2F7 0%,#F5F3EE 55%,#EEF2F7 100%); border-radius:12px; padding:3.5rem 2rem; margin-bottom:0.5rem; text-align:center; position:relative; overflow:hidden; border:1.5px solid rgba(201,163,71,0.3); }
+  .vol-hero::before { content:''; position:absolute; top:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(201,163,71,0.09); }
+  .vol-hero::after { content:''; position:absolute; bottom:-60px;right:-30px;width:250px;height:250px;border-radius:50%;background:rgba(201,163,71,0.06); }
+  .vol-hero-sub { font-size:0.82rem; letter-spacing:0.2em; text-transform:uppercase; color:#6B7280; margin-bottom:1rem; }
+  .vol-hero-h1 { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; color:#1A3A2A; line-height:1.2; margin-bottom:0.8rem; }
+  .vol-hero-tagline { font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; color:#2C343E; }
+  .vol-h2 { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:600; color:#1A3A2A; margin-bottom:1rem; line-height:1.3; }
+  .vol-body { font-size:1rem; line-height:1.8; color:#2C343E; margin-bottom:1.1rem; }
+  .vol-truth { background:#FAF6F0; border-left:3px solid #C9A347; padding:1rem 1.2rem; border-radius:0 8px 8px 0; }
+  .vol-name { color:#C9A347; font-weight:600; font-style:italic; }
+  .vol-divider { width:60px; height:2px; background:#B8973A; opacity:0.45; margin:1.8rem 0; }
+  .vol-reality-box { background:#FAF6F0; border:1.5px solid rgba(184,151,58,0.4); border-radius:10px; padding:1.2rem 1.5rem; margin:1.2rem 0; }
+  .vol-reality-label { display:inline-block; font-family:'Playfair Display',serif; font-size:0.72rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:#B8973A; border:1px solid #B8973A; padding:0.15rem 0.6rem; border-radius:3px; margin-bottom:0.7rem; }
+  .vol-list { margin:0.5rem 0 1rem 1.2rem; }
+  .vol-list li { font-size:1rem; line-height:1.75; color:#2C343E; margin-bottom:0.4rem; }
+  .vol-quote-wrap { background:linear-gradient(135deg,#F0F4F8,#F8F6F2); border:1.5px solid rgba(201,163,71,0.4); border-radius:12px; padding:2rem 2.2rem; margin:1rem 0; text-align:center; }
+  .vol-quote { font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; line-height:1.8; color:#2C343E; margin:0 0 0.8rem; }
+  .vol-quote-mark { font-size:2.5rem; color:#C9A347; line-height:0; vertical-align:-0.4em; margin:0 0.2rem; }
+  .vol-quote-attr { font-size:0.88rem; color:#6B7280; font-style:normal; }
+  .vol-factbox { background:#F0F4F8; border:1.5px solid rgba(201,163,71,0.5); border-radius:12px; padding:1.5rem; margin:1.5rem 0; }
+  .vol-factbox-title { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:600; color:#1A3A2A; margin-bottom:1rem; text-align:left; }
+  .vol-fact { display:flex; flex-direction:row; align-items:baseline; gap:0.8rem; margin-bottom:0.9rem; padding-bottom:0.9rem; border-bottom:1px solid rgba(184,151,58,0.2); }
+  .vol-fact:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .vol-fact-q { font-size:0.9rem; font-weight:400; color:#6B7280; flex:1; }
+  .vol-fact-a { font-size:0.9rem; color:#1A3A2A; font-weight:700; flex:1; }
+  .vol-paris-closer { position:relative; border-radius:12px; min-height:420px; margin:2rem 0; overflow:hidden; background-image:url('paris_sunset.jpg'); background-size:cover; background-position:center center; }
+  .vol-paris-closer::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0.72) 100%); border-radius:12px; }
+  .vol-paris-text { position:absolute; z-index:1; font-family:'Playfair Display',serif; font-style:italic; font-size:1.05rem; line-height:1.9; color:#ffffff; margin:0; top:45%; transform:translateY(-50%); right:2rem; max-width:50%; text-align:right; text-shadow:0 2px 8px rgba(0,0,0,0.95), 0 4px 16px rgba(0,0,0,0.8); }
+  .vol-paris-gold { position:absolute; z-index:1; bottom:1.5rem; left:0; right:0; text-align:center; font-family:'Playfair Display',serif; font-style:normal; font-size:1.15rem; color:#C9A347; text-shadow:0 3px 8px rgba(0,0,0,0.9); margin:0; padding:0 2rem; }
+  .vol-cta-section { padding-top:2rem; }
+  .vol-email { color:#C9A347; font-weight:600; text-decoration:none; }
+  .vol-email:hover { color:#E8B923; text-decoration:underline; }
+  .vol-form-wrap { background:#FAF6F0; border:1.5px solid rgba(201,163,71,0.4); border-radius:12px; padding:2rem; margin-top:2rem; }
+  .vol-form-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:600; color:#B8973A; margin-bottom:1.4rem; text-align:center; }
+  .vol-field { margin-bottom:1.1rem; }
+  .vol-field label { display:block; font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#2C343E; margin-bottom:0.4rem; }
+  .vol-field input, .vol-field textarea { width:100%; padding:0.65rem 0.9rem; background:#FFF8E8; border:1.5px solid rgba(201,163,71,0.45); border-radius:6px; font-family:inherit; font-size:0.95rem; color:#2C343E; box-sizing:border-box; transition:border-color 0.2s; }
+  .vol-field input:focus, .vol-field textarea:focus { outline:none; border-color:#C9A347; }
+  .vol-check-group { display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:0.3rem; }
+  .vol-check { display:flex; align-items:center; gap:0.4rem; font-size:0.92rem; color:#2C343E; cursor:pointer; background:#FFF8E8; border:1.5px solid rgba(201,163,71,0.35); border-radius:6px; padding:0.4rem 0.8rem; transition:border-color 0.2s; }
+  .vol-check:hover { border-color:#C9A347; }
+  .vol-check input { width:auto; padding:0; background:none; border:none; }
+  .vol-submit-btn { background:linear-gradient(135deg,#C9A347,#B8973A); color:#2C343E; border:none; padding:0.9rem 2.5rem; font-family:'DM Sans',system-ui,sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; border-radius:8px; transition:box-shadow 0.25s,transform 0.15s; }
+  .vol-submit-btn:hover { box-shadow:0 0 25px rgba(201,163,71,0.4); transform:translateY(-1px); }
+  @media(max-width:600px){ .vol-hero-h1{font-size:2rem;} .vol-h2{font-size:1.3rem;} .vol-quote{font-size:0.97rem;} }
   .guide-info h4 { font-family: 'Playfair Display', serif; font-size: 0.95rem; margin-bottom: 0.15rem; }
   .guide-info .planner { font-size: 0.73rem; color: var(--stone); }
   .detail-photo { overflow: hidden; max-height: 240px; }
