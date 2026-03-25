@@ -392,17 +392,11 @@
   }
   .month-label span { font-size: 0.75rem; color: var(--stone); font-family: 'DM Sans', sans-serif; font-weight: 300; }
 
-  /* ICON KEY */
+  /* NEXT UPCOMING BUTTON area */
   .icon-key {
     max-width: 1200px; margin: 0 auto;
     padding: 0.8rem 3rem 0.4rem;
-    display: flex; gap: 1.8rem; flex-wrap: wrap; align-items: center;
   }
-  .icon-key-item {
-    display: flex; align-items: center; gap: 0.45rem;
-    font-size: 0.8rem; color: var(--stone); letter-spacing: 0.03em;
-  }
-  .icon-key-item span:first-child { font-size: 1.1rem; }
 
   /* NEXT UPCOMING BUTTON */
   .next-upcoming-btn {
@@ -436,11 +430,11 @@
   .tour-card-pub.video-row { border-top: 3px solid var(--blue); }
   .tour-card-pub.cancelled-row { opacity: 0.55; }
   .tcp-photo {
-    width: 100%; height: 200px; overflow: hidden;
+    width: 100%; overflow: hidden;
     background: #e8e4dc; display: flex; align-items: center; justify-content: center;
     font-size: 3rem;
   }
-  .tcp-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+  .tcp-photo img { width: 100%; height: auto; display: block; object-fit: contain; }
   .tcp-body { padding: 1rem 1.1rem 0.9rem; }
   .tcp-top { display: flex; align-items: flex-start; gap: 0.9rem; margin-bottom: 0.7rem; }
   .tcp-badge {
@@ -463,7 +457,8 @@
   /* MOBILE: 1 col */
   @media(max-width: 768px) {
     .tours-grid { grid-template-columns: 1fr; gap: 1.4rem; }
-    .tcp-photo { height: 200px; }
+    .tcp-photo { height: 220px; overflow: hidden; }
+    .tcp-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
     .icon-key { padding: 0.8rem 1rem 0.4rem; gap: 1rem; }
   }
   .tour-date-badge {
@@ -1064,9 +1059,6 @@
   </div>
 
   <div class="icon-key">
-    <div class="icon-key-item"><span>🚶</span><span>Walking tour</span></div>
-    <div class="icon-key-item"><span>🏛️</span><span>Museum &amp; gallery</span></div>
-    <div class="icon-key-item"><span>📺</span><span>Video tour</span></div>
     <button class="next-upcoming-btn" onclick="scrollToNextUpcoming()">↓ Next upcoming tour</button>
   </div>
 
