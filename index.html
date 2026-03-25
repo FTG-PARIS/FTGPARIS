@@ -416,55 +416,54 @@
   }
   .next-upcoming-btn:hover { background: var(--gold); color: var(--charcoal); }
 
-  /* PUBLIC TOUR ROWS — 2-col grid on desktop */
+  /* PUBLIC TOUR CARDS — 2-col grid on desktop */
   .tours-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 2rem 2.5rem;
+    align-items: start;
   }
   .tour-card-pub {
     background: var(--white);
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     overflow: hidden;
     cursor: pointer;
     transition: box-shadow 0.2s, transform 0.2s;
     border: 1px solid var(--light);
   }
-  .tour-card-pub:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.12); transform: translateY(-2px); }
-  .tour-card-pub.video-row { border-left: 3px solid var(--blue); }
+  .tour-card-pub:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.13); transform: translateY(-3px); }
+  .tour-card-pub.video-row { border-top: 3px solid var(--blue); }
   .tour-card-pub.cancelled-row { opacity: 0.55; }
   .tcp-photo {
-    width: 100%; height: 180px; overflow: hidden;
-    background: var(--light); display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 200px; overflow: hidden;
+    background: #e8e4dc; display: flex; align-items: center; justify-content: center;
     font-size: 3rem;
   }
-  .tcp-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .tcp-body { padding: 0.9rem 1rem 0.7rem; }
-  .tcp-top { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.5rem; }
+  .tcp-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+  .tcp-body { padding: 1rem 1.1rem 0.9rem; }
+  .tcp-top { display: flex; align-items: flex-start; gap: 0.9rem; margin-bottom: 0.7rem; }
   .tcp-badge {
     background: var(--gold); color: var(--charcoal);
-    border-radius: 6px; min-width: 58px; padding: 0.3rem 0.5rem;
+    border-radius: 6px; min-width: 62px; padding: 0.35rem 0.55rem;
     display: flex; flex-direction: column; align-items: center;
     flex-shrink: 0; text-align: center;
   }
-  .tcp-badge .day-num { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; line-height: 1; }
-  .tcp-badge .day-mo { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; }
-  .tcp-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; line-height: 1.35; color: var(--charcoal); flex: 1; padding-top: 0.1rem; }
-  .tcp-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.4rem; }
-  .tcp-type-icon { font-size: 1.1rem; }
-  .tcp-read-more { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.03em; }
+  .tcp-badge .day-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; line-height: 1; }
+  .tcp-badge .day-mo { font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; margin-top: 0.1rem; }
+  .tcp-title { font-family: 'Playfair Display', serif; font-size: 1.08rem; line-height: 1.38; color: var(--charcoal); flex: 1; padding-top: 0.15rem; }
+  .tcp-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid var(--light); }
+  .tcp-read-more { font-size: 0.78rem; color: var(--gold); letter-spacing: 0.03em; font-weight: 500; }
   .tcp-desc-panel {
-    display: none; padding: 0 1rem 0.9rem;
-    font-size: 0.88rem; line-height: 1.7; color: #444;
-    border-top: 1px solid var(--light); padding-top: 0.8rem; margin-top: 0.2rem;
+    display: none; padding: 0.9rem 0 0.2rem;
+    font-size: 0.89rem; line-height: 1.75; color: #444;
   }
   .tcp-desc-panel.open { display: block; }
 
   /* MOBILE: 1 col */
   @media(max-width: 768px) {
-    .tours-grid { grid-template-columns: 1fr; }
-    .tcp-photo { height: 160px; }
+    .tours-grid { grid-template-columns: 1fr; gap: 1.4rem; }
+    .tcp-photo { height: 200px; }
     .icon-key { padding: 0.8rem 1rem 0.4rem; gap: 1rem; }
   }
   .tour-date-badge {
@@ -1104,6 +1103,7 @@
         <button class="members-pill" onclick="filterMembers('May', this)">May</button>
         <button class="members-pill" onclick="filterMembers('June', this)">Jun</button>
         <button class="members-pill video-pill" onclick="filterMembers('video', this)">&#128250; Video Only</button>
+        <button class="next-upcoming-btn" onclick="scrollToMembersNextUpcoming()" style="margin-left:0.5rem;">↓ Next upcoming</button>
       </div>
       <div id="member-tours-list"></div>
     </div>
@@ -2266,10 +2266,10 @@ function tryLogin() {
 function renderPublicCalendar() {
   const cal = document.getElementById('public-calendar');
   cal.innerHTML = '';
-  let filtered;
-  if (activeFilter === 'all') filtered = tours;
-  else if (activeFilter === 'video') filtered = tours.filter(t => t.type === 'video');
-  else filtered = tours.filter(t => t.month === activeFilter);
+  // Video pill filters to video only; month pills show ALL tours and just scroll
+  const filtered = (activeFilter === 'video')
+    ? tours.filter(t => t.type === 'video')
+    : tours;
 
   if (!filtered.length) {
     cal.innerHTML = '<p style="color:var(--stone);padding:3rem 0">No tours match this filter.</p>';
@@ -2304,7 +2304,6 @@ function renderPublicCalendar() {
             '<div class="tcp-title">' + t.name + '</div>' +
           '</div>' +
           '<div class="tcp-footer">' +
-            '<span class="tcp-type-icon">' + ti.emoji + '</span>' +
             (pubDesc ? '<span class="tcp-read-more">Read more ▾</span>' : '') +
           '</div>' +
           (pubDesc ? '<div class="tcp-desc-panel">' + pubDesc + '</div>' : '') +
@@ -2328,28 +2327,29 @@ function renderPublicCalendar() {
 function filterMembers(filter, btn) {
   document.querySelectorAll('.members-pill').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  const allGroups = document.querySelectorAll('#member-tours-list .members-month-head, #member-tours-list .detail-card');
+
   if (filter === 'all') {
-    allGroups.forEach(el => el.style.display = '');
+    // Restore all hidden elements, scroll to top of list
+    document.querySelectorAll('#member-tours-list .members-month-head, #member-tours-list .detail-card')
+      .forEach(el => el.style.display = '');
+    document.getElementById('member-tours-list').scrollIntoView({behavior:'smooth', block:'start'});
   } else if (filter === 'video') {
+    // Video Only: hide non-video tours and their headings
     document.querySelectorAll('#member-tours-list .members-month-head').forEach(h => h.style.display = 'none');
     document.querySelectorAll('#member-tours-list .detail-card').forEach(card => {
       card.style.display = card.classList.contains('video') ? '' : 'none';
     });
+    document.getElementById('member-tours-list').scrollIntoView({behavior:'smooth', block:'start'});
   } else {
-    // Show only the matching month heading and its cards
-    let inMonth = false;
-    document.querySelectorAll('#member-tours-list > *').forEach(el => {
-      if (el.classList.contains('members-month-head')) {
-        inMonth = el.textContent.trim().startsWith(filter);
-        el.style.display = inMonth ? '' : 'none';
-      } else if (el.classList.contains('detail-card')) {
-        el.style.display = inMonth ? '' : 'none';
-      }
-    });
+    // Month pill: restore everything if hidden, then just scroll — no trapping
+    document.querySelectorAll('#member-tours-list .members-month-head, #member-tours-list .detail-card')
+      .forEach(el => el.style.display = '');
+    setTimeout(() => {
+      const head = Array.from(document.querySelectorAll('#member-tours-list .members-month-head'))
+        .find(h => h.textContent.trim().startsWith(filter));
+      if (head) head.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 10);
   }
-  // Scroll to top of member list
-  document.getElementById('member-tours-list').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function scrollToNextUpcoming() {
@@ -2376,18 +2376,57 @@ function scrollToNextUpcoming() {
   }
 }
 
+function scrollToMembersNextUpcoming() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  // Restore all tours in case Video Only was active
+  document.querySelectorAll('#member-tours-list .members-month-head, #member-tours-list .detail-card')
+    .forEach(el => el.style.display = '');
+  // Find the first detail-card whose date >= today
+  const cards = Array.from(document.querySelectorAll('#member-tours-list .detail-card'));
+  for (const card of cards) {
+    const dateAttr = card.dataset.date;
+    if (!dateAttr) continue;
+    const td = new Date(dateAttr); td.setHours(0,0,0,0);
+    if (td >= today) {
+      card.scrollIntoView({behavior:'smooth', block:'center'});
+      card.style.outline = '2px solid var(--gold)';
+      setTimeout(() => { card.style.outline = ''; }, 2000);
+      return;
+    }
+  }
+}
+
 function filterMonth(month, btn) {
-  activeFilter = month;
   document.querySelectorAll('.month-pill').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  renderPublicCalendar();
-  if (month !== 'all' && month !== 'video') {
+
+  if (month === 'video') {
+    // Only Video Only actually re-renders (filters to video tours)
+    activeFilter = 'video';
+    renderPublicCalendar();
+    setTimeout(() => {
+      document.getElementById('public-calendar').scrollIntoView({behavior:'smooth', block:'start'});
+    }, 50);
+  } else if (month === 'all') {
+    // If we were in video mode, re-render all; otherwise just scroll to top
+    if (activeFilter === 'video') {
+      activeFilter = 'all';
+      renderPublicCalendar();
+    }
+    activeFilter = 'all';
+    setTimeout(() => {
+      document.getElementById('public-calendar').scrollIntoView({behavior:'smooth', block:'start'});
+    }, 50);
+  } else {
+    // Month pill: ensure all tours are showing, then just scroll — no re-render, no trapping
+    if (activeFilter === 'video') {
+      activeFilter = 'all';
+      renderPublicCalendar();
+    }
     setTimeout(() => {
       const grp = document.querySelector('.month-group[data-month="' + month + '"]');
       if (grp) grp.scrollIntoView({behavior:'smooth', block:'start'});
-    }, 50);
-  } else {
-    document.getElementById('public-calendar').scrollIntoView({behavior:'smooth', block:'start'});
+    }, activeFilter === 'video' ? 60 : 10);
   }
 }
 
@@ -2409,6 +2448,7 @@ function renderMemberTours() {
       const card = document.createElement('div');
       card.className = 'detail-card' + (t.type==='video'?' video':'') + (t.cancelled?' cancelled':'');
       card.id = 'tour-' + t.date + t.name.replace(/\s/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+      card.dataset.date = t.date;
       const timingHTML = t.type==='video'
         ? '<div class="dh-times">Pre-Meeting: 16h45 &middot; <strong>Start: 17h00</strong> &middot; Questions: 18h15&ndash;18h30</div>'
         : '<div class="dh-times">Meet: ' + (t.meet_time||'&ndash;') + ' &middot; <strong>Start: ' + (t.start_time||'&ndash;') + '</strong>' + (t.finish_time?' &middot; Finish: '+t.finish_time:'') + '</div>';
