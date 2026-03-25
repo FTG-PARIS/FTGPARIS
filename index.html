@@ -3553,7 +3553,11 @@ async function loadSignupLists() {
       const signups = (grouped[key] || { rows: [] }).rows;
       const confirmed = signups.filter(s => s.status === 'Confirmed').length;
       const totalActive = signups.filter(s => s.status.indexOf('Cancel') === -1).length;
-      const guestCount = signups.filter(s => s.status.indexOf('Cancel') === -1 && (s.memberType||'').includes('Guest')).length;
+      // Count named guest rows (memberType='Guest') PLUS declared guest integers on member rows
+      const guestCount = signups.filter(s => s.status.indexOf('Cancel') === -1).reduce((sum, s) => {
+        if ((s.memberType||'').includes('Guest')) return sum + 1; // named guest row
+        return sum + (parseInt(s.guests) || 0); // declared guests on member row
+      }, 0);
       const guestLabel = guestCount > 0 ? ' / ' + guestCount + ' guest' + (guestCount>1?'s':'') : '';
       const countLabel = (confirmed > 0
         ? confirmed + ' confirmed' + (totalActive > confirmed ? ' / ' + totalActive + ' signed up' : '')
