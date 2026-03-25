@@ -446,7 +446,8 @@
   .tcp-badge .day-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; line-height: 1; }
   .tcp-badge .day-mo { font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; margin-top: 0.1rem; }
   .tcp-title { font-family: 'Playfair Display', serif; font-size: 1.08rem; line-height: 1.38; color: var(--charcoal); flex: 1; padding-top: 0.15rem; }
-  .tcp-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid var(--light); }
+  .tcp-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid var(--light); }
+  .tcp-type-label { font-size: 0.72rem; color: var(--stone); letter-spacing: 0.04em; text-transform: uppercase; }
   .tcp-read-more { font-size: 0.78rem; color: var(--gold); letter-spacing: 0.03em; font-weight: 500; }
   .tcp-desc-panel {
     display: none; padding: 0.9rem 0 0.2rem;
@@ -944,15 +945,16 @@
      VOLUNTEERING PAGE
   ═══════════════════════════════════════ */
   .vol-page { max-width:780px; margin:0 auto; padding:0 1rem 4rem; }
+  .vol-content { max-width:680px; margin:2rem auto 0; padding:0 0.5rem; }
+  .vol-cta-email { text-align:center; margin:2.5rem 0 1rem; font-size:1.1rem; }
+  .vol-email { color:var(--gold); font-weight:600; text-decoration:none; }
+  .vol-email:hover { text-decoration:underline; }
   @keyframes volFadeIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
   .vol-section { padding:2.2rem 0 0.5rem; animation:volFadeIn 0.6s ease both; }
-  .vol-hero { background:linear-gradient(135deg,#EEF2F7 0%,#F5F3EE 55%,#EEF2F7 100%); border-radius:12px; padding:3.5rem 2rem; margin-bottom:0.5rem; text-align:center; position:relative; overflow:hidden; border:1.5px solid rgba(201,163,71,0.3); }
-  .vol-hero::before { content:''; position:absolute; top:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(201,163,71,0.09); }
-  .vol-hero::after { content:''; position:absolute; bottom:-60px;right:-30px;width:250px;height:250px;border-radius:50%;background:rgba(201,163,71,0.06); }
-  .vol-hero-sub { font-size:0.82rem; letter-spacing:0.2em; text-transform:uppercase; color:#6B7280; margin-bottom:1rem; }
-  .vol-hero-h1 { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; color:#1A3A2A; line-height:1.2; margin-bottom:0.8rem; }
-  .vol-hero-tagline { font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; color:#2C343E; }
-  .vol-h2 { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:600; color:#1A3A2A; margin-bottom:1rem; line-height:1.3; }
+  .vol-page-header { padding: 2.5rem 0 0.5rem; }
+  .vol-page-h1 { font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:700; color:#1A3A2A; line-height:1.2; margin-bottom:0.5rem; }
+  .vol-page-sub { font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; color:#6B7280; margin:0; }
+  .vol-h2 { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:600; color:#1A3A2A; margin-top:2.5rem; margin-bottom:1rem; line-height:1.3; border-bottom:1px solid rgba(212,175,55,0.35); padding-bottom:0.5rem; }
   .vol-body { font-size:1rem; line-height:1.8; color:#2C343E; margin-bottom:1.1rem; }
   .vol-truth { background:#FAF6F0; border-left:3px solid #C9A347; padding:1rem 1.2rem; border-radius:0 8px 8px 0; }
   .vol-name { color:#C9A347; font-weight:600; font-style:italic; }
@@ -990,7 +992,7 @@
   .vol-check input { width:auto; padding:0; background:none; border:none; }
   .vol-submit-btn { background:linear-gradient(135deg,#C9A347,#B8973A); color:#2C343E; border:none; padding:0.9rem 2.5rem; font-family:'DM Sans',system-ui,sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; border-radius:8px; transition:box-shadow 0.25s,transform 0.15s; }
   .vol-submit-btn:hover { box-shadow:0 0 25px rgba(201,163,71,0.4); transform:translateY(-1px); }
-  @media(max-width:600px){ .vol-hero-h1{font-size:2rem;} .vol-h2{font-size:1.3rem;} .vol-quote{font-size:0.97rem;} }
+  @media(max-width:600px){ .vol-page-h1{font-size:1.9rem;} .vol-h2{font-size:1.3rem;} }
   .guide-info h4 { font-family: 'Playfair Display', serif; font-size: 0.95rem; margin-bottom: 0.15rem; }
   .guide-info .planner { font-size: 0.73rem; color: var(--stone); }
   .detail-photo { overflow: hidden; max-height: 240px; }
@@ -1034,7 +1036,7 @@
   <div class="home-hero">
     <div>
       <h1>Exploring Paris,<br><em>one Friday</em><br>at a time.</h1>
-      <p>A calendar of tours across museums, galleries, neighborhoods, and gardens — in Paris and beyond.<br>Each week offers something different, with expert guides.<br><br>No two Fridays are the same.</p>
+      <p>Our calendar of tours through museums, galleries, iconic neighborhoods and gardens, from famous landmarks to the hidden corners of Paris and beyond... with expert guides.<br><br>No two Fridays are the same.</p>
     </div>
     <div class="hero-season">
       <div class="yr">2025<br>2026</div>
@@ -1332,136 +1334,63 @@
     <div id="tab-volunteer" style="display:none">
       <div class="vol-page">
 
-        <!-- HERO -->
-        <div class="vol-hero">
-          <div class="vol-hero-text">
-            <div class="vol-hero-sub">For decades, we've explored Paris together.</div>
-            <h1 class="vol-hero-h1">Volunteering:<br>The Heart of FTG</h1>
-            <p class="vol-hero-tagline">Help us write the next chapter.</p>
-          </div>
+        <div class="vol-page-header">
+          <h1 class="vol-page-h1">Volunteering: The Heart of FTG</h1>
+          <p class="vol-page-sub">Help us write the next chapter.</p>
         </div>
 
-        <!-- LEGACY OPENER -->
-        <div class="vol-section">
-          <h2 class="vol-h2">Our Legacy is in Your Hands</h2>
-          <p class="vol-body">For decades, the Friday Tour Group has explored the soul of Paris — and beyond — together. We've stood in hidden crypts and quiet gardens. We've stepped into rooms most visitors never see. We've wandered through museums, archives, cathedrals, back corridors, and heard stories layered with centuries of history.</p>
-          <p class="vol-body">We've learned. We've discovered. We've been amazed — <em>together.</em></p>
-          <p class="vol-body vol-truth">And here is the quiet truth behind every tour we've taken:<br><strong>FTG only exists because of its members.</strong></p>
-        </div>
+        <!-- BODY -->
+        <div class="vol-content">
 
-        <div class="vol-divider"></div>
+          <p class="vol-body">Every tour you attend is made possible by members like you.<br>
+          It's easy to get involved and most people help out in small ways:</p>
 
-        <!-- EVERY TOUR -->
-        <div class="vol-section">
-          <h2 class="vol-h2">Every Tour has a Volunteer Behind It</h2>
-          <p class="vol-body">Your annual membership allows us to secure exceptional guides, book venues in advance and get access to exclusive places… But money alone does not run FTG. <strong>People do.</strong></p>
-          <p class="vol-body">Every confirmation email, every booking, every deposit, every curated description and every schedule is handled by a small, dedicated team of volunteers. Currently, our Co-Chairs <span class="vol-name">Paul</span> and <span class="vol-name">Lee</span> and planners <span class="vol-name">Barbara</span> and <span class="vol-name">Dee</span>, with help from our former Co-Chair <span class="vol-name">Nancy</span> — carry the entire load.</p>
-          <div class="vol-reality-box">
-            <span class="vol-reality-label">The Reality</span>
-            <p>They are dedicated; they do it because they love this group. But they are over-stretched. To keep our tours running and our group thriving, <strong>we need to grow this team today.</strong></p>
-          </div>
-        </div>
-
-        <div class="vol-divider"></div>
-
-        <!-- EVERY CONTRIBUTION -->
-        <div class="vol-section">
-          <h2 class="vol-h2">Every Contribution Counts</h2>
-          <p class="vol-body">Most of you already contribute in "small" ways that keep the spirit of the group strong:</p>
           <ul class="vol-list">
-            <li>Showing up on time with exact change</li>
-            <li>Welcoming a new face with a warm hello</li>
-            <li>Helping with attendance or sharing metro updates on WhatsApp</li>
-            <li>Inviting new friends to join to keep our community growing</li>
+            <li>Welcoming newcomers</li>
+            <li>Helping with attendance</li>
+            <li>Sharing transportation tips</li>
+            <li>Inviting guests to join</li>
           </ul>
-        </div>
 
-        <div class="vol-divider"></div>
+          <p class="vol-body">Other steps take a bit more time — like helping to plan a tour.</p>
 
-        <!-- STEP UP -->
-        <div class="vol-section">
-          <h2 class="vol-h2">♥ Step Up: Help Make the Magic Happen!</h2>
-          <p class="vol-body">If you have enjoyed our tours and want FTG to continue for years to come, the most meaningful step you can take is to <strong>plan just one or two tours a year.</strong></p>
-          <p class="vol-body" style="font-style:italic; color:#C9A84C; font-family:'Playfair Display',serif; font-size:1.05rem;">"But I've never done this before!"</p>
-          <p class="vol-body">Don't worry — planning a tour is like baking a cake using a tried-and-true recipe:</p>
+          <p class="vol-body">If you are enjoying spending your Fridays with FTG, one of the most meaningful ways you can contribute is by helping to plan one or two tours a year.</p>
+
+          <p class="vol-body">It sounds daunting — but it's not.</p>
+
+          <ol class="vol-list">
+            <li>You will work with an experienced guide who tells you everything you need to know.</li>
+            <li>You'll fill in a simple online template.</li>
+            <li>You'll have a mentor — an experienced planner to walk you through the process.</li>
+            <li>No French required! Our guides speak English and most reservations are done online — easy!</li>
+          </ol>
+
+          <p class="vol-body">You're never on your own — and there's no long-term commitment.<br>
+          Even planning a single tour makes a real difference.</p>
+
+          <h2 class="vol-h2">Why It Matters</h2>
+
+          <p class="vol-body">Right now, all the planning and coordination is handled by a small team of volunteers. They do it willingly — but when more members get involved, even occasionally:</p>
+
           <ul class="vol-list">
-            <li><strong>Expert Guidance:</strong> You'll work alongside one of our experienced guides who know tour planning inside and out.</li>
-            <li><strong>The "Recipe":</strong> We provide a simple template designed by experienced planners to collect every detail.</li>
-            <li><strong>Full Mentorship:</strong> <span class="vol-name">Paul</span>, <span class="vol-name">Lee</span>, and <span class="vol-name">Barbara</span> will mentor you step-by-step. You are never alone.</li>
-            <li><strong>No French Required:</strong> When in doubt, just be polite and keep your favourite translation app on hand!</li>
+            <li>the group stays active and varied</li>
+            <li>the workload is shared</li>
+            <li>planners and organizers get to step back and simply enjoy a Friday like everyone else</li>
           </ul>
-        </div>
 
-        <div class="vol-divider"></div>
+          <h2 class="vol-h2">A Shared Effort</h2>
 
-        <!-- QUOTE -->
-        <div class="vol-quote-wrap">
-          <blockquote class="vol-quote">
-            <span class="vol-quote-mark">"</span>
-            I planned a tour for a place I'd never been to and knew nothing about. Reading about it online didn't prepare me for the real experience at all. Watching the faces of our members as they arrived at this amazing site filled with history, and witnessing the tour that I had planned unfold seamlessly was <span class="vol-name">pure magic.</span>
-            <span class="vol-quote-mark">"</span>
-          </blockquote>
-          <p class="vol-quote-attr">— <span class="vol-name">Barb Trimpi</span>, Carmes Convent, November 2023</p>
-        </div>
+          <p class="vol-body">Remember, there isn't a formal organization running in the background — FTG is something members keep going together.</p>
 
-        <div class="vol-divider"></div>
+          <p class="vol-body">That might mean arriving early for a tour to help out, or planning a visit.</p>
 
-        <!-- QUICK FACT BOX -->
-        <div class="vol-section">
-          <h2 class="vol-h2">Ready to take part?</h2>
-          <p class="vol-body">Whether you can help take attendance this Friday or want to try your hand at planning a tour next fall, we want to hear from you. There's no binding contract — just the opportunity to be the reason the next tour happens.</p>
-          <p class="vol-body">Our current planners — <span class="vol-name">Paul</span>, <span class="vol-name">Lee</span>, and <span class="vol-name">Barbara</span> — have been our anchors. By planning just one tour a year, you give them the chance to simply show up and enjoy a tour as a member again, just like you.</p>
+          <p class="vol-body">Think about taking the next step.</p>
 
-          <div class="vol-factbox">
-            <div class="vol-factbox-title">New Planner FAQs</div>
-            <div class="vol-fact"><span class="vol-fact-q">Do I need to speak French?</span><span class="vol-fact-a">No!</span></div>
-            <div class="vol-fact"><span class="vol-fact-q">Am I on my own?</span><span class="vol-fact-a">Never. You'll have a guide, a template, and a mentor.</span></div>
-            <div class="vol-fact"><span class="vol-fact-q">What if I try it once and it's not for me?</span><span class="vol-fact-a">No problem! There's no binding commitment.</span></div>
-          </div>
-        </div>
+          <p class="vol-body">Talk to the planner of your next tour or send an email to express your interest today.</p>
 
-        <!-- PARIS CLOSER -->
-        <div class="vol-paris-closer">
-          <p class="vol-paris-text">The buildings will still stand.<br>The masterpieces will still take your breath away.<br>The history will still exist.</p>
-          <p class="vol-paris-gold">But without your help, we may not be here to discover it together.</p>
-        </div>
+          <p class="vol-cta-email"><a href="mailto:ftg.membership@gmail.com" class="vol-email">ftg.membership@gmail.com</a></p>
 
-        <!-- CTA + FORM -->
-        <div class="vol-section vol-cta-section">
-          <h2 class="vol-h2" style="text-align:center">"FTG Runs on Volunteers.<br>Be the One Who Makes the Next Tour Happen." ♥</h2>
-          <p class="vol-body" style="text-align:center">Contact us today: <a href="mailto:ftg.membership@gmail.com" class="vol-email">ftg.membership@gmail.com</a><br>Or talk to <span class="vol-name">Barbara</span>, <span class="vol-name">Lee</span>, or <span class="vol-name">Paul</span> at the next tour!</p>
-
-          <div class="vol-form-wrap">
-            <h3 class="vol-form-title">I'm Interested — Tell Me More</h3>
-            <form id="volForm" onsubmit="submitVolForm(event)">
-              <div class="vol-field">
-                <label>Your Name</label>
-                <input type="text" id="volName" required placeholder="Your full name">
-              </div>
-              <div class="vol-field">
-                <label>Email Address</label>
-                <input type="email" id="volEmail" required placeholder="your@email.com">
-              </div>
-              <div class="vol-field">
-                <label>How would you like to help?</label>
-                <div class="vol-check-group">
-                  <label class="vol-check"><input type="checkbox" value="Plan a tour"> Plan a tour</label>
-                  <label class="vol-check"><input type="checkbox" value="Take attendance"> Take attendance</label>
-                  <label class="vol-check"><input type="checkbox" value="Help with admin"> Help with admin/emails</label>
-                  <label class="vol-check"><input type="checkbox" value="Other"> Something else</label>
-                </div>
-              </div>
-              <div class="vol-field">
-                <label>Anything else you'd like to say?</label>
-                <textarea id="volMessage" rows="4" placeholder="Optional message…"></textarea>
-              </div>
-              <div class="vol-field" style="text-align:center">
-                <button type="submit" class="vol-submit-btn" id="volSubmitBtn">Send My Interest ♥</button>
-              </div>
-              <div id="volFormStatus" style="text-align:center;margin-top:0.8rem;font-size:0.9rem;"></div>
-            </form>
-          </div>
-        </div>
+        </div><!-- end vol-content -->
 
       </div><!-- end vol-page -->
     </div><!-- end tab-volunteer -->
@@ -1790,7 +1719,7 @@ const tours = [
     read_ahead:'<a href="https://explorethearchive.com/cleopatra-books">explorethearchive.com</a> · <a href="https://www.imarabe.org/fr/agenda/expositions-musee/mystere-cleopatre">imarabe.org</a> · <a href="https://en.wikipedia.org/wiki/Cleopatra">Wikipedia: Cleopatra</a>',
     desc:'What do we really know about Cleopatra? Was she the seductive femme fatale immortalized in film, or a cruel and ruthless ruler? What have archaeologists and historians actually uncovered? Our guide will help us separate fact from fiction as we tour The Mystery of Cleopatra at the Institut du Monde Arabe. The exhibition begins with coins, papyri, and other artifacts that bring Cleopatra VII Philopator into sharper focus. Far from the image crafted by Roman propaganda, Cleopatra emerges as a brilliant strategist, skilled diplomat, and reformer who enriched Egypt\'s economy, strengthened its navy, and commissioned grand temples. Set against the vibrant backdrop of Alexandria, the Hellenistic world\'s cultural and commercial hub, the exhibition explores how passion, politics, and power intertwined, and how a queen became a myth which continues to fascinate.' },
 
-  { date:'2025-10-10', photo_url: SEWER_IMG, name:'The City under the City – Paris Sewers', month:'October', type:'walking', emoji:'🚇',
+  { date:'2025-10-10', photo_url: SEWER_IMG, name:'The City under the City – Paris Sewers', month:'October', type:'museum', emoji:'🚇',
     meet_time:'10h15', start_time:'10h30', finish_time:'',
     meeting:'Musée des égouts - Pont de l\'Alma - Esplanade Habib Bourguiba. On the southeast side of the river.',
     transport:'Métro: M-9 Alma-Marceau · M8 or M13 Invalides · RER: C Alma-Marceau · Bus: 42, 63, 80, 92 station Bosquet-Rapp',
@@ -2189,9 +2118,9 @@ let quizAnswered = false;
 let activeFilter = 'all';
 
 function getTypeIcon(type) {
-  if (type === 'video') return { cls:'video', img:MONITOR_IMG, w:34, emoji:'📺' };
-  if (type === 'museum') return { cls:'museum', img:FEET_IMG, w:30, emoji:'🏛️' };
-  return { cls:'walk', img:FEET_IMG, w:30, emoji:'🚶' };
+  if (type === 'video') return { cls:'video', img:MONITOR_IMG, w:34, emoji:'📺', label:'Video tour' };
+  if (type === 'museum') return { cls:'museum', img:FEET_IMG, w:30, emoji:'🏛️', label:'Museum tour' };
+  return { cls:'walk', img:FEET_IMG, w:30, emoji:'🚶', label:'Walking tour' };
 }
 
 function walkLevelHTML(dots, label) {
@@ -2296,6 +2225,7 @@ function renderPublicCalendar() {
             '<div class="tcp-title">' + t.name + '</div>' +
           '</div>' +
           '<div class="tcp-footer">' +
+            '<span class="tcp-type-label">' + ti.label + '</span>' +
             (pubDesc ? '<span class="tcp-read-more">Read more ▾</span>' : '') +
           '</div>' +
           (pubDesc ? '<div class="tcp-desc-panel">' + pubDesc + '</div>' : '') +
