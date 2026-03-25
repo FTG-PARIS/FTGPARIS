@@ -3023,8 +3023,8 @@ function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups
         lastName: s.lastName || '',
         type: mtype.includes('Guest') ? 'Guest' : mtype.includes('Regular') ? 'RM' : mtype.includes('Video') ? 'VM' : 'WL',
         fee: mtype.includes('Guest') ? guestFee : fee,
-        extraDue: 0,
-        extraReason: '',
+        extraDue: parseFloat(s.extraDue) || 0,
+        extraReason: s.extraReason || '',
         email: s.email || '',
         phone: s.phone || s.mobile || '',
         invitedBy: s.invitedBy || '',
@@ -3053,9 +3053,9 @@ function renderAttendanceSheet() {
         <span class="att-extra-label">Extra due:</span>
         <span style="color:#fff">€</span>
         <input class="att-extra-input" type="number" min="0" placeholder="0"
-               value="${p.extraDue||''}" onchange="attendanceData[${i}].extraDue=parseFloat(this.value)||0;renderMobileAttendance()">
+               value="${p.extraDue||''}" onchange="attendanceData[${i}].extraDue=parseFloat(this.value)||0">
         <input class="att-reason-input" type="text" placeholder="reason (e.g. dues, no-show fee)"
-               value="${p.extraReason||''}" onchange="attendanceData[${i}].extraReason=this.value;renderMobileAttendance()">
+               value="${p.extraReason||''}" onchange="attendanceData[${i}].extraReason=this.value">
       </div>` : (p.extraDue ? `<div class="att-extra-row"><span class="att-extra-label">Extra due: <strong style="color:#D4AF37">€${p.extraDue}</strong> — ${p.extraReason}</span></div>` : '');
     return `<tr>
       <td>${p.lastName}, ${p.firstName}</td>
@@ -3115,9 +3115,27 @@ function renderMobileAttendance() {
 
     // Contact info block — phone and email for quick reference
     const guestTag = p.type === 'Guest' ? `<div style="font-size:0.72rem;color:#CE93D8;margin-top:0.15rem;">Guest of ${p.invitedBy||'member'}</div>` : '';
+    const nameDisplay = p.type === 'Guest'
+      ? `<div style="display:flex;gap:0.4rem;margin-bottom:0.15rem;">
+           <input type="text" value="${p.firstName}" placeholder="First name"
+                  style="background:#1a202c;border:1px solid #CE93D8;border-radius:4px;color:#fff;padding:0.2rem 0.5rem;font-size:0.95rem;font-weight:700;width:50%;"
+                  oninput="attendanceData[${i}].firstName=this.value">
+           <input type="text" value="${p.lastName}" placeholder="Last name"
+                  style="background:#1a202c;border:1px solid #CE93D8;border-radius:4px;color:#fff;padding:0.2rem 0.5rem;font-size:0.95rem;font-weight:700;width:50%;"
+                  oninput="attendanceData[${i}].lastName=this.value">
+         </div>${guestTag}`
+      : `<div class="mob-person-name">${p.lastName}, ${p.firstName}${guestTag}</div>`;
     const contactBlock = `
       <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:0.5rem 0.7rem;margin-bottom:0.6rem;font-size:0.82rem;">
-        ${p.phone ? `<div>📞 <a href="tel:${p.phone}" style="color:#81C784;text-decoration:none;">${p.phone}</a></div>` : '<div style="color:rgba(255,255,255,0.3);">📞 No phone on file</div>'}
+        ${p.phone ? (() => {
+            const ph = p.phone.replace(/\s/g,'');
+            const isFrench = /^(06|07|\+336|\+337)/.test(ph);
+            const telNum = ph.startsWith('0') ? '+33' + ph.slice(1) : ph;
+            return isFrench
+              ? `<div>📞 <a href="tel:${telNum}" style="color:#81C784;text-decoration:none;">${p.phone}</a></div>`
+              : `<div>📞 <span style="color:#FFB74D;">${p.phone} 🌍</span></div>`;
+          })()
+          : '<div style="color:rgba(255,255,255,0.3);">📞 No phone on file</div>'}
         ${p.email ? `<div>✉️ <a href="mailto:${p.email}" style="color:#81C784;text-decoration:none;">${p.email}</a></div>` : ''}
         ${p.type === 'Guest' ? `
           <div style="margin-top:0.4rem;color:rgba(255,255,255,0.5);font-size:0.78rem;">Update guest contact:</div>
@@ -3133,7 +3151,7 @@ function renderMobileAttendance() {
     return `
       <div class="mob-person" id="mob-person-${i}">
         <div class="mob-person-head" onclick="mobToggleBody(${i})">
-          <div class="mob-person-name">${p.lastName}, ${p.firstName}${guestTag}</div>
+          ${nameDisplay}
           <div class="mob-person-meta">
             <div class="mob-person-type">${typeLabel}</div>
             <div class="mob-person-fee">€${p.fee}</div>
@@ -3150,15 +3168,15 @@ function renderMobileAttendance() {
           </div>
           <div class="mob-diff-row" id="mob-fee-diff-${i}" style="display:none;">
             <span class="mob-diff-label">Different amount?</span>
-            <input class="mob-diff-input" type="number" placeholder="€" onchange="mobUpdatePersonTotal(${i})">
+            <input class="mob-diff-input" type="number" placeholder="€" oninput="mobUpdatePersonTotal(${i})" onchange="mobUpdatePersonTotal(${i})">
             <input class="mob-diff-reason" type="text" placeholder="reason">
           </div>
           ${extraBlock}
           <div class="mob-unexpected-section">
-            <div class="mob-unexpected-label">Unexpected payment:</div>
+            <div class="mob-unexpected-label">Extra collected on day:</div>
             <div class="mob-pay-row">
               <input class="mob-diff-input" type="number" placeholder="€ amt"
-                     id="mob-unexp-amt-${i}" onchange="mobUpdatePersonTotal(${i})">
+                     id="mob-unexp-amt-${i}" oninput="mobUpdatePersonTotal(${i})" onchange="mobUpdatePersonTotal(${i})">
               <input class="mob-diff-reason" type="text" placeholder="reason"
                      id="mob-unexp-reason-${i}">
             </div>
@@ -3248,18 +3266,26 @@ function renderMobileAttendance() {
           <span class="mob-grand-label">GRAND TOTAL</span>
           <span class="mob-grand-val" id="mob-tot-grand">€0</span>
         </div>
-        <div class="mob-cashin-row">
-          <span class="mob-cashin-label">Cash in hand — count and enter:</span>
-          <input class="mob-cashin-input" type="number" id="mob-cashin" placeholder="€0"
-                 oninput="mobUpdateDiff()">
-        </div>
-        <div class="mob-diff-display ok" id="mob-diff-display" style="margin-top:0.5rem;">
-          <span class="mob-diff-display-label">Difference</span>
-          <span class="mob-diff-display-val" id="mob-diff-val">—</span>
-        </div>
         <button id="mob-submit-att-btn"
                 onclick="submitAttendance()"
                 style="margin-top:1rem;width:100%;padding:0.85rem;background:#D4AF37;color:#1A3A2A;font-weight:800;font-size:1rem;border:none;border-radius:8px;cursor:pointer;letter-spacing:0.05em;">💾 Submit Attendance</button>
+
+        <div id="mob-cash-count-section" style="display:none;margin-top:1.5rem;background:rgba(212,175,55,0.1);border:1px solid #D4AF37;border-radius:8px;padding:1rem;">
+          <div style="color:#D4AF37;font-weight:700;font-size:0.9rem;letter-spacing:0.05em;margin-bottom:0.75rem;">💰 CASH COUNT</div>
+          <div style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:0.5rem;">Grand total collected: <strong style="color:#D4AF37;" id="mob-cash-final-total">€0</strong></div>
+          <div class="mob-cashin-row">
+            <span class="mob-cashin-label">Cash in hand:</span>
+            <input class="mob-cashin-input" type="number" id="mob-cashin" placeholder="€0"
+                   oninput="mobUpdateDiff()">
+          </div>
+          <div class="mob-diff-display ok" id="mob-diff-display" style="margin-top:0.5rem;">
+            <span class="mob-diff-display-label">Difference</span>
+            <span class="mob-diff-display-val" id="mob-diff-val">—</span>
+          </div>
+          <button onclick="submitCashCount()"
+                  style="margin-top:0.75rem;width:100%;padding:0.75rem;background:#27ae60;color:#fff;font-weight:800;font-size:0.95rem;border:none;border-radius:8px;cursor:pointer;">💾 Save Cash Count</button>
+          <div id="mob-cash-saved-msg" style="display:none;color:#27ae60;text-align:center;margin-top:0.5rem;font-size:0.9rem;">✅ Cash count saved</div>
+        </div>
       </div>
     </div>`;
 
@@ -3378,6 +3404,8 @@ function mobUpdateTotals() {
 
 function mobUpdateDiff() {
   const grand = parseFloat((document.getElementById('mob-tot-grand')||{}).textContent.replace('€',''))||0;
+  const finalEl = document.getElementById('mob-cash-final-total');
+  if (finalEl) finalEl.textContent = '€' + grand;
   const cashin = parseFloat((document.getElementById('mob-cashin')||{}).value)||0;
   const diff = cashin - grand;
   const dispEl = document.getElementById('mob-diff-display');
@@ -3386,6 +3414,32 @@ function mobUpdateDiff() {
   if (!cashin) { valEl.textContent='—'; dispEl.className='mob-diff-display ok'; return; }
   valEl.textContent = (diff===0?'✅ €0': (diff>0?'+':'')+diff);
   dispEl.className = 'mob-diff-display '+(diff===0?'ok':'bad');
+}
+
+async function submitCashCount() {
+  const ti = attendanceTourInfo;
+  if (!ti.name) return;
+  const cashin = parseFloat((document.getElementById('mob-cashin')||{}).value)||0;
+  if (!cashin) { alert('Please enter the cash amount first.'); return; }
+  const grand = parseFloat((document.getElementById('mob-tot-grand')||{}).textContent.replace('€',''))||0;
+  const row = { date: ti.date, tourName: ti.name, firstName: 'CASH', lastName: 'COUNT',
+                memberId: 'CASH_COUNT', type: 'CASH_COUNT', arrived: 'Y',
+                feePaid: cashin, extraPaid: grand, extraReason: 'Cash in hand / Grand total' };
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'saveattendance', rows: [row] })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      const msg = document.getElementById('mob-cash-saved-msg');
+      if (msg) msg.style.display = 'block';
+    } else {
+      alert('Error saving cash count: ' + (data.error || 'Unknown error'));
+    }
+  } catch(err) {
+    alert('Could not connect. Please try again.');
+  }
 }
 
 function mobWalkinFee(n) {
@@ -3460,8 +3514,10 @@ async function submitAttendance() {
     });
     const data = await resp.json();
     if (data.success) {
-      if (btn) { btn.textContent = '✅ Saved!'; }
-      alert('Attendance saved to Attendance_History tab.\n' + rows.length + ' rows written.\n\nPaul can now audit the money and update the master roster.');
+      if (btn) { btn.textContent = '✅ Saved!'; btn.disabled = true; }
+      const cashSection = document.getElementById('mob-cash-count-section');
+      if (cashSection) cashSection.style.display = 'block';
+      alert('Attendance saved — ' + rows.length + ' rows written.\n\nCount the cash and enter the total below when ready.');
     } else {
       if (btn) { btn.disabled = false; btn.textContent = '💾 Submit Attendance'; }
       alert('Error saving: ' + (data.error || 'Unknown error'));
@@ -3497,9 +3553,11 @@ async function loadSignupLists() {
       const signups = (grouped[key] || { rows: [] }).rows;
       const confirmed = signups.filter(s => s.status === 'Confirmed').length;
       const totalActive = signups.filter(s => s.status.indexOf('Cancel') === -1).length;
-      const countLabel = confirmed > 0
+      const guestCount = signups.filter(s => s.status.indexOf('Cancel') === -1 && (s.memberType||'').includes('Guest')).length;
+      const guestLabel = guestCount > 0 ? ' / ' + guestCount + ' guest' + (guestCount>1?'s':'') : '';
+      const countLabel = (confirmed > 0
         ? confirmed + ' confirmed' + (totalActive > confirmed ? ' / ' + totalActive + ' signed up' : '')
-        : totalActive + ' signed up';
+        : totalActive + ' signed up') + guestLabel;
       const tourDate = new Date(t.date);
       const dateStr = tourDate.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'long'});
       const daysOut = Math.round((tourDate - today) / (1000*60*60*24));
