@@ -2959,34 +2959,36 @@ function downloadICS() {
     const [dateStr, tourName] = tv.split('|');
     const tour = tours.find(t => t.date === dateStr && t.name === tourName) || tours.find(t => t.date === dateStr);
     if (!tour) return;
-    const d = new Date(tour.date);
-    const ymd = tour.date.replace(/-/g,'');
-    // Parse meet time (format: "13h45" or "13 h 45")
-    const meetRaw = (tour.meet_time || tour.meetTime || '').replace(/\s/g,'').replace('h',':');
-    let meetH = 13, meetM = 0;
-    if (meetRaw) { const parts = meetRaw.split(':'); meetH = parseInt(parts[0])||13; meetM = parseInt(parts[1])||0; }
+    const ymd = dateStr.replace(/-/g,'');
+    // Parse meet_time — format is "10h00" or "10 h 00"
+    const meetRaw = (tour.meet_time || '13h00').replace(/\s/g,'');
+    const parts = meetRaw.split('h');
+    const meetH = parseInt(parts[0]) || 13;
+    const meetM = parseInt(parts[1]) || 0;
     const endH = meetH + 2;
     const pad = n => String(n).padStart(2,'0');
     const dtStart = ymd + 'T' + pad(meetH) + pad(meetM) + '00';
     const dtEnd   = ymd + 'T' + pad(endH)  + pad(meetM) + '00';
-    const feeLine = tour.fees ? 'Tour fee: ' + (tour.fees.rm || tour.fees.RM || '') + ' (Regular Member), ' + (tour.fees.wl || tour.fees.WL || '') + ' (Waitlist).' : '';
-    const transport = [tour.metro ? 'Métro: ' + tour.metro : '', tour.rer ? 'RER: ' + tour.rer : '', tour.bus ? 'Bus: ' + tour.bus : ''].filter(Boolean).join(' | ');
-    const desc = [
-      tour.desc ? tour.desc.substring(0,300).replace(/[\r\n]/g,' ') + '...' : '',
-      feeLine,
-      transport ? 'Transport: ' + transport : '',
-      tour.guide ? 'Guide: ' + tour.guide : '',
-      'Day-of contact: Paul GAVORA 06 73 31 98 92 / Lee HUBERT 06 75 06 61 99',
-      'Note: Your spot is not guaranteed until you receive a confirmation email.'
-    ].filter(Boolean).join('\\n');
+    // Build description lines
+    const descLines = [];
+    if (tour.cost_regular || tour.cost_waitlist || tour.cost_guest) {
+      descLines.push('Tour fees: Regular Members: ' + (tour.cost_regular||'—') + ' / Waitlist Members: ' + (tour.cost_waitlist||'—') + ' / Guests: ' + (tour.cost_guest||'—'));
+    }
+    if (tour.meeting) descLines.push('Meeting point: ' + tour.meeting);
+    if (tour.transport) descLines.push('Transport: ' + tour.transport);
+    if (tour.guide) descLines.push('Guide: ' + tour.guide);
+    descLines.push('Day-of contact: Paul GAVORA 06 73 31 98 92 / Lee HUBERT 06 75 06 61 99');
+    descLines.push('Note: Your spot is not guaranteed until you receive a confirmation email.');
+    const descStr = descLines.join('\\n').replace(/,/g,'\\,');
+    const locationStr = (tour.meeting || 'See ftgparis.com for details').replace(/,/g,'\\,');
     icsContent +=
       'BEGIN:VEVENT\r\n' +
       'UID:' + dateStr + '-' + tourName.replace(/\s/g,'') + '@ftgparis.com\r\n' +
       'DTSTART;TZID=Europe/Paris:' + dtStart + '\r\n' +
       'DTEND;TZID=Europe/Paris:' + dtEnd + '\r\n' +
       'SUMMARY:FTG – ' + tourName + '\r\n' +
-      'LOCATION:' + (tour.meeting_place || tour.meetingPlace || 'See tour details on ftgparis.com') + '\r\n' +
-      'DESCRIPTION:' + desc + '\r\n' +
+      'LOCATION:' + locationStr + '\r\n' +
+      'DESCRIPTION:' + descStr + '\r\n' +
       'END:VEVENT\r\n';
   });
   icsContent += 'END:VCALENDAR';
