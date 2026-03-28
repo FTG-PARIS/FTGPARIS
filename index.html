@@ -3952,6 +3952,7 @@ async function submitVisitorsForm(e) {
         _subject: 'New Visitor Enquiry from ' + name,
         _replyto: email,
         _captcha: 'false',
+        _autoresponse: 'Bonjour ' + name + ',\n\nThank you for your interest in Fridays in Paris and our upcoming tours. We\'ll get back to you shortly.\n\nHope to meet you on a great tour soon!\n\nBest wishes,\nFridays in Paris',
         message: body
       })
     });
