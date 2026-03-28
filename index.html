@@ -401,14 +401,14 @@
   /* NEXT UPCOMING BUTTON */
   .next-upcoming-btn {
     display: inline-block; margin: 0.8rem 0 0.4rem;
-    padding: 0.45rem 1.1rem;
-    background: transparent; border: 1px solid var(--gold);
-    color: var(--gold); border-radius: 20px;
-    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.55rem 1.4rem;
+    background: var(--gold); border: none;
+    color: #1a1a1a; border-radius: 20px;
+    font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase;
     cursor: pointer; transition: all 0.2s;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif; font-weight: 700;
   }
-  .next-upcoming-btn:hover { background: var(--gold); color: var(--charcoal); }
+  .next-upcoming-btn:hover { background: #b8932a; color: #fff; }
 
   /* PUBLIC TOUR CARDS — 2-col grid on desktop */
   .tours-grid {
@@ -1000,6 +1000,14 @@
     .detail-contact { padding: 0.8rem 1.4rem; background: var(--charcoal); color: var(--cream); font-size: 0.82rem; display: flex; align-items: center; gap: 0.5rem; }
   .detail-contact strong { color: var(--gold); }
 
+  /* PAGE FOOTER */
+  footer {
+    text-align: center; padding: 1.2rem 1rem;
+    font-size: 0.8rem; color: var(--stone);
+    border-top: 1px solid var(--light);
+  }
+  @media(max-width:768px) { footer { text-align: center; } }
+
   /* ABOUT / RULES */
   .about-hero { padding: 2rem 0 1rem; max-width: 100%; }
   .about-hero h1 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.8rem; color: var(--purple); }
@@ -1060,7 +1068,7 @@
     <button class="month-pill video-pill" onclick="filterMonth('video', this)">&#128250; Video Only</button>
   </div>
 
-  <div class="icon-key">
+  <div class="icon-key" style="text-align:center;">
     <button class="next-upcoming-btn" onclick="scrollToNextUpcoming()">↓ Next upcoming tour</button>
   </div>
 
@@ -2148,9 +2156,9 @@ let quizAnswered = false;
 let activeFilter = 'all';
 
 function getTypeIcon(type) {
-  if (type === 'video') return { cls:'video', img:MONITOR_IMG, w:34, emoji:'📺', label:'Video tour', icon:'<svg width="14" height="14" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:4px"><rect x="1" y="2" width="22" height="15" rx="2" fill="currentColor"/><rect x="7" y="18" width="10" height="2" rx="1" fill="currentColor"/><rect x="9" y="17" width="6" height="2" fill="currentColor"/></svg>' };
-  if (type === 'museum') return { cls:'museum', img:FEET_IMG, w:30, emoji:'🏛️', label:'Museum tour', icon:'<svg width="14" height="14" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:4px"><polygon points="12,1 2,7 22,7" fill="currentColor"/><rect x="2" y="7" width="20" height="2" fill="currentColor"/><rect x="3" y="19" width="18" height="2" fill="currentColor"/><rect x="3" y="21" width="18" height="2" fill="currentColor"/><rect x="4" y="9" width="3" height="10" fill="currentColor"/><rect x="9" y="9" width="3" height="10" fill="currentColor"/><rect x="14" y="9" width="3" height="10" fill="currentColor"/><rect x="19" y="9" width="2" height="10" fill="currentColor"/></svg>' };
-  return { cls:'walk', img:FEET_IMG, w:30, emoji:'🚶', label:'Walking tour', icon:'<img src="photos/photo15.png" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;object-fit:contain;">' };
+  if (type === 'video') return { cls:'video', img:MONITOR_IMG, w:34, emoji:'📺', label:'Video tour', icon:'<svg width="14" height="14" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:4px"><rect x="1" y="2" width="22" height="15" rx="2" fill="currentColor"/><rect x="7" y="18" width="10" height="2" rx="1" fill="currentColor"/><rect x="9" y="17" width="6" height="2" fill="currentColor"/></svg>', slideIcon:'<svg width="40" height="40" viewBox="0 0 24 24"><rect x="1" y="2" width="22" height="15" rx="2" fill="#1A3A2A"/><rect x="7" y="18" width="10" height="2" rx="1" fill="#1A3A2A"/><rect x="9" y="17" width="6" height="2" fill="#1A3A2A"/></svg>' };
+  if (type === 'museum') return { cls:'museum', img:FEET_IMG, w:30, emoji:'🏛️', label:'Museum tour', icon:'<svg width="14" height="14" viewBox="0 0 24 24" style="vertical-align:-2px;margin-right:4px"><polygon points="12,1 2,7 22,7" fill="currentColor"/><rect x="2" y="7" width="20" height="2" fill="currentColor"/><rect x="3" y="19" width="18" height="2" fill="currentColor"/><rect x="3" y="21" width="18" height="2" fill="currentColor"/><rect x="4" y="9" width="3" height="10" fill="currentColor"/><rect x="9" y="9" width="3" height="10" fill="currentColor"/><rect x="14" y="9" width="3" height="10" fill="currentColor"/><rect x="19" y="9" width="2" height="10" fill="currentColor"/></svg>', slideIcon:'<svg width="40" height="40" viewBox="0 0 24 24"><polygon points="12,1 2,7 22,7" fill="#1A3A2A"/><rect x="2" y="7" width="20" height="2" fill="#1A3A2A"/><rect x="3" y="19" width="18" height="2" fill="#1A3A2A"/><rect x="3" y="21" width="18" height="2" fill="#1A3A2A"/><rect x="4" y="9" width="3" height="10" fill="#1A3A2A"/><rect x="9" y="9" width="3" height="10" fill="#1A3A2A"/><rect x="14" y="9" width="3" height="10" fill="#1A3A2A"/><rect x="19" y="9" width="2" height="10" fill="#1A3A2A"/></svg>' };
+  return { cls:'walk', img:FEET_IMG, w:30, emoji:'🚶', label:'Walking tour', icon:'<img src="photos/photo15.png" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;object-fit:contain;">', slideIcon:'' };
 }
 
 function walkLevelHTML(dots, label) {
@@ -2510,7 +2518,7 @@ function renderMemberTours() {
           + '<button class="slide-cta-btn" onclick="openReserveModal()">Reserve a Spot</button>'
           + '</div>'
           + '<div class="slide-days-badge" id="' + daysEl_id + '"></div>'
-          + '<div class="slide-type-badge"><img src="' + ti.img + '" style="width:52px;height:52px;object-fit:contain;"></div>'
+          + '<div class="slide-type-badge">' + (ti.slideIcon || '<img src="' + ti.img + '" style="width:52px;height:52px;object-fit:contain;">') + '</div>'
           + '</div>'
           + '</div>'
           // BODY
@@ -2530,7 +2538,7 @@ function renderMemberTours() {
       } else {
       // ── STANDARD CARD LAYOUT (no photo) ──
       card.innerHTML =
-        '<div class="detail-header"><div class="detail-header-left"><div class="dh-date"><span class="dh-day">' + d.getDate() + '</span><span class="dh-month">' + d.toLocaleDateString('en-GB',{month:'long'}) + '</span></div><div class="dh-title">' + (t.cancelled?'<div class="cancelled-tag">Cancelled</div>':'') + '<h3>' + t.name + '</h3>' + timingHTML + '</div></div><div class="dh-icon"><img src="' + ti.img + '" style="width:30px;height:30px;object-fit:contain;"></div></div>' +
+        '<div class="detail-header"><div class="detail-header-left"><div class="dh-date"><span class="dh-day">' + d.getDate() + '</span><span class="dh-month">' + d.toLocaleDateString('en-GB',{month:'long'}) + '</span></div><div class="dh-title">' + (t.cancelled?'<div class="cancelled-tag">Cancelled</div>':'') + '<h3>' + t.name + '</h3>' + timingHTML + '</div></div><div class="dh-icon">' + (ti.slideIcon ? ti.slideIcon.replace('width="40" height="40"','width="30" height="30"') : '<img src="' + ti.img + '" style="width:30px;height:30px;object-fit:contain;">') + '</div></div>' +
         '<div class="detail-body">' + meetSection +
         '<div class="detail-section"><div class="detail-section-label">Walk Level</div><div class="detail-section-value">' + walkLevelHTML(t.walk_dots, t.walk_level) + '</div></div>' +
         '<div class="detail-section"><div class="detail-section-label">Cost</div><div class="detail-section-value"><div class="costs-grid"><div class="cost-item"><div class="ci-label">Regular Members</div><div class="ci-val">' + t.cost_regular + '</div></div><div class="cost-item"><div class="ci-label">Waitlist Members</div><div class="ci-val">' + t.cost_waitlist + '</div></div><div class="cost-item"><div class="ci-label">Guests</div><div class="ci-val">' + t.cost_guest + '</div></div><div class="cost-item"><div class="ci-label">No Show Fee</div><div class="ci-val">' + (t.no_show||'10€') + '</div></div></div><div class="no-show-note">Limit: ' + (t.limit||'N/A') + ' participants.</div></div></div>' +
@@ -2984,8 +2992,8 @@ function downloadICS() {
     icsContent +=
       'BEGIN:VEVENT\r\n' +
       'UID:' + dateStr + '-' + tourName.replace(/\s/g,'') + '@ftgparis.com\r\n' +
-      'DTSTART;TZID=Europe/Paris:' + dtStart + '\r\n' +
-      'DTEND;TZID=Europe/Paris:' + dtEnd + '\r\n' +
+      'DTSTART:' + dtStart + '\r\n' +
+      'DTEND:' + dtEnd + '\r\n' +
       'SUMMARY:FTG – ' + tourName + '\r\n' +
       'LOCATION:' + locationStr + '\r\n' +
       'DESCRIPTION:' + descStr + '\r\n' +
