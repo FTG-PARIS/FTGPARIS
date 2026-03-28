@@ -1011,18 +1011,28 @@
   /* ABOUT / RULES */
   .about-hero { padding: 2rem 0 1rem; max-width: 100%; }
   .about-hero h1 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.8rem; color: var(--purple); }
-  .about-hero .lead { font-size: 1rem; color: #2C343E; line-height: 1.75; margin-bottom: 2rem; }
-  .rules-section { padding: 0 0 2rem; max-width: 100%; }
+  .about-hero .lead { font-size: 1.05rem; color: #2C343E; line-height: 1.85; margin-bottom: 2rem; }
+  .rules-section { padding: 0 0 2rem; max-width: 900px; }
   .section-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; margin-bottom: 1.5rem; margin-top: 2rem; display: flex; align-items: center; gap: 1rem; color: var(--gold); }
   .section-title::after { content: ''; flex: 1; height: 1px; background: var(--light); }
-  .rule-item { display: grid; grid-template-columns: 36px 1fr; gap: 1rem; margin-bottom: 1.3rem; align-items: start; }
+  .rule-item { display: grid; grid-template-columns: 36px 1fr; gap: 1rem; margin-bottom: 1.5rem; align-items: start; }
   .rule-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--purple); line-height: 1.2; }
-  .rule-text h4 { font-family: 'Playfair Display', serif; margin-bottom: 0.25rem; font-size: 1rem; color: #1a1a1a; }
-  .rule-text p { font-size: 0.925rem; color: #2C343E; line-height: 1.7; }
+  .rule-text h4 { font-family: 'Playfair Display', serif; margin-bottom: 0.3rem; font-size: 1.05rem; color: #1a1a1a; }
+  .rule-text p { font-size: 1rem; color: #2C343E; line-height: 1.85; }
   .contacts-box { background: var(--purple); color: var(--cream); padding: 1.5rem 2rem; margin-top: 2rem; }
   .contacts-box h4 { font-family: 'Playfair Display', serif; margin-bottom: 0.8rem; color: var(--gold); }
-  .contacts-box p { font-size: 0.875rem; color: rgba(255,255,255,0.65); line-height: 1.9; }
-  .contacts-box strong { color: var(--cream); } }
+  .contacts-box p { font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.9; }
+  .contacts-box strong { color: var(--cream); }
+  .ftg-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.88rem; }
+  .ftg-table th { background: #1A3A2A; color: #fff; padding: 0.6rem 0.8rem; text-align: left; font-family: 'Playfair Display', serif; font-weight: 700; }
+  .ftg-table td { padding: 0.6rem 0.8rem; border: 1px solid #ddd; color: #2C343E; vertical-align: top; line-height: 1.6; }
+  .ftg-table tr:nth-child(even) td { background: #f9f7f4; }
+  .ftg-table tr:hover td { background: #f5f0e8; }
+  .timetable-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.82rem; }
+  .timetable-table th { background: #1A3A2A; color: #fff; padding: 0.5rem 0.6rem; text-align: center; font-family: 'DM Sans', sans-serif; font-weight: 700; }
+  .timetable-table td { padding: 0.5rem 0.6rem; border: 1px solid #ddd; color: #2C343E; vertical-align: top; line-height: 1.5; }
+  .timetable-table .highlight { background: #fdf8e8; font-weight: 600; }
+  @media(max-width:768px) { .ftg-table, .timetable-table { font-size: 0.78rem; } .ftg-table th, .timetable-table th, .ftg-table td, .timetable-table td { padding: 0.4rem 0.5rem; } } }
 </style>
 </head>
 <body>
@@ -1141,7 +1151,7 @@
         </div>
 
         <div class="section-title">How to Choose</div>
-        <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;margin-bottom:1rem;">If you attend <strong>more than six tours per year</strong>, consider becoming a Regular Member. It's the easiest way to enjoy everything FTG offers — while helping sustain the group. Regular Members' dues make it possible to maintain a full and varied programme, book expert guides, and experience unique sites.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1rem;">If you attend <strong>more than six tours per year</strong>, consider becoming a Regular Member. It's the easiest way to enjoy everything FTG offers — while helping sustain the group. Regular Members' dues make it possible to maintain a full and varied programme, book expert guides, and experience unique sites.</p>
 
         <!-- Why RM box -->
         <div style="background:#fff;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,0.07);border-top:4px solid #C9A030;padding:1.4rem 1.6rem;margin-bottom:2rem;">
@@ -1172,7 +1182,7 @@
         </div>
 
         <div class="section-title">Annual Membership Fees</div>
-        <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;margin-bottom:1rem;">All fees are paid directly to the Co-Directors or Treasurer. Annual membership fees must be paid no later than the first in-person event of the season.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1rem;">All fees are paid directly to the Co-Directors or Treasurer. Annual membership fees must be paid no later than the first in-person event of the season.</p>
 
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:1.5rem;">
           <div style="background:#fdf8e8;border-radius:8px;padding:1.1rem 1.3rem;border:1px solid rgba(201,160,48,0.25);">
@@ -1186,7 +1196,7 @@
         </div>
 
         <div class="section-title">Leadership &amp; Coordination</div>
-        <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;margin-bottom:1.2rem;">Co-Directors, Treasurer, and Membership Coordinator coordinate all FTG activities. Tour guides are selected to organise and present tours. The Co-Directors oversee all FTG activities.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1.2rem;">Co-Directors, Treasurer, and Membership Coordinator coordinate all FTG activities. Tour guides are selected to organise and present tours. The Co-Directors oversee all FTG activities.</p>
 
         <div class="contacts-box">
           <h4>Co-Directors &amp; Contact</h4>
@@ -1208,10 +1218,10 @@
       <div class="rules-section">
 
         <div class="section-title">Season Opening Welcome Meeting</div>
-        <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;margin-bottom:1.5rem;">The Season Opening Welcome Meeting is held each September. During this event — in person or via Zoom video-conference — the tours for the new season are presented and the FTG guidelines and other important information are reviewed.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1.5rem;">The Season Opening Welcome Meeting is held each September. During this event — in person or via Zoom video-conference — the tours for the new season are presented and the FTG guidelines and other important information are reviewed.</p>
 
         <div class="section-title">When &amp; How to Sign Up</div>
-        <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;margin-bottom:1rem;">Tours are posted twice a year: in <strong>September</strong> for tours through to the winter break, and in <strong>January</strong> for tours to the end of the season.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1rem;">Tours are posted twice a year: in <strong>September</strong> for tours through to the winter break, and in <strong>January</strong> for tours to the end of the season.</p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin-bottom:1.5rem;">
           <div style="background:#fff;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,0.07);border-top:4px solid #C9A030;padding:1.3rem 1.4rem;">
             <div style="font-family:'Playfair Display',serif;font-weight:700;color:#C9A030;font-size:0.9rem;letter-spacing:0.05em;margin-bottom:0.4rem;">REGULAR MEMBERS</div>
@@ -1226,14 +1236,14 @@
             <p style="font-size:0.82rem;color:#2C343E;line-height:1.6;">Video tours are <strong>open to all members — no sign-up required.</strong> The link is sent to all members a few days before the event.</p>
           </div>
         </div>
-        <p style="font-size:0.85rem;color:#2C343E;line-height:1.7;margin-bottom:1.5rem;padding:0.8rem 1rem;background:#fdf8e8;border-radius:6px;">📧 The Membership Coordinator sends a <strong>Last Chance email</strong> on Monday of the week before the tour if spaces remain. A final attendance list is sent to Co-Directors and Treasurer before the tour.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1.5rem;padding:0.8rem 1rem;background:#fdf8e8;border-radius:6px;">The Membership Coordinator sends a <strong>Last Chance email</strong> on Monday of the week before the tour if spaces remain. A final attendance list is then sent to the Co-Directors and Treasurer.</p>
 
         <div class="section-title">Guest Policy</div>
-        <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;margin-bottom:1.5rem;">All members (RM, WL and VM) are welcome to bring guests, space permitting. People who live in the Paris region may attend <strong>one activity as a Guest.</strong> If they wish to attend more, we encourage them to join as a Waitlist Member. <em>A Guest may not attend a tour in place of a member and must be accompanied by a member.</em></p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1.5rem;">All members (RM, WL and VM) are welcome to bring guests, space permitting. People who live in the Paris region may attend <strong>one activity as a Guest.</strong> If they wish to attend more, we encourage them to join as a Waitlist Member. <em>A Guest may not attend a tour in place of a member and must be accompanied by a member.</em> Alumnae members are an exception — they do not need to be accompanied by a Regular or Waitlist Member.</p>
 
         <div class="section-title">Tour Costs &amp; Payment</div>
-        <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;margin-bottom:0.8rem;">Fees vary by membership level and what is included (guide, entrance, lunch). The amount is shown on the website and in the reminder email. <strong>Payment is due in cash on the day of the tour. No coins accepted.</strong></p>
-        <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;margin-bottom:1.5rem;">One of the FTG officers pays the guide, restaurant, tips, and other fees as required.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:0.8rem;">Fees vary by membership level and what is included (guide, entrance, lunch). The amount is shown on the website and in the reminder email. <strong>Payment is due in cash on the day of the tour. No coins accepted.</strong></p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1.5rem;">One of the FTG officers pays the guide, restaurant, tips, and other fees as required.</p>
 
         <div class="section-title">On Tour Day</div>
         <div class="rule-item">
@@ -1242,7 +1252,7 @@
         </div>
         <div class="rule-item">
           <div class="rule-num">2</div>
-          <div class="rule-text"><h4>Running Late or Cancelling</h4><p>Please notify the <strong>Day-of Contact Person</strong> as a courtesy. Their number is in the tour details and reminder email. This helps speed up roll-taking and fee collection for the whole group.</p></div>
+          <div class="rule-text"><h4>Running Late or Cancelling</h4><p>Please notify the <strong>Day-of Contact Person</strong> as a courtesy — this helps speed up roll-taking and fee collection for the whole group. <strong>Make a note of the Day-of Contact Person's mobile number</strong> from the tour details or reminder email. For museum tours, reservations may include a fixed timeslot or special access — arriving on time is essential to pass through security, coat-check, and distribute headsets before the tour begins.</p></div>
         </div>
         <div class="rule-item">
           <div class="rule-num">3</div>
@@ -1255,17 +1265,94 @@
 
         <div class="section-title">Cancellations &amp; No-Shows</div>
         <div style="background:#fff8f8;border-left:4px solid #c0392b;padding:1rem 1.2rem;border-radius:0 6px 6px 0;margin-bottom:1.2rem;">
-          <p style="font-size:0.88rem;color:#2C343E;line-height:1.75;"><strong>Cancellation deadline:</strong> No later than <strong>noon on Tuesday</strong> before the Friday tour. After this time, you are responsible for all applicable tour fees.</p>
+          <p style="font-size:1rem;color:#2C343E;line-height:1.85;"><strong>Cancellation deadline:</strong> No later than <strong>noon on Tuesday</strong> before the Friday tour, for live half-day tours. After this time, you are responsible for all applicable tour fees.</p>
         </div>
         <div class="rule-item">
-          <div class="rule-num">€</div>
-          <div class="rule-text"><h4>No-Show Fee</h4><p>If you fail to attend an event for which you are registered, a <strong>No-Show fee</strong> equal to the cost of the tour is due. For tours free to Regular Members, the No-Show fee equals the amount a Waitlist Member would have paid. <em>This applies to all members and guests, regardless of reason.</em></p></div>
+          <div class="rule-num">—</div>
+          <div class="rule-text"><h4>No-Show Fee</h4><p>If you fail to attend an event for which you are registered, a <strong>No-Show fee</strong> equal to the cost of the tour is due. For tours offered free to Regular Members, the No-Show fee equals the amount that would have been collected had the RM's space been used by a Waitlist Member. <em>This applies to all members and guests, regardless of reason.</em></p></div>
         </div>
-        <p style="font-size:0.85rem;color:#2C343E;line-height:1.7;margin-bottom:1.5rem;padding:0.8rem 1rem;background:#f5f3ef;border-radius:6px;"><strong>Exceptions:</strong> If someone from the waitlist takes your place, no cancellation fee is due. If there is no waitlist but you find a replacement yourself, no fee is due either.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1.5rem;padding:0.8rem 1rem;background:#f5f3ef;border-radius:6px;"><strong>Exceptions:</strong> If someone from the waitlist takes your place, no cancellation fee is due. If there is no waitlist but you find a replacement yourself, no fee is due either.</p>
+
+        <div class="section-title">Tour Sign-Up Timetable</div>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1rem;">The same timetable applies for tours not on a Friday: 14 days before / 11 days / 8 days / 3 days / 2 days.</p>
+        <div style="overflow-x:auto;">
+        <table class="timetable-table">
+          <thead><tr><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr></thead>
+          <tbody>
+            <tr>
+              <td></td><td></td><td></td><td></td>
+              <td class="highlight"><strong>14 days before</strong><br>Co-Directors finalise tour details</td>
+            </tr>
+            <tr>
+              <td class="highlight"><strong>~11 days before</strong><br>Membership Coordinator sends <strong>Reminder email</strong> to RM, WL and VM with activity details. RSVP ASAP.</td>
+              <td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td class="highlight"><strong>~5 days before</strong><br>If space still available, all RM, WL and VM receive Last Chance message</td>
+              <td class="highlight"><strong>By 12 noon</strong><br>RM, WL and VM deadline to respond or cancel without penalty</td>
+              <td class="highlight"><strong>~3 days before</strong><br>Membership Coordinator emails final count to Co-Directors and Treasurer by noon. Co-Directors confirm reservation(s).</td>
+              <td></td>
+              <td class="highlight"><strong>Day of the event</strong><br>All RM, WL and VM who signed up pay for event. Treasurer pays in full for reserved number. No-shows and late cancellations will pay at next event.</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="section-title">Leadership Team 2025–2026</div>
+        <div style="overflow-x:auto;">
+        <table class="ftg-table">
+          <thead><tr><th style="width:15%">Position</th><th style="width:20%">Name</th><th style="width:40%">Responsibilities</th><th style="width:25%">Contact</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Co-Directors</strong></td>
+              <td>Paul GAVORA<br>Lee HUBERT</td>
+              <td>Plan overall FTG activities, facilitate the season opening and closing events, publish tour descriptions and schedule, act as final arbitrators for any decision required by the group. Coordinate the schedule, communicate with guides, arrange and monitor tours.</td>
+              <td>06 73 31 98 92<br>ftg.membership@gmail.com<br>paul.gavora@gmail.com<br><br>06 75 06 61 99<br>leehubert@free.fr</td>
+            </tr>
+            <tr>
+              <td><strong>Treasurer</strong></td>
+              <td>Paul GAVORA</td>
+              <td>Responsible for dues and event payments, develops yearly budget, sets prices for membership and events, collects money, pays guides and entry fees, balances the books. Final authority for financial decisions.</td>
+              <td>06 73 31 98 92<br>ftg.membership@gmail.com</td>
+            </tr>
+            <tr>
+              <td><strong>Membership Coordinator</strong></td>
+              <td>Paul GAVORA</td>
+              <td>Contacts all members regularly about upcoming events, notifies Treasurer and Co-Directors about attendees, coordinates attendance, disperses news and updates. Final authority for attendance priorities.</td>
+              <td>06 73 31 98 92<br>ftg.membership@gmail.com</td>
+            </tr>
+            <tr>
+              <td><strong>Day-of Contact</strong></td>
+              <td>Paul GAVORA<br>Lee HUBERT</td>
+              <td>Person to call only on the day of the event if unable to attend, running late, or lost. Note: the Day-of Contact may vary — verify with the tour invitation email.</td>
+              <td>06 73 31 98 92<br><br>06 75 06 61 99<br>leehubert@free.fr</td>
+            </tr>
+            <tr>
+              <td><strong>Webmaster</strong></td>
+              <td>Barbara TRIMPI</td>
+              <td>Designs and maintains the FTG website.</td>
+              <td>Via Co-Directors</td>
+            </tr>
+            <tr>
+              <td><strong>Planning &amp; Support Team</strong></td>
+              <td>Barbara TRIMPI</td>
+              <td>Participates in planning activities and supports tour activities (attendance or fee collection) when necessary.</td>
+              <td>Via Co-Directors</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="section-title">Administrative Notes</div>
+        <div class="rule-item"><div class="rule-num">1</div><div class="rule-text"><h4>Security &amp; Health</h4><p>Walk difficulty is indicated in each tour description, including length and number of staircases. Wear proper walking shoes, dress accordingly, and carry an umbrella. If there are any French health guidelines to be observed on walks or in museums, members must respect them.</p></div></div>
+        <div class="rule-item"><div class="rule-num">2</div><div class="rule-text"><h4>Video Tour Recordings</h4><p>FTG Video Tours are recorded with Zoom and stored for future viewing via a private Google/YouTube channel. Members with Gmail addresses can be authorized to view recordings and must agree to Google/YouTube usage rules. A replay link will be provided after the event. Video Tours are private — they may not be reproduced, copied, or shared on any social media platform. If presenters do not give permission to record, the tour will not be recorded. Museum and walking tours are not recorded.</p></div></div>
+        <div class="rule-item"><div class="rule-num">3</div><div class="rule-text"><h4>Planning Team</h4><p>FTG has an active planning team. Members participate in seasonal tour planning, detail preparation, and guide selection. They occasionally arrange transportation, museum scheduling, and guide coordination. When needed, they support day-of-tour activities such as taking attendance and collecting fees. If you would like to help plan one or several tours, please contact the Co-Directors.</p></div></div>
+        <div class="rule-item"><div class="rule-num">4</div><div class="rule-text"><h4>Tour Ideas</h4><p>Tour ideas from members are always welcomed.</p></div></div>
+        <div class="rule-item"><div class="rule-num">5</div><div class="rule-text"><h4>Supporting Our Guides</h4><p>FTG supports our guides by broadcasting their tour information or websites to our members.</p></div></div>
 
         <div class="section-title">Disclaimers</div>
-        <p style="font-size:0.82rem;color:#2C343E;line-height:1.7;margin-bottom:0.8rem;"><strong>Participation:</strong> Participation in all FTG activities is entirely at the risk and responsibility of the member or guest who registers. In no case may a registrant hold FTG or its officers liable for any loss, damage, or injury sustained during participation in an FTG-sponsored activity. By registering for an activity and paying the fee, you agree to these terms.</p>
-        <p style="font-size:0.82rem;color:#2C343E;line-height:1.7;margin-bottom:1.5rem;"><strong>Perspectives &amp; Opinions:</strong> FTG does not necessarily endorse the individual opinions of guides or speakers. Their views are their own and do not represent the views of the Friday Tour Group.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:0.8rem;"><strong>Participation:</strong> Participation in all FTG activities is entirely at the risk and responsibility of the member or guest who registers. In no case may a registrant hold FTG or its officers liable for any loss, damage, or injury sustained during participation in an FTG-sponsored activity. By registering for an activity and paying the fee, you agree to these terms.</p>
+        <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1.5rem;"><strong>Perspectives &amp; Opinions:</strong> FTG does not necessarily endorse the individual opinions of guides or speakers. Their views are their own and do not represent the views of the Friday Tour Group.</p>
 
         <div class="contacts-box">
           <h4>Leadership Team 2025–2026</h4>
