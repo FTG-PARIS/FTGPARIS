@@ -1631,7 +1631,11 @@
 
           <p class="vol-body">Talk to the planner of your next tour or send an email to express your interest today.</p>
 
-          <p class="vol-cta-email"><a href="mailto:ftg.membership@gmail.com" class="vol-email">ftg.membership@gmail.com</a></p>
+          <div style="text-align:center; margin:2.5rem 0 1rem;">
+            <h2 class="vol-h2">Ready to Help?</h2>
+            <p class="vol-body" style="text-align:center;">No experience needed — just enthusiasm!</p>
+            <button onclick="openVolunteerModal()" style="background:#C9A030;color:#fff;border:none;padding:0.85rem 2rem;font-family:'DM Sans',sans-serif;font-size:1rem;letter-spacing:0.05em;cursor:pointer;font-weight:700;border-radius:3px;margin-top:0.5rem;">Yes! Let me know what I can do!</button>
+          </div>
 
         </div><!-- end vol-content -->
 
@@ -2387,9 +2391,60 @@ function walkLevelHTML(dots, label) {
   return html;
 }
 
+function openVolunteerModal() {
+  document.getElementById('volunteer-modal-overlay').style.display = 'flex';
+  document.getElementById('vol-name').value = '';
+  document.getElementById('vol-email').value = '';
+  document.getElementById('vol-phone').value = '';
+  document.getElementById('vol-message').value = '';
+  document.getElementById('vol-status').textContent = '';
+}
+function closeVolunteerModal() {
+  document.getElementById('volunteer-modal-overlay').style.display = 'none';
+}
+async function submitVolunteer() {
+  const name = document.getElementById('vol-name').value.trim();
+  const email = document.getElementById('vol-email').value.trim();
+  const phone = document.getElementById('vol-phone').value.trim();
+  const message = document.getElementById('vol-message').value.trim();
+  const status = document.getElementById('vol-status');
+  if (!name || !email) { status.textContent = 'Please enter at least your name and email.'; status.style.color='#c00'; return; }
+  status.textContent = 'Sending...'; status.style.color='#555';
+  try {
+    const resp = await fetch('https://formsubmit.co/ajax/ftg.membership@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: "I'm Ready to Volunteer",
+        name: name,
+        email: email,
+        phone: phone || 'Not provided',
+        message: message || 'No additional details provided.',
+        _template: 'table'
+      })
+    });
+    const data = await resp.json();
+    if (data.success === 'true' || data.success === true) {
+      status.textContent = '✓ Thank you! We\'ll be in touch soon.';
+      status.style.color = '#1A3A2A';
+      document.getElementById('vol-name').value = '';
+      document.getElementById('vol-email').value = '';
+      document.getElementById('vol-phone').value = '';
+      document.getElementById('vol-message').value = '';
+    } else {
+      status.textContent = 'Something went wrong. Please try again.';
+      status.style.color = '#c00';
+    }
+  } catch(e) {
+    status.textContent = 'Something went wrong. Please try again.';
+    status.style.color = '#c00';
+  }
+}
+
 function openSuggestionsModal() {
   document.getElementById('suggestions-modal-overlay').style.display = 'flex';
   document.getElementById('sg-name').value = '';
+  document.getElementById('sg-email').value = '';
   document.getElementById('sg-message').value = '';
   document.getElementById('sg-status').textContent = '';
 }
@@ -2398,6 +2453,7 @@ function closeSuggestionsModal() {
 }
 async function submitSuggestion() {
   const name = document.getElementById('sg-name').value.trim() || 'Anonymous';
+  const email = document.getElementById('sg-email').value.trim();
   const message = document.getElementById('sg-message').value.trim();
   const status = document.getElementById('sg-status');
   if (!message) { status.textContent = 'Please write your idea before sending.'; status.style.color='#c00'; return; }
@@ -2409,6 +2465,7 @@ async function submitSuggestion() {
       body: JSON.stringify({
         _subject: 'FTG Member Suggestion',
         name: name,
+        email: email || 'Not provided',
         message: message,
         _template: 'table'
       })
@@ -2419,6 +2476,7 @@ async function submitSuggestion() {
       status.style.color = '#1A3A2A';
       document.getElementById('sg-message').value = '';
       document.getElementById('sg-name').value = '';
+      document.getElementById('sg-email').value = '';
     } else {
       status.textContent = 'Something went wrong. Please try again.';
       status.style.color = '#c00';
@@ -4214,6 +4272,33 @@ async function requestCancel(email, tourDate, tourName, btn) {
 }
 </script>
 
+<!-- VOLUNTEER MODAL -->
+<div id="volunteer-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;" onclick="if(event.target===this)closeVolunteerModal()">
+  <div style="background:#fff;border-radius:8px;padding:2rem 2.2rem;max-width:480px;width:90%;position:relative;max-height:90vh;overflow-y:auto;">
+    <button onclick="closeVolunteerModal()" style="position:absolute;top:0.8rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;">&times;</button>
+    <h2 style="font-family:'Playfair Display',serif;color:#1A3A2A;margin:0 0 0.4rem;font-size:1.5rem;">Yes! Let me know what I can do!</h2>
+    <p style="color:#555;font-size:0.95rem;line-height:1.65;margin:0 0 1.4rem;">Fill in your details below and we'll be in touch!</p>
+    <div style="margin-bottom:1rem;">
+      <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">Your name</label>
+      <input id="vol-name" type="text" placeholder="Your name" style="width:100%;padding:0.55rem 0.7rem;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.95rem;box-sizing:border-box;">
+    </div>
+    <div style="margin-bottom:1rem;">
+      <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">Your email</label>
+      <input id="vol-email" type="email" placeholder="Your email" style="width:100%;padding:0.55rem 0.7rem;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.95rem;box-sizing:border-box;">
+    </div>
+    <div style="margin-bottom:1rem;">
+      <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">Your phone number</label>
+      <input id="vol-phone" type="tel" placeholder="Your phone number" style="width:100%;padding:0.55rem 0.7rem;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.95rem;box-sizing:border-box;">
+    </div>
+    <div style="margin-bottom:1.4rem;">
+      <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">How would you like to help?</label>
+      <textarea id="vol-message" rows="4" placeholder="Tell us a little about how you'd like to get involved..." style="width:100%;padding:0.55rem 0.7rem;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.95rem;box-sizing:border-box;resize:vertical;"></textarea>
+    </div>
+    <button onclick="submitVolunteer()" style="background:#C9A030;color:#fff;border:none;padding:0.65rem 1.6rem;font-family:'DM Sans',sans-serif;font-size:0.88rem;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;font-weight:600;border-radius:3px;">Send</button>
+    <p id="vol-status" style="margin-top:0.8rem;font-size:0.88rem;color:#555;"></p>
+  </div>
+</div>
+
 <!-- SUGGESTIONS MODAL -->
 <div id="suggestions-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;" onclick="if(event.target===this)closeSuggestionsModal()">
   <div style="background:#fff;border-radius:8px;padding:2rem 2.2rem;max-width:480px;width:90%;position:relative;max-height:90vh;overflow-y:auto;">
@@ -4224,6 +4309,10 @@ async function requestCancel(email, tourDate, tourName, btn) {
     <div style="margin-bottom:1rem;">
       <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">Your name <span style="color:#aaa;">(optional)</span></label>
       <input id="sg-name" type="text" placeholder="Your name" style="width:100%;padding:0.55rem 0.7rem;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.95rem;box-sizing:border-box;">
+    </div>
+    <div style="margin-bottom:1rem;">
+      <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">Your email <span style="color:#aaa;">(optional — so we can thank you!)</span></label>
+      <input id="sg-email" type="email" placeholder="Your email" style="width:100%;padding:0.55rem 0.7rem;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.95rem;box-sizing:border-box;">
     </div>
     <div style="margin-bottom:1.4rem;">
       <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">Your idea or suggestion</label>
