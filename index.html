@@ -4163,13 +4163,13 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
   const tooLate = daysOut <= 10;
   const isAdmin = plannerUser && plannerUser.role === 'admin';
 
-  let html = '<table class="signup-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Type</th><th>Guests/Guest of</th><th>Signed Up</th><th>Status</th><th></th></tr></thead><tbody>';
+  let html = '<table class="signup-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Phone</th><th>Type</th><th>Guests/Guest of</th><th>Signed Up</th><th>Status</th><th></th></tr></thead><tbody>';
   signups.forEach((s, idx) => {
     const isCancelled = s.status.indexOf('Cancel') !== -1;
     const isConfirmed = s.status === 'Confirmed';
     const isGuest = (s.memberType || '').includes('Guest');
     html += '<tr class="' + (isCancelled ? 'cancelled-signup' : '') + '" data-isguest="' + (isGuest ? '1' : '0') + '" data-status="' + s.status + '">' +
-      '<td>' + (s.firstName || '') + '</td><td>' + (s.lastName || '') + '</td><td>' + s.email + '</td>' +
+      '<td>' + (s.firstName || '') + '</td><td>' + (s.lastName || '') + '</td><td>' + (s.phone || '<span style="color:#aaa;font-size:0.8rem;">no phone</span>') + '</td>' +
       '<td>' + (s.memberType === 'Guest' ? '<span style="color:#CE93D8">Guest</span>' : s.memberType) + '</td>' +
       '<td>' + (s.invitedBy ? '<span style="font-size:0.8rem;color:#CE93D8;">of ' + s.invitedBy + '</span>' : (s.guests > 0 ? '+' + s.guests + ' guest' + (s.guests>1?'s':'') : '—')) + '</td>' +
       '<td>' + s.signupDate + '</td>' +
