@@ -54,6 +54,13 @@
     cursor: pointer; transition: background 0.2s; font-weight: 600;
   }
   .visitors-nav-btn:hover { background: #c09b2a; color: var(--white); }
+  .suggestions-nav-btn {
+    background: var(--gold); color: var(--ink); border: none;
+    padding: 0.45rem 1.1rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase;
+    cursor: pointer; transition: background 0.2s; font-weight: 600;
+  }
+  .suggestions-nav-btn:hover { background: #c09b2a; color: var(--white); }
 
   /* VISITORS MODAL */
   #visitors-modal-overlay {
@@ -1045,6 +1052,7 @@
   <ul class="nav-links">
     <li><button class="visitors-nav-btn" onclick="showPublicTab('about')">About Us</button></li>
     <li><button class="visitors-nav-btn" onclick="openVisitorsModal()">Visitors</button></li>
+    <li><button class="suggestions-nav-btn" onclick="openSuggestionsModal()" style="display:none">💡 Suggestions</button></li>
   </ul>
   <button class="nav-member-btn" id="btn-members" onclick="openLoginModal()">Members &#8599;</button>
   <button class="nav-member-btn" id="btn-home" onclick="showPage('home')" style="display:none">&#8592; Home</button>
@@ -1438,13 +1446,7 @@
             </div>
           </div>
 
-          <div class="guide-card" id="guide-pascale-chauvel">
-            <img src="guides/pascale_chauvel.jpg" alt="Pascale Chauvel" class="guide-photo" onerror="this.style.visibility='hidden'">
-            <div class="guide-body">
-              <h3 class="guide-name">Pascale Chauvel</h3>
-              <p class="guide-bio">A practicing artist and museum guide with a BAC in Arts from the Ecole du Louvre. She has worked for 25 years as a guide in the Parisian national museums, notably the Musée d'Orsay, and paints in pastel, oil, watercolour and ink.</p>
-            </div>
-          </div>
+
 
 
 
@@ -1472,13 +1474,7 @@
             </div>
           </div>
 
-          <div class="guide-card" id="guide-ellen-hampton">
-            <img src="guides/ellen_hampton.jpg" alt="Ellen Hampton" class="guide-photo">
-            <div class="guide-body">
-              <h3 class="guide-name">Ellen Hampton</h3>
-              <p class="guide-bio">PhD historian, author, and former Sciences Po lecturer. Author of <em>Women of Valor: The Rochambelles on the WWII Front</em>. Specializes in the social history of WWII, the French Resistance, and women in military history.</p>
-            </div>
-          </div>
+
 
           <div class="guide-card" id="guide-thierry-heil">
             <img src="guides/thierry_heil.jpg" alt="Thierry Heil" class="guide-photo">
@@ -2391,6 +2387,48 @@ function walkLevelHTML(dots, label) {
   return html;
 }
 
+function openSuggestionsModal() {
+  document.getElementById('suggestions-modal-overlay').style.display = 'flex';
+  document.getElementById('sg-name').value = '';
+  document.getElementById('sg-message').value = '';
+  document.getElementById('sg-status').textContent = '';
+}
+function closeSuggestionsModal() {
+  document.getElementById('suggestions-modal-overlay').style.display = 'none';
+}
+async function submitSuggestion() {
+  const name = document.getElementById('sg-name').value.trim() || 'Anonymous';
+  const message = document.getElementById('sg-message').value.trim();
+  const status = document.getElementById('sg-status');
+  if (!message) { status.textContent = 'Please write your idea before sending.'; status.style.color='#c00'; return; }
+  status.textContent = 'Sending...'; status.style.color='#555';
+  try {
+    const resp = await fetch('https://formsubmit.co/ajax/fridaysinparis@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        _subject: 'FTG Member Suggestion',
+        name: name,
+        message: message,
+        _template: 'table'
+      })
+    });
+    const data = await resp.json();
+    if (data.success === 'true' || data.success === true) {
+      status.textContent = '✓ Your idea has been sent. Thank you!';
+      status.style.color = '#1A3A2A';
+      document.getElementById('sg-message').value = '';
+      document.getElementById('sg-name').value = '';
+    } else {
+      status.textContent = 'Something went wrong. Please try again.';
+      status.style.color = '#c00';
+    }
+  } catch(e) {
+    status.textContent = 'Something went wrong. Please try again.';
+    status.style.color = '#c00';
+  }
+}
+
 function makeGuideLink(guideName) {
   const guideIdMap = {
     'Amy KUPEC-LARUE': 'guide-amy-kupec-larue',
@@ -2432,8 +2470,9 @@ function showPage(name, fromPopState) {
   document.getElementById('btn-members').style.display = onMembers ? 'none' : '';
   document.getElementById('btn-home').style.display = onMembers ? '' : 'none';
   document.querySelector('nav').style.background = onMembers ? '#2d3748' : 'var(--purple)';
-  const vBtn = document.querySelector('.visitors-nav-btn');
-  if (vBtn) vBtn.style.display = onMembers ? 'none' : '';
+  document.querySelectorAll('.visitors-nav-btn').forEach(b => b.style.display = onMembers ? 'none' : '');
+  const sBtn = document.querySelector('.suggestions-nav-btn');
+  if (sBtn) sBtn.style.display = onMembers ? '' : 'none';
   const fn = document.getElementById('footer-name');
   if (fn) fn.textContent = onMembers ? 'Friday Tour Group' : 'Fridays in Paris';
   const nt = document.getElementById('nav-site-title');
@@ -2762,7 +2801,7 @@ function renderMemberTours() {
           + '<div class="slide-title-panel">'
           + '<div class="slide-date-chip">' + dateStr + '</div>'
           + '<div class="slide-title">' + t.name + '</div>'
-          + '<div class="slide-subtitle">Guide &nbsp;·&nbsp; ' + t.guide + '</div>'
+          + '<div class="slide-subtitle">Guide &nbsp;·&nbsp; ' + makeGuideLink(t.guide) + '</div>'
           + '<div class="slide-meet-time">MEET TIME: ' + (t.meet_time||'16h45') + '</div>'
           + '<div class="slide-cta-row">'
           + '<button class="slide-cta-btn" onclick="openReserveModal()">Reserve a Spot</button>'
@@ -4159,6 +4198,27 @@ async function requestCancel(email, tourDate, tourName, btn) {
   }
 }
 </script>
+
+<!-- SUGGESTIONS MODAL -->
+<div id="suggestions-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:8px;padding:2rem 2.2rem;max-width:480px;width:90%;position:relative;max-height:90vh;overflow-y:auto;">
+    <button onclick="closeSuggestionsModal()" style="position:absolute;top:0.8rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;">&times;</button>
+    <h2 style="font-family:'Playfair Display',serif;color:#1A3A2A;margin:0 0 0.4rem;font-size:1.5rem;">Help us make our Fridays even better!</h2>
+    <p style="color:#555;font-size:0.95rem;line-height:1.65;margin:0 0 1.4rem;">Got a great idea for a tour? A neighbourhood you've always wanted to explore,<br>a museum you think we'd love, or something you think would make <strong style="color:#C9A030;">Friday Tour Group</strong><br>more enjoyable?</p>
+    <p style="color:#555;font-size:0.95rem;margin:0 0 1.4rem;font-style:italic;">Don't forget it — write it down here!</p>
+    <div style="margin-bottom:1rem;">
+      <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">Your name <span style="color:#aaa;">(optional)</span></label>
+      <input id="sg-name" type="text" placeholder="Your name" style="width:100%;padding:0.55rem 0.7rem;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.95rem;box-sizing:border-box;">
+    </div>
+    <div style="margin-bottom:1.4rem;">
+      <label style="font-size:0.85rem;color:#444;display:block;margin-bottom:0.3rem;">Your idea or suggestion</label>
+      <textarea id="sg-message" rows="5" placeholder="Write your idea here..." style="width:100%;padding:0.55rem 0.7rem;border:1px solid #ddd;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.95rem;box-sizing:border-box;resize:vertical;"></textarea>
+    </div>
+    <button onclick="submitSuggestion()" style="background:#C9A030;color:#fff;border:none;padding:0.65rem 1.6rem;font-family:'DM Sans',sans-serif;font-size:0.88rem;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;font-weight:600;border-radius:3px;">Send Your Idea</button>
+    <p id="sg-status" style="margin-top:0.8rem;font-size:0.88rem;color:#555;"></p>
+    <p style="margin-top:1rem;font-size:0.82rem;color:#888;font-style:italic;">Thank you — we read every suggestion!</p>
+  </div>
+</div>
 
 <!-- VISITORS MODAL -->
 <div id="visitors-modal-overlay" onclick="closeVisitorsModal(event)">
