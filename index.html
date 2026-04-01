@@ -1055,7 +1055,7 @@
     <li><button class="suggestions-nav-btn" onclick="openSuggestionsModal()" style="display:none">💡 Suggestions</button></li>
   </ul>
   <button class="nav-member-btn" id="btn-members" onclick="openLoginModal()">Members &#8599;</button>
-  <button class="nav-member-btn" id="btn-home" onclick="showPage('home')" style="display:none">&#8592; Home</button>
+  <button class="nav-member-btn" id="btn-home" onclick="membersTab('tours', document.querySelector('[onclick*=\'tours\']')); window.scrollTo(0,0);" style="display:none">&#8592; Home</button>
 </nav>
 
 <!-- HOME PAGE -->
@@ -1781,6 +1781,8 @@
     <button class="rm-close" onclick="closeReserveModal(null)" title="Close">&times;</button>
     <h2>Reserve a Spot 🌿</h2>
     <p class="rm-intro">Select your name from the list. Your details will fill in automatically.</p>
+    <p style="font-size:0.83rem;color:#555;margin:0 0 0.5rem;line-height:1.5;">📺 <strong>Video tours?</strong> No need to sign up — just mark your calendar and enjoy!</p>
+    <p style="font-size:0.83rem;color:#555;margin:0 0 1.2rem;line-height:1.5;">To cancel a tour or add a guest after signing up, email <a href="mailto:ftg.membership@gmail.com" style="color:#C9A030;text-decoration:underline;">ftg.membership@gmail.com</a></p>
     <form id="reserve-form" onsubmit="submitReserveForm(event)">
       <div class="rm-row">
         <div class="rm-field" style="flex:1;">
@@ -1836,13 +1838,14 @@
       <div id="rm-guidelines-check" style="display:none;margin:0.8rem 0 0.6rem;padding:0.5rem 0.2rem;font-size:0.83rem;color:#444;line-height:1.5;">
         <label style="display:flex;align-items:flex-start;gap:0.5rem;cursor:pointer;">
           <input type="checkbox" id="rm-guidelines-cb" required style="margin-top:3px;flex-shrink:0;">
-          <span>I have read and accept the <button type="button" onclick="membersTab('guidelines', document.querySelector('[onclick*=guidelines]'));closeReserveModal(null);" style="background:none;border:none;color:#D4AF37;text-decoration:underline;cursor:pointer;font-size:0.83rem;padding:0;">FTG Guidelines</button>. I understand that signing up is a commitment to attend.</span>
+          <span>I have read and accept the <button type="button" onclick="membersTab('guidelines', document.querySelector('[onclick*=guidelines]')); window.scrollTo(0,0); closeReserveModal(null);" style="background:none;border:none;color:#D4AF37;text-decoration:underline;cursor:pointer;font-size:0.83rem;padding:0;">FTG Guidelines</button>. I understand that signing up is a commitment to attend.</span>
         </label>
       </div>
     </form>
     <div id="rm-calendar-btn-wrap" style="display:none;margin-top:0.8rem;text-align:center;">
       <button type="button" onclick="downloadICS()" style="background:#1A3A2A;color:#fff;border:none;padding:0.55rem 1.2rem;border-radius:5px;font-size:0.85rem;cursor:pointer;">📅 Add to My Calendar</button>
       <div style="font-size:0.75rem;color:#888;margin-top:0.3rem;">Works with Google, Outlook, Apple Calendar and iCal</div>
+      <div style="margin-top:0.8rem;"><button type="button" onclick="document.getElementById('reserve-modal-overlay').classList.remove('open'); document.getElementById('rm-calendar-btn-wrap').style.display='none';" style="background:none;border:1px solid #ccc;color:#666;padding:0.35rem 1rem;border-radius:4px;font-size:0.8rem;cursor:pointer;">Close</button></div>
     </div>
   </div>
 </div>
@@ -2411,7 +2414,7 @@ async function submitVolunteer() {
   if (!name || !email) { status.textContent = 'Please enter at least your name and email.'; status.style.color='#c00'; return; }
   status.textContent = 'Sending...'; status.style.color='#555';
   try {
-    const resp = await fetch('https://formsubmit.co/ajax/ftg.membership@gmail.com', {
+    const resp = await fetch('https://formsubmit.co/ajax/fridaysinparis@gmail.com', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
@@ -3202,6 +3205,7 @@ function buildTourChecklist() {
   let hasUpcoming = false;
   tours.forEach(t => {
     if (t.cancelled) return;
+    if (t.type === 'video') return; // no sign-up needed for video tours
     const tourDate = new Date(t.date); tourDate.setHours(0,0,0,0);
     if (tourDate < today) return; // skip past tours entirely
     hasUpcoming = true;
@@ -3304,11 +3308,7 @@ async function submitReserveForm(e) {
       document.getElementById('rm-calendar-btn-wrap').style.display = '';
       window._lastReservedTours = selectedTours;
       btn.textContent = 'Sent!';
-      setTimeout(() => {
-        document.getElementById('reserve-modal-overlay').classList.remove('open');
-        status.textContent = ''; btn.textContent = 'Reserve My Spot(s)'; btn.disabled = false;
-        document.getElementById('rm-calendar-btn-wrap').style.display = 'none';
-      }, 6000);
+      btn.disabled = true;
     } else {
       status.style.color = '#c0392b';
       status.textContent = data.error || 'Something went wrong. Please try again.';
