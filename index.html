@@ -2476,18 +2476,18 @@ async function submitSuggestion() {
       })
     });
     const data = await resp.json();
-    if (data.success === true) {
+    if (data.success === true || data.success === 'true') {
       status.textContent = '✓ Your idea has been sent. Thank you!';
       status.style.color = '#1A3A2A';
       document.getElementById('sg-message').value = '';
       document.getElementById('sg-name').value = '';
       document.getElementById('sg-email').value = '';
     } else {
-      status.textContent = 'Something went wrong. Please try again.';
+      status.textContent = 'Something went wrong: ' + (data.message || JSON.stringify(data));
       status.style.color = '#c00';
     }
   } catch(e) {
-    status.textContent = 'Something went wrong. Please try again.';
+    status.textContent = 'Error: ' + e.message;
     status.style.color = '#c00';
   }
 }
