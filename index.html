@@ -2471,7 +2471,7 @@ async function submitSuggestion() {
         access_key: 'eeb66435-a785-415e-9269-f4b0a7cf165d',
         subject: 'FTG Member Suggestion',
         name: name,
-        email: email || 'Not provided',
+        email: email || 'anonymous@ftgparis.com',
         message: message
       })
     });
@@ -2483,11 +2483,11 @@ async function submitSuggestion() {
       document.getElementById('sg-name').value = '';
       document.getElementById('sg-email').value = '';
     } else {
-      status.textContent = 'Something went wrong: ' + (data.message || JSON.stringify(data));
+      status.textContent = 'Something went wrong. Please try again.';
       status.style.color = '#c00';
     }
   } catch(e) {
-    status.textContent = 'Error: ' + e.message;
+    status.textContent = 'Something went wrong. Please try again.';
     status.style.color = '#c00';
   }
 }
