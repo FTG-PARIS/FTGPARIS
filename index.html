@@ -1043,6 +1043,7 @@
     <span>2025–2026</span>
   </a>
   <ul class="nav-links">
+    <li><button class="visitors-nav-btn" onclick="showPublicTab('about')">About Us</button></li>
     <li><button class="visitors-nav-btn" onclick="openVisitorsModal()">Visitors</button></li>
   </ul>
   <button class="nav-member-btn" id="btn-members" onclick="openLoginModal()">Members &#8599;</button>
@@ -1083,6 +1084,36 @@
   </div>
 
   <div class="calendar-section" id="public-calendar"></div>
+</div>
+
+<!-- ABOUT US PAGE -->
+<div id="page-about" class="page">
+  <div class="vol-page" style="padding-top:0;">
+    <div class="vol-page-header">
+      <h1 class="vol-page-h1">Exploring Paris – Together</h1>
+      <p class="vol-page-sub">We are a membership-based group.</p>
+    </div>
+    <div class="vol-content">
+      <p class="vol-body">For decades, our group has explored Paris – and beyond – together.</p>
+      <p class="vol-body">From major museums to lesser-known sites,<br>
+      what defines our visits is not where we go,<br>
+      but how we experience them:<br>
+      through expert guides who bring history to life<br>
+      and help us see works of art, nature, and historic places<br>
+      in entirely new ways.</p>
+      <p class="vol-body">We learn, we discover and we share those moments – together.</p>
+      <p class="vol-body" style="color:#C9A030; font-weight:600;">And behind it all is a simple truth: We exist because of our members.</p>
+      <p class="vol-body">Dedicated volunteers plan and organize our tours,<br>
+      ensuring there is something to look forward to<br>
+      almost every Friday in Paris.</p>
+      <p class="vol-body">This website was created and is maintained entirely by volunteers too.</p>
+      <p class="vol-body">Interested in learning more, or becoming a member?<br>
+      Click the <button class="visitors-nav-btn" onclick="openVisitorsModal()" style="font-size:0.85rem; padding:0.35rem 0.9rem; vertical-align:middle;">Visitors</button> button and we'll get back to you.</p>
+    </div>
+    <div style="text-align:center; margin-top:2.5rem; padding-bottom:2rem;">
+      <button onclick="showPublicTab('home')" style="background:none; border:1px solid #1A3A2A; color:#1A3A2A; padding:0.5rem 1.4rem; font-family:'DM Sans',sans-serif; font-size:0.85rem; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer;">&#8592; Home</button>
+    </div>
+  </div>
 </div>
 
 <!-- MEMBERS PAGE -->
@@ -2390,6 +2421,13 @@ function walkLevelHTML(dots, label) {
   return html;
 }
 
+function showPublicTab(tab) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + tab);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
 function showPage(name, fromPopState) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
@@ -2927,7 +2965,7 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 (function() {
-  const u='ftg.membership', d='gmail.com';
+  const u='fridaysinparis', d='gmail.com';
   const el=document.getElementById('footer-email');
   if(el) el.innerHTML='<a href="mai'+'lto:'+u+'@'+d+'" style="color:var(--gold);text-decoration:none;">'+u+'@'+d+'</a>';
 })();
