@@ -1246,8 +1246,8 @@
         <div class="contacts-box">
           <h4>Co-Directors &amp; Contact</h4>
           <p>
-            <strong>Paul GAVORA</strong> &nbsp; 06 73 31 98 92 &nbsp;·&nbsp; paul.gavora@gmail.com<br>
-            <strong>Lee HUBERT</strong> &nbsp; 06 75 06 61 99 &nbsp;·&nbsp; leehubert@free.fr<br><br>
+            <strong>Paul GAVORA</strong><br>
+            <strong>Lee HUBERT</strong><br><br>
             General enquiries: &nbsp;<strong>ftg.membership@gmail.com</strong>
           </p>
         </div>
@@ -1297,7 +1297,7 @@
         </div>
         <div class="rule-item">
           <div class="rule-num">2</div>
-          <div class="rule-text"><h4>Running Late or Cancelling</h4><p>Please notify the <strong>Day-of Contact Person</strong> as a courtesy — this helps speed up roll-taking and fee collection for the whole group. <strong>Make a note of the Day-of Contact Person's mobile number</strong> from the tour details or reminder email. For museum tours, reservations may include a fixed timeslot or special access — arriving on time is essential to pass through security, coat-check, and distribute headsets before the tour begins.</p></div>
+          <div class="rule-text"><h4>Running Late or Cancelling</h4><p>Please notify the <strong>Day-of Contact Person</strong> as a courtesy — this helps speed up roll-taking and fee collection for the whole group. <strong>The Day-of Contact Person's mobile number is included in your confirmation email</strong> — please save it before the tour. For museum tours, reservations may include a fixed timeslot or special access — arriving on time is essential to pass through security, coat-check, and distribute headsets before the tour begins.</p></div>
         </div>
         <div class="rule-item">
           <div class="rule-num">3</div>
@@ -1352,25 +1352,25 @@
               <td><strong>Co-Directors</strong></td>
               <td>Paul GAVORA<br>Lee HUBERT</td>
               <td>Plan overall FTG activities, facilitate the season opening and closing events, publish tour descriptions and schedule, act as final arbitrators for any decision required by the group. Coordinate the schedule, communicate with guides, arrange and monitor tours.</td>
-              <td>06 73 31 98 92<br>ftg.membership@gmail.com<br>paul.gavora@gmail.com<br><br>06 75 06 61 99<br>leehubert@free.fr</td>
+              <td>ftg.membership@gmail.com</td>
             </tr>
             <tr>
               <td><strong>Treasurer</strong></td>
               <td>Paul GAVORA</td>
               <td>Responsible for dues and event payments, develops yearly budget, sets prices for membership and events, collects money, pays guides and entry fees, balances the books. Final authority for financial decisions.</td>
-              <td>06 73 31 98 92<br>ftg.membership@gmail.com</td>
+              <td>ftg.membership@gmail.com</td>
             </tr>
             <tr>
               <td><strong>Membership Coordinator</strong></td>
               <td>Paul GAVORA</td>
               <td>Contacts all members regularly about upcoming events, notifies Treasurer and Co-Directors about attendees, coordinates attendance, disperses news and updates. Final authority for attendance priorities.</td>
-              <td>06 73 31 98 92<br>ftg.membership@gmail.com</td>
+              <td>ftg.membership@gmail.com</td>
             </tr>
             <tr>
               <td><strong>Day-of Contact</strong></td>
               <td>Paul GAVORA<br>Lee HUBERT</td>
               <td>Person to call only on the day of the event if unable to attend, running late, or lost. Note: the Day-of Contact may vary — verify with the tour invitation email.</td>
-              <td>06 73 31 98 92<br><br>06 75 06 61 99<br>leehubert@free.fr</td>
+              <td>Contact details included in your confirmation email</td>
             </tr>
             <tr>
               <td><strong>Webmaster</strong></td>
@@ -1402,9 +1402,9 @@
         <div class="contacts-box">
           <h4>Leadership Team 2025–2026</h4>
           <p>
-            <strong>Co-Directors &amp; Day-of Contact</strong><br>
-            Paul GAVORA &nbsp; 06 73 31 98 92 &nbsp;·&nbsp; paul.gavora@gmail.com<br>
-            Lee HUBERT &nbsp; 06 75 06 61 99 &nbsp;·&nbsp; leehubert@free.fr<br><br>
+            <strong>Co-Directors</strong><br>
+            Paul GAVORA<br>
+            Lee HUBERT<br><br>
             <strong>Membership Coordinator &amp; Treasurer</strong><br>
             Paul GAVORA &nbsp; ftg.membership@gmail.com<br><br>
             <strong>Webmaster</strong><br>
@@ -1868,17 +1868,12 @@
 </footer>
 
 <script>
-const MEMBER_PASSWORD = 'ftg2526';
+// Member password validated server-side — not stored in HTML
 
 /* PLANNER AUTHENTICATION */
-const PLANNER_USERS = {
-  'isntitPLae1!': {name:'Barb',    role:'admin'},
-  'paulFTG2026!': {name:'Paul',    role:'admin'},
-  'leeFTG2026!':  {name:'Lee',     role:'planner'},
-  'deeFTG2026!':  {name:'Dee',     role:'planner'},
-  'FTG2026!':     {name:'Planner', role:'planner'}
-};
+// Planner passwords validated server-side — not stored in HTML
 let plannerUser = null; // {name, role} set on planner login
+let plannerToken = null; // raw password sent as token on every API call
 let plannerSubTab = 'signup'; // 'signup' | 'attendance' | 'mobile'
 let attendanceData = []; // confirmed list for mobile view
 let attendanceTourInfo = {}; // {name, date, rmFee, wlFee, guestFee}
@@ -1933,7 +1928,7 @@ const tours = [
     limit:'25', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://centrerusbranly.mid.ru/about/history/">https://centrerusbranly.mid.ru/about/history/</a> · <a href="https://tocqueville21.com/books/after-romanovs-russian-exiles-paris/">https://tocqueville21.com/books/after-romanovs-russian-exiles-paris/</a>',
     desc:'Discover the Russian side of Paris with an expert guide. This tour explores landmarks shaped by migration, art, and culture. Highlights include a conservatory where émigrés arriving after 1917 preserved Russian musical and dance traditions, influencing generations of artists. We will pass by a famous bridge over the Seine, its gilded sculptures and inscriptions quietly recalling a historic Franco-Russian alliance. The visit also includes a modern cathedral that serves as both sacred space and cultural venue, hosting concerts, exhibitions, and lectures. Along the way, streets, theaters, and buildings reveal traces of diplomacy, artistic exchange, and émigré life, often overlooked by passersby. This tour uncovers the stories behind familiar landmarks, offering a perspective on Paris rarely experienced. It is a journey through history, creativity, and the enduring marks of Russian heritage in the French capital.' },
 
@@ -1947,7 +1942,7 @@ const tours = [
     limit:'25', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://museemaillol.com/en/expositions/robert-doisneau-instants-donnes-2/">museemaillol.com</a> · <a href="https://en.wikipedia.org/wiki/Robert_Doisneau">Wikipedia: Robert Doisneau</a>',
     desc:'Whether you\'ve heard of Robert Doisneau or not, you are in for a lovely surprise. An iconic photographer of everyday life in France in the mid 20th century, Robert Doisneau had a unique vision of the human being in multiple environments. Children amazed and fascinated him. Painters, sculptors and writers allowed him into their studios and offices. He worked for Vogue and explored fashion and luxury goods and even did some work in advertising. But his work never neglects social context, and his honest gaze reflects his solidarity with the world around him. For this show Doisneau\'s daughters chose 350 photographs out of his corpus of over 450,000 works, some very familiar, some less so. Our guide will help us understand how Doisneau\'s work is a unique illustration of French life.' },
 
@@ -1961,7 +1956,7 @@ const tours = [
     limit:'25', walk_level:'Medium walk, may be long',
     walk_dots: [true,true,true,false,false],
     tour_planner:'Dee GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="http://www.baladesauxjardins.fr">www.baladesauxjardins.fr</a>',
     desc:'Our walk in the Bois de Boulogne last spring proved so popular that we are doing it again this fall but on the other side of Paris in the Bois de Vincennes. In Gallo-Roman times, this was part of the ancient forest surrounding the town of Lutecia and was called Vilcena, thus the origin of the present name. We\'ll hear stories about the history of the forest and the people who shaped it over time. And we\'ll be watching for raptors such as the kestrels that live on the chateau, as well as small migrating falcons called hobbies and sparrowhawks. Our route will take us by the park\'s ornithological reserve, which will also let us observe numerous perching birds and maybe spot one of the five species of woodpeckers that live in the park.' },
 
@@ -1976,7 +1971,7 @@ const tours = [
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://madparis.fr/Paul-Poiret-La-mode-est-une-fete">madparis.fr</a>',
     desc:'Join us at the Arts Décoratifs for the first ever exhibit of Paul Poiret, the most outstanding figure of Parisian high fashion at the beginning of the 20th century. He did something we can all be grateful for – he got rid of the corset and liberated women. From the Belle Epoque to the roaring \'20s Paul Poiret showcased his genius in fashion, decorative arts, perfume, parties and gastronomy. Our guide will help us get to know Paul Poiret, see his work, and understand his legacy, which has influenced many a designer from Christian Dior in 1948 to Alphonse Maîtrepierre in 2024.' },
 
@@ -1990,7 +1985,7 @@ const tours = [
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://explorethearchive.com/cleopatra-books">explorethearchive.com</a> · <a href="https://www.imarabe.org/fr/agenda/expositions-musee/mystere-cleopatre">imarabe.org</a> · <a href="https://en.wikipedia.org/wiki/Cleopatra">Wikipedia: Cleopatra</a>',
     desc:'What do we really know about Cleopatra? Was she the seductive femme fatale immortalized in film, or a cruel and ruthless ruler? What have archaeologists and historians actually uncovered? Our guide will help us separate fact from fiction as we tour The Mystery of Cleopatra at the Institut du Monde Arabe. The exhibition begins with coins, papyri, and other artifacts that bring Cleopatra VII Philopator into sharper focus. Far from the image crafted by Roman propaganda, Cleopatra emerges as a brilliant strategist, skilled diplomat, and reformer who enriched Egypt\'s economy, strengthened its navy, and commissioned grand temples. Set against the vibrant backdrop of Alexandria, the Hellenistic world\'s cultural and commercial hub, the exhibition explores how passion, politics, and power intertwined, and how a queen became a myth which continues to fascinate.' },
 
@@ -2004,7 +1999,7 @@ const tours = [
     limit:'25 plus guide', walk_level:'May be slippery and cool underground. Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://musee-egouts.paris.fr/venir/">musee-egouts.paris.fr</a>',
     desc:'We take modern conveniences for granted today, but did you ever think about how water and waste are handled in a big city? Below our feet there is literally another city with streets and circulation channels with 2600 km of galleries and gutters. Some 300 million cubic meters of rainwater and wastewater pass through them every year, hurtling down the pipes of this singular network before being directed to power plants to be treated and cleaned. The sewers also house other networks: drinking water, non-drinking water and even fiberoptics networks! The sewers of Paris designed more than a century ago remain pertinent and are an outstanding industrial heritage of engineering genius. Join us to visit the recently renovated museum to learn more about the fascinating history of the Paris sewer system.' },
 
@@ -2018,7 +2013,7 @@ const tours = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Bayeux_Tapestry">Wikipedia: Bayeux Tapestry</a>',
     desc:'The Bayeux Tapestry is a remarkable example of medieval art and is a unique historical artifact. The Tapestry tells the story of the main events leading up to and including the Norman Conquest of England in 1066. From the reign of English King Edward the Confessor to the Norman victory at the battle of Hastings, the tapestry (actually an embroidery) blends Norman styles and Anglo-Saxon art into a sequential narrative and clever piece of propaganda about William the Conqueror\'s great victory. In this presentation we review this important time in medieval history, investigate the key scenes of the tapestry, and address some of the mysteries in the images that remain unsolved.' },
 
@@ -2032,7 +2027,7 @@ const tours = [
     limit:'25', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Dee GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://fr.wikipedia.org/wiki/Musee_francais_de_la_carte_a_jouer">Wikipedia (fr)</a> · <a href="https://www.museecarteajouer.com/en">museecarteajouer.com</a>',
     desc:'Card games have long held a certain allure. Images range from innocent children\'s games to sophisticated casino gamblers or Western poker games played in bars. And of course, we can\'t forget the magical power of cards. Have you ever wondered about cards - where they came from or how games developed? Thankfully two interested collectors pooled their resources in 1986 and created the Musée Français de la Carte à Jouer, which won the European Museum of the Year award in 1999. Today the museum contains nearly 6500 playing cards (someone counted!) from around the world dating from the 15th to the 20th century. Exhibits focus on the art of the cards, different production techniques and the players universe. There\'s even a surprising collection of cards from the Reign of Terror where Phrygian caps replaced crowns on the cards.' },
 
@@ -2047,7 +2042,7 @@ const tours = [
     limit:'25', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.citeco.fr">citeco.fr</a>',
     desc:'Step inside the extraordinary Hôtel Gaillard in Paris\'s 17th arrondissement and discover Citéco – the Cité de l\'Économie, a museum unlike any other. Behind its neo-Renaissance façade lies both a historic mansion and a modern exploration of economics. Our guided tour begins with the story of the building itself—an opulent residence built for a banker, later transformed into a Banque de France branch, complete with ornate salons, stained glass, and even a fortified vault. In the second part, we turn to the museum\'s captivating section on the history of economic crises, from market crashes to global recessions, and the lessons they continue to offer today. This two-part visit offers a rare mix of Parisian heritage and economic insight—a cultural experience not to miss.' },
 
@@ -2061,7 +2056,7 @@ const tours = [
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Dee GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.citedelarchitecture.fr/en">citedelarchitecture.fr</a>',
     desc:'The Cité de l\'architecture et du patrimoine, the largest museum devoted to architecture in the world, presents the history of French architecture and national monuments from the Middle Ages to the present day. Its origins are rooted in the work of Eugène Viollet-le-Duc, who idealized and modified France\'s medieval architecture, including Notre Dame. Today the museum houses full-size plaster replicas or detailed miniatures thus we can walk through chapels and crypts from all over France while simultaneously passing from the 12th to the 20th centuries - all without leaving the heart of Paris. Highlights include models of world-famous monuments and buildings as well as a replica of a Le Corbusier apartment from the Cité Radieuse in Marseille. As a bonus, the museum\'s location in the Palais de Chaillot provides stunning views of the Eiffel Tower with the surrounding city unfolding around it.' },
 
@@ -2075,7 +2070,7 @@ const tours = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.factinate.com/people/facts-queen-marie-therese">factinate.com</a>',
     desc:'This presentation explores the incredible, yet tragic life of Marie-Thérèse Charlotte of France. Marie-Thérèse, first born of Marie-Antoinette and Louis XVI, entered the world under the shadow of expectation—she was not the male heir the monarchy desired, yet quickly became the apple of her father\'s eye. The early loss of two younger siblings foreshadowed a life marked by tragedy, as the French Revolution shattered her world. Against all odds, she escaped the guillotine and, years later, would again walk the halls of Versailles. The presentation traces the extraordinary life of the last Dauphine of France - from her royal childhood to forced exile, where revolution and political upheaval dictated her every move.' },
 
@@ -2089,7 +2084,7 @@ const tours = [
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://madparis.fr/1925-2025-Cent-ans-d-Art-deco">madparis.fr</a> · <a href="https://en.wikipedia.org/wiki/Art_Deco">Wikipedia: Art Deco</a>',
     desc:'This exhibit celebrates the 100th anniversary of the famous 1925 Art déco show in Paris. An aesthetic and artistic trend born before the First World War, Art Deco flourished in the 1920s, coinciding with the emergence of a new way of life. Speed, movement and freedom were now the watchwords of society, breaking with the previous decades. The furniture and objects used the most precious techniques of craftsmanship and were reserved for the wealthiest, without concern for their application to the greater number. Our guide will take us through this exhibition which celebrates the movement in all its facets and contradictions from its beginnings in the 1910s to its contemporary reinterpretations.' },
 
@@ -2104,7 +2099,7 @@ const tours = [
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.musee-moyenage.fr/collection/dossiers-thematiques/huit-questions-sur-le-musee.html">musee-moyenage.fr</a>',
     desc:'Join us as we explore the themes of authenticity, revival and reinvention in this exhibit featuring priceless works of gold, enamel, ivory and textiles from private and public collections around the world. Our guide will lead us as we compare and contrast the new creations from the 19th century plus original objects from the Middle Ages, as well as the counterfeits they inspired. From the 1830s to the First World War, the Paris art market was the epicenter of trade where serious collectors, unscrupulous dealers and elites met. Our guide will walk us through the period when the demand for medieval art exploded and show us all the alluring mix of precious arts collected for this special exhibit.' },
 
@@ -2118,7 +2113,7 @@ const tours = [
     limit:'25', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.musee-orsay.fr/en/whats-on/exhibitions/sargent-paris-years-1874-1884">musee-orsay.fr</a> · <a href="https://en.wikipedia.org/wiki/John_Singer_Sargent">Wikipedia: John Singer Sargent</a>',
     desc:'John Singer Sargent is one of the most famous American artists of his generation. He came to Paris in 1874 at the age of 18 to study with Carolus-Durand, and it was in Paris that he forged his style. He excelled at portraiture and surpassed his teachers and painted on a par with the great masters. His technical skill, vibrant brush stroke, luscious colors and provocative assurance troubled the public but seduced the critics who declared him to be the worthy heir of Velazquez. However, his portrait of Virginie Gautreau created a scandal at the Salon, and Sargent left to work in London. Today that portrait is the pride and joy of the Metropolitain Museum in New York, and it is on display in Paris for the first time since 1884. Our guide will help us understand the climate of the 19th century where society was changing as old European aristocracy mingled with money from the new world.' },
 
@@ -2132,7 +2127,7 @@ const tours = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.musee-orangerie.fr/fr/agenda/visites-et-ateliers/berthe-weill-une-femme-pionniere">musee-orangerie.fr</a>',
     desc:'In 1901 Berthe Weill opened an art gallery in Paris in the Pigalle quarter. She was committed to sponsoring young artists. She sold pictures for Picasso before she even opened her gallery. She was the only one to exhibit Modigliani while he was still alive in 1917. She helped establish Fauvism by regularly showing the works of Matisse\'s students. She showed the Cubists and painters from the school of Paris, fighting against both conservatives and xenophobia. She was also one of the first to show numerous female artists including Suzanne Valadon. In over a hundred shows, she exhibited more than 300 young and upcoming artists, but today she is all but forgotten. Join us for a video presentation of this exhibit currently showing at the Orangerie museum which aims to revive interest in this dynamic gallery owner.' },
 
@@ -2147,7 +2142,7 @@ const tours = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Vincent_van_Gogh">Wikipedia: Vincent van Gogh</a>',
     desc:'We hope you will join us for a 4-part series of artists who were known for their many self portraits! Van Gogh, Edvard Munch, Frida Kahlo, and Artemisia Gentileschi. There are many reasons why artists do these self portraits: because they themselves are free models, because they want to show their skills in the genre of portraiture to potential patrons, they do it as a marketing tool to spread their fame, but for some it is also done in an almost therapeutic way. The first session covers Vincent Van Gogh: within the space of just 3.5 years, Dutch artist Vincent van Gogh created 35 self portraits. Convinced he would become a portraitist, he set about teaching himself by using his own likeness. This talk will show how these self-portraits were essential in the evolution of Van Gogh\'s art and development as an artist.' },
 
@@ -2161,7 +2156,7 @@ const tours = [
     limit:'20', walk_level:'Easy, a little bit long, few staircases',
     walk_dots: [true,true,false,false,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Ann%C3%A9es_folles">Wikipedia: Années folles</a> · <a href="https://autour-de-paris.com/dossiers/que-reste-t-il-du-montparnasse-boheme-des-annees-20">autour-de-paris.com</a> · <a href="https://www.bbc.co.uk/history/historic_figures/moulin_jean.shtml">BBC: Jean Moulin</a>',
     desc:'This tour is set in the vibrant Montparnasse artists\' district, where our expert guide will show us two exclusive home-ateliers. We\'ll start at a spectacular 1930s Art Deco building, where an acclaimed international photographer opens her remarkable duplex workshop—the only entirely original one remaining in the building. We\'ll see her work and collection and hear the fascinating story of her apartment, once the Parisian hideout of WWII resistance hero Jean Moulin. We\'ll then head to the legendary brasserie Le Bullier for lunch (on your own, not included) before walking to our next studio for a rare glimpse into the life and work of a pioneering female sculptor. Her granddaughter will guide us through the space, sharing the artist\'s life, her mastery of cement sculpture, and her evolution alongside other Montparnasse masters. Her work is displayed as in a museum and is also available for purchase.' },
 
@@ -2175,7 +2170,7 @@ const tours = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Edith_Piaf">Wikipedia: Edith Piaf</a> · <a href="https://www.ericjohnkaiser.com">ericjohnkaiser.com</a>',
     desc:'Édith Piaf is one of France\'s most iconic singers, known for her powerful voice and deeply emotional songs. Born in Paris in 1915, she overcame a difficult childhood to become the voice of French chanson. Her music explores themes of love, loss, and longing, with timeless classics like La Vie en Rose, Non, je ne regrette rien, and Hymne à l\'amour. Often called "the Little Sparrow," Piaf left a lasting mark on French culture and the world. Join us as our guide pays tribute to Édith Piaf in words and entertains us with her unforgettable songs and talks about her unique life and legacy.' },
 
@@ -2190,7 +2185,7 @@ const tours = [
     limit:'10 per session maximum', walk_level:'In person lecture',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'',
     desc:'"A childhood passion was re-awakened some 30 years ago in Normandy when I came across tiny pyritized ammonites in clay beds on the beach. The spell was cast, and over the years my collection has expanded with fossils dating back to the Jurassic Period. I have also developed links with the paleontological world and like-minded fossil geeks which I will tell you about. You are invited to come and see some of my treasures recovered from many stormy days tramping in muddy fields, on mountains and sea cliffs in France. My collection mostly centres on Jurassic ammonites from Normandy and Paleolithic stone tools from a quarry near Paris. A self-confessed amateur fossil hunter, I will try to communicate the wonder of my finds, the thrill of the hunt, and what these petrified objects tell us about the world as it used to be." – Our expert guide' },
 
@@ -2204,7 +2199,7 @@ const tours = [
     limit:'25+', walk_level:'Café Lecture',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://parisianfields.com/2014/03/09/paris-bridges-mirrors-of-history/">parisianfields.com</a> · <a href="https://www.parisinsidersguide.com/paris-bridges.html">parisinsidersguide.com</a>',
     desc:'Discover the hidden history of Paris\'s iconic bridges in this captivating Café Lecture. This isn\'t just a list of famous landmarks; it\'s a journey through centuries of architectural marvels and untold stories. We\'ll explore the city\'s evolution, from the medieval bridges once lined with houses to the stunning structures that stand today. Beyond their beauty, these bridges are silent witnesses to Parisian life and innovation. You\'ll learn about bridges that were never built, and hear fascinating anecdotes about the people and events that shaped them. From the Pont de la Concorde, built with stones from the demolished Bastille, to the double-decker Pont de Bir-Hakeim that carries both cars and the Metro, each bridge tells a unique tale of fashion, technology, and endless expansion. Coffee/Tea and Dessert included!' },
 
@@ -2218,7 +2213,7 @@ const tours = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Edvard_Munch">Wikipedia: Edvard Munch</a>',
     desc:'Edvard Munch lived for 80 years, his life covering world wars and huge changes within the European art scene. Most people only know his Scream, painted during a productive but troubled period in his life, living in Germany. Munch strongly believed in the possibility of picking up emotions and the personality of people through the colors they radiate, some of it is shown in the Scream. However, it is in his self portraits that we see him truly trying to make the invisible visible, using colors and lines to show a person\'s inner being - just like the new X-rays could.' },
 
@@ -2233,7 +2228,7 @@ const tours = [
     limit:'20', walk_level:'Easy, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/History_of_writing">Wikipedia: History of writing</a> · <a href="https://www.getty.edu/news/where-did-writing-come-from/">getty.edu</a>',
     desc:'Join us as we return to the Louvre\'s Antiquities section for a much-anticipated tour focused on the Origins of Writing. We will examine how early societies transformed everyday practices—counting, trade, and ritual—into systems of marks that could be read, copied, and preserved. The tour highlights key developments in the evolution of script, from the earliest tokens and pictographs to more complex inscriptions, showing how writing shaped administration, communication, and culture. Through careful attention to the objects themselves, we trace the steps by which abstract signs became tools for organizing information and recording human activity, offering a window into the ancient societies that created them.' },
 
@@ -2247,7 +2242,7 @@ const tours = [
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Notre-Dame_de_Paris">Wikipedia: Notre-Dame de Paris</a>',
     desc:'Join one of our own members, who is a volunteer guide, for a visit to the Cathedral of Notre Dame de Paris, which rose from tragedy to triumph. Beginning with the dramatic fire the night of April 15, 2019, when flames threatened to silence eight centuries of prayer, you will learn about resilience, faith, and the glory of a remarkable reconstruction. We will also see the extraordinary results of the coordination of skilled craftsmen and engineers who rebuilt the cathedral. We will tour the inside, looking at its soaring arches, luminous stained glass, its centuries of history, and discover not only the art and architecture of a world icon but also the spirit of those who rebuilt it through faith and devotion to God and to the Virgin Mary. For those who are interested at the end of our tour inside, our guide can continue outside and also tell us about the façade and its iconography.' },
 
@@ -2261,7 +2256,7 @@ const tours = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Frida_Kahlo">Wikipedia: Frida Kahlo</a>',
     desc:'Kahlo famously stated, "I paint myself because I am so often alone and because I am the subject I know best." Her paintings are like a diary with her most intimate thoughts, fears and desires. Criticized in her time for creating "unsophisticated, naive and primitive" paintings, these works are now seen as hugely imaginative and brave, exploring both her physical and emotional pain, her femininity and Mexican identity.' },
 
@@ -2276,7 +2271,7 @@ const tours = [
     limit:'25+', walk_level:'Medium long city and small park walk',
     walk_dots: [true,true,true,false,false],
     tour_planner:'Dee GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="http://www.baladesauxjardins.fr">www.baladesauxjardins.fr</a>',
     desc:'Our guide will take us through modern Faubourg Saint Martin looking for traces of the past while enjoying the flora and fauna in the canals and gardens that exist today. The faubourgs around Paris were born in the 14th century when artisans, gardeners, and winegrowers began to leave the city. They formed small suburban villages, such as Faubourg Saint Martin, located outside the city walls, and today Paris\' street names recall these ancient villages. In our search for the past, we\'ll visit the Saint Laurent church, founded at the end of the 5th century to welcome pilgrims on their way to the abbey of Saint-Denis. And in contrast, we\'ll visit a new addition to the area, the Marielle Franco garden. Placed along the railway tracks, it offers green relief in an area of steel and stone.' },
 
@@ -2290,7 +2285,7 @@ const tours = [
     limit:'25', walk_level:'Easy, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Place_Vend%C3%B4me">Wikipedia: Place Vendôme</a>',
     desc:'The Vendôme Square is a world-wide reference for its luxury shops. Its story began in the 17th century as one of the royal squares in Paris attracting the greatest noble families of the kingdom. That all changed at the French Revolution, but soon after it became the preferred destination of wealthy tourists and the address for the major jewelry houses. This tour describes the beginnings and the history of Mellerio, Cartier, Van Cleef & Arpels, Boucheron and Chaumet along with the fashion and luxury goods houses like Schiaparelli, Louis Vuitton and Goyard that are still in or near the Place Vendôme.' },
 
@@ -2304,7 +2299,7 @@ const tours = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Artemisia_Gentileschi">Wikipedia: Artemisia Gentileschi</a>',
     desc:'Painting strong, heroic and virtuous women throughout her life, especially Old Testament heroines, Artemisia often inserted her own likeness into the depiction of these saints and heroines. Trying to forge her way in a man\'s world, Artemisia used her art and her likeness to show off her identity as a professional artist challenging traditional gender roles. Becoming the poster girl for a successful, strong and determined woman, her self portraits are also an example for other girls and women, creating a sisterhood of possibility.' },
 
@@ -2319,7 +2314,7 @@ const tours = [
     limit:'25', walk_level:'Easy, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Palais-Royal">Wikipedia: Palais-Royal</a>',
     desc:'The history of the Palais Royal is amazing. As an architectural space, it is the quintessence of French neo-classical values, which have very ancient Latin roots. Built by Cardinal Richelieu in 1628, it was later the place of residence of many royals. In 1780 the space was enclosed by the Duc d\'Orléans, and shops, cafés, restaurants, and other attractions were created. So this lovely space also holds a more ambiguous story about the very lucrative activities of prostitution and gambling. At the time of the Revolution it became a veritable forum where patriots and radicals met and debated before becoming a space for various administrations in the 19th century. Join us as our guide makes this incredible space and its delightful gardens come alive.' },
 
@@ -2333,7 +2328,7 @@ const tours = [
     limit:'20', walk_level:'Medium walk with uphill sections — will be a long walk',
     walk_dots: [true,true,true,true,false],
     tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://observatoiredeparis.psl.eu/le-chateau-de-meudon.html">Observatoire de Paris: Château de Meudon</a> · <a href="https://musee.meudon.fr/">Musée d\'Art et d\'Histoire de Meudon</a>',
     desc:'Join us as we explore the town of Meudon, just southwest of Paris. Our tour, starting at Gare Bellevue, will allow us to take a close look at some unique experimental modern homes from the 1950s, including works by Jean Prouvé and André Bloc, pioneers of prefabrication and sculptural concrete which they tested on these steep plots overlooking Paris. From there we climb to the site of the Château de Meudon, acquired in 1695 for Louis XIV\'s son and destroyed during the Franco-Prussian War in 1871. Today, the Meudon Observatory, home to the Grande Coupole telescope, now crowns the terrace, offering expansive views over Paris and the Seine valley. We will then descend through former royal hunting grounds before concluding our tour in the town center at the Musée d\'Art et d\'Histoire de Meudon, which features works by Rodin, Carpeaux, and 19th-century regional artists.' },
 
@@ -2347,7 +2342,7 @@ const tours = [
     limit:'25+', walk_level:'Easy, few staircases, but will be a long walk in the Parc de Sceaux',
     walk_dots: [true,true,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.theparisianguide.com/s/parc-de-sceaux/">theparisianguide.com</a> · <a href="https://tourisme.sceaux.fr/discover-sceaux">tourisme.sceaux.fr</a>',
     desc:'The Parc de Sceaux was created in the late 17th century as a prestigious country estate by Louis 14th\'s finance minister, Jean-Baptiste Colbert, who brought together some of the greatest artists of the time. André Le Nôtre\'s genius is displayed in the immense perspectives, terraces, water features and parterres that were beautifully restored in 2013. The estate was greatly expanded by Colbert\'s son before changing hands many times. It remained a place of power, productivity and pleasure until the French Revolution. Colbert also commissioned an office outside of the chateau which still stands today with its original allegorical ceiling by Charles Le Brun. Today, the park blends formal French gardens with ecologically-managed forests and open lawns and many classical statues. Join us for a tour of some of the iconic features and perspectives before lunch in the park.' },
 
@@ -2362,7 +2357,7 @@ const tours = [
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA 06 73 31 98 92 · Lee HUBERT 06 75 06 61 99',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://madparis.fr/">madparis.fr</a>',
     desc:'Who hasn\'t dreamed of being transported back in time? At the current show at the Museum of Decorative Arts, it is almost possible since we are invited to visit an 18th century manor dating from 1780. We will see furniture, sculpted wood panels, wallpaper, ceramics, silverware, clothes and accessories, toys and jewelry as we go from room to room. We will be like privileged guests in a house complete with sounds and smells from the time. Join us as our guide takes us through this exhibit with over 550 different objects, mostly from the museum\'s collection, and be transported back to the 18th century.' },
 ];
@@ -2587,15 +2582,28 @@ function closeLoginModal() {
   document.getElementById('pw-input').value = '';
   document.getElementById('pw-error').style.display = 'none';
 }
-function tryLogin() {
-  if (document.getElementById('pw-input').value.trim() === MEMBER_PASSWORD) {
-    isLoggedIn = true;
-    closeLoginModal();
-    showPage('members');
-  } else {
+async function tryLogin() {
+  const pw = document.getElementById('pw-input').value.trim();
+  if (!pw) return;
+  const btn = document.querySelector('#login-modal .modal-submit');
+  if (btn) { btn.disabled = true; btn.textContent = 'Checking…'; }
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=validatemember&pw=' + encodeURIComponent(pw));
+    const data = await resp.json();
+    if (data.success) {
+      isLoggedIn = true;
+      closeLoginModal();
+      showPage('members');
+    } else {
+      document.getElementById('pw-error').style.display = 'block';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  } catch(err) {
+    document.getElementById('pw-error').textContent = 'Could not connect. Please try again.';
     document.getElementById('pw-error').style.display = 'block';
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Enter →'; }
   }
 }
 
@@ -2911,7 +2919,7 @@ function renderMemberTours() {
           // FOOTER
           + '<div class="slide-footer">'
           + '<div class="slide-footer-guide">Tour Planner: <strong>' + t.tour_planner + '</strong></div>'
-          + '<div class="slide-footer-contact">&#128222; Day-of Contact: ' + (t.day_contact||'Paul GAVORA 06 73 31 98 92') + '</div>'
+
           + '</div>';
 
       } else {
@@ -2923,7 +2931,7 @@ function renderMemberTours() {
         '<div class="detail-section"><div class="detail-section-label">Cost</div><div class="detail-section-value"><div class="costs-grid"><div class="cost-item"><div class="ci-label">Regular Members</div><div class="ci-val">' + t.cost_regular + '</div></div><div class="cost-item"><div class="ci-label">Waitlist Members</div><div class="ci-val">' + t.cost_waitlist + '</div></div><div class="cost-item"><div class="ci-label">Guests</div><div class="ci-val">' + t.cost_guest + '</div></div><div class="cost-item"><div class="ci-label">No Show Fee</div><div class="ci-val">' + (t.no_show||'10€') + '</div></div></div><div class="no-show-note">Limit: ' + (t.limit||'N/A') + ' participants.</div></div></div>' +
         '<div class="detail-desc-section"><div class="detail-desc">' + t.desc + '</div>' + (t.note?'<div class="detail-note">&#8505; ' + t.note + '</div>':'') + '</div>' +
         '<div class="detail-guide-section"><div class="guide-photo">' + t.emoji + '</div><div class="guide-info"><h4>Guide: ' + makeGuideLink(t.guide) + '</h4><div class="planner">Tour Planner: ' + t.tour_planner + '</div></div></div>' +
-        '<div class="detail-contact">&#128222; <strong>Day-of Contact:</strong>&nbsp; ' + (t.day_contact||'Paul GAVORA 06 73 31 98 92') + '</div></div>';
+        '</div>';
       }
       list.appendChild(card);
     });
@@ -3102,7 +3110,7 @@ let rosterLoaded = false;
 async function loadRoster() {
   if (rosterLoaded) return;
   try {
-    const resp = await fetch(APPS_SCRIPT_URL + '?action=getroster');
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=getroster&token=' + encodeURIComponent(plannerToken || ''));
     const data = await resp.json();
     if (data.success && data.members && data.members.length > 0) {
       rosterMembers = data.members;
@@ -3394,7 +3402,7 @@ function downloadICS() {
     if (tour.meeting) descLines.push('Meeting point: ' + tour.meeting);
     if (tour.transport) descLines.push('Transport: ' + tour.transport);
     if (tour.guide) descLines.push('Guide: ' + tour.guide);
-    descLines.push('Day-of contact: Paul GAVORA 06 73 31 98 92 / Lee HUBERT 06 75 06 61 99');
+    descLines.push('Day-of contact: See your confirmation email for contact details.');
     descLines.push('Note: Your spot is not guaranteed until you receive a confirmation email.');
     const descStr = descLines.join('\\n').replace(/,/g,'\\,');
     const locationStr = (tour.meeting || 'See ftgparis.com for details').replace(/,/g,'\\,');
@@ -3428,23 +3436,36 @@ function closePlannerLogin() {
   document.getElementById('planner-login-modal').classList.remove('open');
 }
 
-function tryPlannerLogin() {
+async function tryPlannerLogin() {
   const pw = document.getElementById('planner-pw-input').value.trim();
-  const user = PLANNER_USERS[pw];
-  if (user) {
-    plannerUser = user;
-    closePlannerLogin();
-    showPlannerWorkspace();
-    loadSignupLists();
-  } else {
+  if (!pw) return;
+  const btn = document.querySelector('.planner-login-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Checking…'; }
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=validateplanner&token=' + encodeURIComponent(pw));
+    const data = await resp.json();
+    if (data.success) {
+      plannerUser = { name: data.name, role: data.role };
+      plannerToken = pw; // stored for use in subsequent API calls
+      closePlannerLogin();
+      showPlannerWorkspace();
+      loadSignupLists();
+    } else {
+      document.getElementById('planner-pw-error').style.display = 'block';
+      document.getElementById('planner-pw-input').value = '';
+      document.getElementById('planner-pw-input').focus();
+    }
+  } catch(err) {
+    document.getElementById('planner-pw-error').textContent = 'Could not connect. Please try again.';
     document.getElementById('planner-pw-error').style.display = 'block';
-    document.getElementById('planner-pw-input').value = '';
-    document.getElementById('planner-pw-input').focus();
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Enter Workspace →'; }
   }
 }
 
 function plannerLogout() {
   plannerUser = null;
+  plannerToken = null;
   attendanceData = [];
   attendanceTourInfo = {};
   document.getElementById('planner-workspace').style.display = 'none';
@@ -3531,6 +3552,7 @@ async function adminAddPersonSubmit() {
       method: 'POST',
       body: JSON.stringify({
         action: 'signup',
+        token: plannerToken || '',
         firstName: opt.dataset.first,
         lastName:  opt.dataset.last,
         email:     opt.dataset.email,
@@ -4006,7 +4028,7 @@ async function submitCashCount() {
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: 'saveattendance', rows: [row] })
+      body: JSON.stringify({ action: 'saveattendance', token: plannerToken || '', rows: [row] })
     });
     const data = await resp.json();
     if (data.success) {
@@ -4088,7 +4110,7 @@ async function submitAttendance() {
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: 'saveattendance', rows })
+      body: JSON.stringify({ action: 'saveattendance', token: plannerToken || '', rows })
     });
     const data = await resp.json();
     if (data.success) {
@@ -4112,7 +4134,7 @@ async function loadSignupLists() {
   if (!container) return;
   container.innerHTML = '<div class="signup-loading">Loading signup lists…</div>';
   try {
-    const resp = await fetch(APPS_SCRIPT_URL + '?action=getlist');
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=getlist&token=' + encodeURIComponent(plannerToken || ''));
     const data = await resp.json();
     if (!data.success) { container.innerHTML = '<div class="signup-loading">Could not load signups. Try refreshing.</div>'; return; }
     const today = new Date(); today.setHours(0,0,0,0);
@@ -4223,7 +4245,7 @@ async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, las
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action:'confirm', email, tourDate, tourName, firstName: firstName||'', lastName: lastName||'' })
+      body: JSON.stringify({ action:'confirm', token: plannerToken || '', email, tourDate, tourName, firstName: firstName||'', lastName: lastName||'' })
     });
     const data = await resp.json();
     if (data.success) {
@@ -4301,7 +4323,7 @@ async function requestCancel(email, tourDate, tourName, btn) {
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: 'cancel', email, tourDate, tourName, isAdmin: isAdmin })
+      body: JSON.stringify({ action: 'cancel', token: plannerToken || '', email, tourDate, tourName })
     });
     const data = await resp.json();
     if (data.success) {
