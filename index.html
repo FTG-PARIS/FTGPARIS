@@ -3764,15 +3764,12 @@ function renderMobileAttendance() {
 
     // Contact info block — phone and email for quick reference
     const guestTag = p.type === 'Guest' ? `<div style="font-size:0.72rem;color:#CE93D8;margin-top:0.15rem;">Guest of ${p.invitedBy||'member'}</div>` : '';
+    // For guests: show placeholder name in header; name editing goes in the body
+    const guestDisplayName = (p.firstName && !p.firstName.includes("'s Guest"))
+      ? p.lastName + ', ' + p.firstName
+      : 'Guest of ' + (p.invitedBy || 'member');
     const nameDisplay = p.type === 'Guest'
-      ? `<div style="display:flex;gap:0.4rem;margin-bottom:0.15rem;">
-           <input type="text" value="${p.firstName}" placeholder="First name"
-                  style="background:#1a202c;border:1px solid #CE93D8;border-radius:4px;color:#fff;padding:0.2rem 0.5rem;font-size:0.95rem;font-weight:700;width:50%;"
-                  oninput="attendanceData[${i}].firstName=this.value">
-           <input type="text" value="${p.lastName}" placeholder="Last name"
-                  style="background:#1a202c;border:1px solid #CE93D8;border-radius:4px;color:#fff;padding:0.2rem 0.5rem;font-size:0.95rem;font-weight:700;width:50%;"
-                  oninput="attendanceData[${i}].lastName=this.value">
-         </div>${guestTag}`
+      ? `<div class="mob-person-name" style="color:#CE93D8;">${guestDisplayName}${guestTag}</div>`
       : `<div class="mob-person-name">${p.lastName}, ${p.firstName}${guestTag}</div>`;
     const contactBlock = `
       <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:0.5rem 0.7rem;margin-bottom:0.6rem;font-size:0.82rem;">
@@ -3787,6 +3784,15 @@ function renderMobileAttendance() {
           : '<div style="color:rgba(255,255,255,0.3);">📞 No phone on file</div>'}
         ${p.email ? `<div>✉️ <a href="mailto:${p.email}" style="color:#81C784;text-decoration:none;">${p.email}</a></div>` : ''}
         ${p.type === 'Guest' ? `
+          <div style="margin-top:0.5rem;color:rgba(255,255,255,0.5);font-size:0.78rem;">Guest name:</div>
+          <div style="display:flex;gap:0.3rem;margin-top:0.2rem;">
+            <input type="text" placeholder="First name" value="${(p.firstName||'').includes("'s Guest") ? '' : (p.firstName||'')}"
+                   style="flex:1;padding:0.35rem 0.5rem;background:#1a202c;border:1px solid #CE93D8;border-radius:4px;color:#fff;font-size:0.88rem;"
+                   oninput="attendanceData[${i}].firstName=this.value;document.getElementById('mob-person-name-${i}')&&(document.getElementById('mob-person-name-${i}').textContent=this.value+' '+(attendanceData[${i}].lastName||''))">
+            <input type="text" placeholder="Last name" value="${(p.lastName||'').includes("'s Guest") ? '' : (p.lastName||'')}"
+                   style="flex:1;padding:0.35rem 0.5rem;background:#1a202c;border:1px solid #CE93D8;border-radius:4px;color:#fff;font-size:0.88rem;"
+                   oninput="attendanceData[${i}].lastName=this.value">
+          </div>
           <div style="margin-top:0.4rem;color:rgba(255,255,255,0.5);font-size:0.78rem;">Update guest contact:</div>
           <input type="text" placeholder="Phone" value="${p.phone||''}"
                  style="width:100%;margin-top:0.2rem;padding:0.3rem;background:#1a202c;border:1px solid #3a4455;border-radius:4px;color:#fff;font-size:0.82rem;"
@@ -4153,7 +4159,7 @@ async function renderVideoLog() {
 
   const today = new Date(); today.setHours(0,0,0,0);
   // Show video tours from past 30 days through future
-  const videoTours = (window.tours || []).filter(t => {
+  const videoTours = (tours || []).filter(t => {
     if (t.type !== 'video' || t.cancelled) return false;
     const d = new Date(t.date); d.setHours(0,0,0,0);
     const cutoff = new Date(d); cutoff.setDate(cutoff.getDate() + 30);
@@ -4552,7 +4558,7 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
       statusCell = '<span style="font-size:0.82rem;color:rgba(255,255,255,0.6);">Signed Up</span>';
       if (isAdmin) statusCell += ' <button class="confirm-btn" onclick="adminConfirmSignup(this,\''+s.email.replace(/'/g,"\\'")+'\',\''+tourDate+'\',\''+tourName.replace(/'/g,"\\'")+'\',\''+(s.firstName||'').replace(/'/g,"\\'")+'\',\''+(s.lastName||'').replace(/'/g,"\\'")+'\')">✓ Confirm</button>';
     }
-    html += '<tr class="' + (isCancelled ? 'cancelled-signup' : '') + '" data-isguest="' + (isGuest ? '1' : '0') + '" data-status="' + s.status + '">' +
+    html += '<tr class="' + (isCancelled ? 'cancelled-signup' : '') + '" data-isguest="' + (isGuest ? '1' : '0') + '" data-status="' + s.status + '" data-extradue="' + (s.extraDue||0) + '" data-extrareason="' + (s.extraReason||'').replace(/"/g,'&quot;') + '" data-email="' + (s.email||'').replace(/"/g,'&quot;') + '">' +
       '<td>' + (s.firstName || '') + '</td><td>' + (s.lastName || '') + '</td><td>' + (s.phone || '<span style="color:#aaa;font-size:0.8rem;">no phone</span>') + '</td>' +
       '<td>' + typeAbbr(s.memberType) + '</td>' +
       '<td>' + (s.invitedBy ? '<span style="font-size:0.8rem;color:#CE93D8;">of ' + s.invitedBy + '</span>' : (s.guests > 0 ? '+' + s.guests + ' guest' + (s.guests>1?'s':'') : '—')) + '</td>' +
@@ -4626,6 +4632,14 @@ async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, las
 async function adminUpdateExtraDue(input, email, tourDate, tourName) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
   const amount = parseFloat(input.value) || 0;
+  // Update the row data-attribute immediately so scraper picks it up on Mark Ready
+  const row = input.closest('tr');
+  if (row) row.setAttribute('data-extradue', amount);
+  // Also update attendanceData in memory if tour already marked ready (live-updates mobile view)
+  if (attendanceData && attendanceData.length) {
+    const match = attendanceData.find(p => (p.email||'').toLowerCase() === email.toLowerCase());
+    if (match) { match.extraDue = amount; renderMobileAttendance(); }
+  }
   input.style.borderColor = '#D4AF37';
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
@@ -4669,12 +4683,15 @@ function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
     const guestCell = cells[4].textContent.trim();
     const guestMatch = guestCell.match(/\+(\d+)/);
     const guestCount = guestMatch ? parseInt(guestMatch[1]) : 0;
+    const extraDue = parseFloat(row.getAttribute('data-extradue')) || 0;
+    const extraReason = row.getAttribute('data-extrareason') || '';
     signups.push({
       firstName, lastName, email,
       membershipType: memberType,
       memberType: memberType,
       guests: guestCount,
-      status: isGuest ? 'Signed Up' : 'Confirmed'
+      status: isGuest ? 'Signed Up' : 'Confirmed',
+      extraDue, extraReason
     });
     // Synthesise a row for each guest this member brought
     if (guestCount > 0 && !isGuest) {
