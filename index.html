@@ -263,10 +263,14 @@
   .mob-att-cash-label { font-size:0.65rem; color:rgba(255,255,255,0.55); text-transform:uppercase; }
 
   /* MOBILE PERSON ROW */
-  .mob-person { background:#1e2533; border-radius:8px; margin-bottom:0.5rem; overflow:hidden; border:2px solid transparent; transition:border-color 0.2s; }
+  .mob-person { background:#1e2533; border-radius:8px; margin-bottom:0.5rem; overflow:hidden; border:2px solid transparent; transition:border-color 0.2s, background 0.2s; }
   .mob-person.arrived { border-color:#27ae60; }
+  .mob-person.done { background:#152b1a; border-color:#27ae60; }
+  .mob-person.pending-extra { background:#2b1a0e; border-color:#e67e22; }
+  .mob-person.done .mob-person-name { color:#d0e8d4; }
+  .mob-person.pending-extra .mob-person-name { color:#f5d0a8; }
   .mob-person-head { display:flex; align-items:center; padding:0.85rem 1rem; cursor:pointer; gap:0.75rem; }
-  .mob-person-name { flex:1; font-size:1rem; font-weight:700; color:#e2e8f0; }
+  .mob-person-name { flex:1; font-size:1rem; font-weight:700; color:#e2e8f0; transition:color 0.2s; }
   .mob-person-meta { display:flex; flex-direction:column; align-items:flex-end; gap:0.1rem; }
   .mob-person-type { font-size:0.75rem; font-weight:700; }
   .mob-person-fee { font-size:0.85rem; color:#D4AF37; font-weight:700; }
@@ -274,6 +278,38 @@
   .mob-arrive-btn.tapped { background:#27ae60; color:#fff; }
   .mob-person-body { display:none; padding:0.75rem 1rem 1rem; border-top:1px solid #2a3340; background:#161c27; }
   .mob-person-body.open { display:block; }
+  .mob-close-btn { display:block; width:100%; margin-top:0.75rem; padding:0.5rem; background:rgba(255,255,255,0.07); border:1px solid #3a4455; border-radius:6px; color:rgba(255,255,255,0.55); font-size:0.82rem; cursor:pointer; text-align:center; letter-spacing:0.03em; }
+  .mob-close-btn:hover { background:rgba(255,255,255,0.12); color:#fff; }
+
+  /* VIDEO LOG SUB-TAB */
+  .vlog-tour-block { background:#1e2533; border-radius:8px; margin-bottom:1rem; overflow:hidden; }
+  .vlog-tour-head { display:flex; align-items:center; justify-content:space-between; padding:0.9rem 1rem; cursor:pointer; gap:0.75rem; }
+  .vlog-tour-title { font-family:'Playfair Display',serif; color:#FFB74D; font-size:1rem; font-weight:700; }
+  .vlog-tour-date { color:rgba(255,255,255,0.5); font-size:0.8rem; margin-top:0.1rem; }
+  .vlog-tour-badge { font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:10px; font-weight:700; white-space:nowrap; }
+  .vlog-badge-open { background:rgba(255,183,77,0.2); color:#FFB74D; border:1px solid rgba(255,183,77,0.4); }
+  .vlog-badge-done { background:rgba(39,174,96,0.2); color:#27ae60; border:1px solid rgba(39,174,96,0.4); }
+  .vlog-tour-body { display:none; border-top:1px solid #2a3340; padding:1rem; }
+  .vlog-tour-body.open { display:block; }
+  .vlog-name-row { display:flex; gap:0.5rem; align-items:center; margin-bottom:0.4rem; flex-wrap:wrap; }
+  .vlog-name-input { background:#0f1419; border:1px solid #3a4455; color:#fff; padding:0.4rem 0.6rem; border-radius:6px; font-size:0.9rem; flex:1; min-width:120px; position:relative; }
+  .vlog-name-input:focus { border-color:#FFB74D; outline:none; }
+  .vlog-autocomplete { position:absolute; z-index:200; background:#1a202c; border:1px solid #FFB74D; border-radius:6px; width:100%; max-height:180px; overflow-y:auto; box-shadow:0 4px 16px rgba(0,0,0,0.5); }
+  .vlog-ac-item { padding:0.45rem 0.75rem; cursor:pointer; font-size:0.88rem; color:#e2e8f0; border-bottom:1px solid #2a3340; }
+  .vlog-ac-item:last-child { border-bottom:none; }
+  .vlog-ac-item:hover { background:#2d3748; color:#FFB74D; }
+  .vlog-type-pill { font-size:0.72rem; font-weight:700; padding:0.15rem 0.45rem; border-radius:8px; white-space:nowrap; }
+  .vlog-remove-btn { background:none; border:1px solid #3a4455; color:rgba(255,255,255,0.4); border-radius:4px; padding:0.2rem 0.5rem; font-size:0.8rem; cursor:pointer; }
+  .vlog-remove-btn:hover { border-color:#e74c3c; color:#e74c3c; }
+  .vlog-add-row-btn { background:none; border:1px dashed #FFB74D; color:#FFB74D; border-radius:6px; padding:0.4rem 0.8rem; font-size:0.83rem; cursor:pointer; margin-top:0.3rem; width:100%; }
+  .vlog-add-row-btn:hover { background:rgba(255,183,77,0.1); }
+  .vlog-submit-btn { margin-top:1rem; width:100%; padding:0.8rem; background:#FFB74D; color:#1a1a1a; font-weight:800; font-size:0.95rem; border:none; border-radius:8px; cursor:pointer; letter-spacing:0.04em; }
+  .vlog-submit-btn:hover { background:#e6a030; }
+  .vlog-submit-btn:disabled { background:#555; color:#999; cursor:default; }
+  .vlog-attendee-list { margin-bottom:0.5rem; }
+  .vlog-attendee-row { display:flex; align-items:center; gap:0.5rem; padding:0.3rem 0; border-bottom:1px solid #2a3340; font-size:0.88rem; }
+  .vlog-attendee-name { flex:1; color:#e2e8f0; }
+  .vlog-wrap-input { position:relative; flex:1; min-width:120px; }
 
   /* PAYMENT ROWS IN MOBILE */
   .mob-pay-row { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.6rem; flex-wrap:wrap; }
@@ -1680,6 +1716,7 @@
           <button class="planner-subtab active" id="pst-signup"     onclick="plannerSubTabSwitch('signup')">📋 Sign-up Sheet</button>
           <button class="planner-subtab"         id="pst-attendance" onclick="plannerSubTabSwitch('attendance')">📝 Attendance Sheet</button>
           <button class="planner-subtab"         id="pst-mobile"    onclick="plannerSubTabSwitch('mobile')">📱 Mobile Attendance</button>
+          <button class="planner-subtab"         id="pst-videolog"  onclick="plannerSubTabSwitch('videolog')">🎬 Video Log</button>
           <button class="planner-subtab"         id="pst-tool"      onclick="plannerSubTabSwitch('tool')">🗂 Planner Tool</button>
         </div>
 
@@ -1712,6 +1749,14 @@
             <div style="color:rgba(255,255,255,0.5);font-size:0.9rem;font-style:italic;text-align:center;padding:2rem;">
               The mobile attendance view will appear here once a tour is marked Ready for Tour Day.
             </div>
+          </div>
+        </div>
+
+        <!-- SUB-TAB: Video Log -->
+        <div id="planner-sub-videolog" style="display:none;">
+          <div style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-bottom:0.75rem;">Record attendance for video tours after they happen. Type names, then submit to update the Google Sheet.</div>
+          <div id="videolog-container">
+            <div class="signup-loading">Loading video tours…</div>
           </div>
         </div>
 
@@ -1874,9 +1919,12 @@
 // Planner passwords validated server-side — not stored in HTML
 let plannerUser = null; // {name, role} set on planner login
 let plannerToken = null; // raw password sent as token on every API call
-let plannerSubTab = 'signup'; // 'signup' | 'attendance' | 'mobile'
+let plannerSubTab = 'signup'; // 'signup' | 'attendance' | 'mobile' | 'videolog' | 'tool'
 let attendanceData = []; // confirmed list for mobile view
 let attendanceTourInfo = {}; // {name, date, rmFee, wlFee, guestFee}
+let rosterData = []; // loaded from Apps Script for autocomplete
+let videoLogEntries = {}; // key → [{firstName, lastName, memberId, type, email}]
+let videoLogSubmitted = []; // keys already submitted this session
 
 const SARGENT_IMG = 'photos/photo03.jpg';
 const MARIE_THERESE_IMG = 'photos/photo04.jpg';
@@ -3594,12 +3642,13 @@ function showPlannerWorkspace() {
 
 function plannerSubTabSwitch(tab) {
   plannerSubTab = tab;
-  ['signup','attendance','mobile','tool'].forEach(t => {
+  ['signup','attendance','mobile','videolog','tool'].forEach(t => {
     const el = document.getElementById('planner-sub-'+t);
     if (el) el.style.display = t===tab ? 'block' : 'none';
     const btn = document.getElementById('pst-'+t);
     if (btn) btn.classList.toggle('active', t===tab);
   });
+  if (tab === 'videolog') { loadRoster(); renderVideoLog(); }
 }
 
 // --- MARK TOUR READY FOR TOUR DAY (Admin only) ---
@@ -3782,6 +3831,7 @@ function renderMobileAttendance() {
             </div>
           </div>
           <div class="mob-person-total">Collected: <span id="mob-person-total-${i}">€0</span></div>
+          <button class="mob-close-btn" onclick="event.stopPropagation();mobCloseCard(${i})">Close ✕</button>
         </div>
       </div>`;
   }).join('');
@@ -3918,6 +3968,7 @@ function mobTickFee(i) {
   if (!ticked) diffRow.style.display = 'flex';
   mobUpdatePersonTotal(i);
   mobUpdateTotals();
+  if (ticked) mobCheckDone(i);
 }
 
 function mobTickExtra(i) {
@@ -3929,6 +3980,46 @@ function mobTickExtra(i) {
   if (diffRow) diffRow.style.display = ticked ? 'none' : 'flex';
   mobUpdatePersonTotal(i);
   mobUpdateTotals();
+  if (ticked) mobCheckDone(i);
+}
+
+// Check if person is fully processed — if so, auto-close and mark Done
+function mobCheckDone(i) {
+  const p = attendanceData[i];
+  const feeTick = document.getElementById('mob-fee-tick-'+i);
+  const extraTick = document.getElementById('mob-extra-tick-'+i);
+  const feeDone = feeTick && feeTick.classList.contains('ticked');
+  const extraDone = !p.extraDue || (extraTick && extraTick.classList.contains('ticked'));
+  if (feeDone && extraDone) {
+    // Fully processed — close and mark done (green)
+    const body = document.getElementById('mob-body-'+i);
+    const card = document.getElementById('mob-person-'+i);
+    if (body) body.classList.remove('open');
+    if (card) { card.classList.remove('pending-extra'); card.classList.add('done'); }
+  }
+}
+
+// Close button handler — close card, mark state based on what was paid
+function mobCloseCard(i) {
+  const p = attendanceData[i];
+  const feeTick = document.getElementById('mob-fee-tick-'+i);
+  const extraTick = document.getElementById('mob-extra-tick-'+i);
+  const body = document.getElementById('mob-body-'+i);
+  const card = document.getElementById('mob-person-'+i);
+  if (body) body.classList.remove('open');
+  const feeDone = feeTick && feeTick.classList.contains('ticked');
+  const extraDone = !p.extraDue || (extraTick && extraTick.classList.contains('ticked'));
+  if (card) {
+    card.classList.remove('done','pending-extra');
+    if (feeDone && extraDone) {
+      card.classList.add('done');         // green — fully processed
+    } else if (feeDone && p.extraDue && !extraDone) {
+      card.classList.add('pending-extra'); // amber — extra fee not paid
+    } else if (feeDone) {
+      card.classList.add('done');          // tour fee done, no extra owed
+    }
+    // If fee not even ticked, no color change — stays normal or arrived-green border
+  }
 }
 
 function mobUpdatePersonTotal(i) {
@@ -4042,6 +4133,252 @@ async function submitCashCount() {
   }
 }
 
+// ============================================================
+// VIDEO LOG — Post-tour attendance for video tours
+// ============================================================
+
+// State: submitted video tour dates (loaded from Apps Script)
+var videoLogSubmitted = [];
+// Per-tour attendee lists: { [tourKey]: [ {firstName, lastName, memberId, type, email} ] }
+var videoLogEntries = {};
+
+async function renderVideoLog() {
+  const container = document.getElementById('videolog-container');
+  if (!container) return;
+  container.innerHTML = '<div class="signup-loading">Loading…</div>';
+
+  // Get list of already-submitted tours from Apps Script
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=getvideolog&token=' + encodeURIComponent(plannerToken || ''));
+    const data = await resp.json();
+    videoLogSubmitted = (data.submitted || []);
+  } catch(e) {
+    videoLogSubmitted = [];
+  }
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  // Show video tours from past 30 days through future
+  const videoTours = (window.tours || []).filter(t => {
+    if (t.type !== 'video' || t.cancelled) return false;
+    const d = new Date(t.date); d.setHours(0,0,0,0);
+    const cutoff = new Date(d); cutoff.setDate(cutoff.getDate() + 30);
+    return cutoff >= today;
+  }).sort((a,b) => new Date(a.date) - new Date(b.date));
+
+  if (videoTours.length === 0) {
+    container.innerHTML = '<div class="signup-loading">No video tours found for this period.</div>';
+    return;
+  }
+
+  container.innerHTML = '';
+  videoTours.forEach(t => {
+    const key = t.date + '|' + t.name;
+    const isDone = videoLogSubmitted.includes(key);
+    if (!videoLogEntries[key]) videoLogEntries[key] = [];
+    const tourDate = new Date(t.date);
+    const dateStr = tourDate.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'long'});
+    const block = document.createElement('div');
+    block.className = 'vlog-tour-block';
+    block.id = 'vlog-block-' + key.replace(/[^a-zA-Z0-9]/g,'_');
+    const badge = isDone
+      ? '<span class="vlog-tour-badge vlog-badge-done">✓ Submitted</span>'
+      : '<span class="vlog-tour-badge vlog-badge-open">Open</span>';
+    block.innerHTML =
+      '<div class="vlog-tour-head" onclick="this.nextElementSibling.classList.toggle(\'open\')">' +
+        '<div><div class="vlog-tour-title">' + t.name + '</div>' +
+        '<div class="vlog-tour-date">' + dateStr + '</div></div>' +
+        badge +
+      '</div>' +
+      '<div class="vlog-tour-body' + (isDone ? '' : ' open') + '" id="vlog-body-' + key.replace(/[^a-zA-Z0-9]/g,'_') + '">' +
+        buildVideoLogBody(key, t, isDone) +
+      '</div>';
+    container.appendChild(block);
+  });
+}
+
+function buildVideoLogBody(key, tourObj, isDone) {
+  if (isDone) {
+    return '<div style="color:#27ae60;font-size:0.88rem;padding:0.5rem 0;">Attendance submitted. Data is in the Google Sheet.</div>';
+  }
+  const safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');
+  const entries = videoLogEntries[key] || [];
+  let rows = '';
+  const count = Math.max(entries.length + 1, 1); // always show at least 1 empty row
+  for (let i = 0; i < count; i++) {
+    const e = entries[i] || {};
+    rows += buildVlogRow(key, safeKey, i, e);
+  }
+  return `
+    <div id="vlog-rows-${safeKey}" class="vlog-attendee-list">${rows}</div>
+    <button class="vlog-add-row-btn" onclick="vlogAddRow('${key}','${safeKey}')">+ Add another name</button>
+    <div style="color:rgba(255,255,255,0.4);font-size:0.78rem;margin-top:0.5rem;">
+      Type a name to search the roster. Non-members: type freely and press Tab or click away.
+    </div>
+    <button class="vlog-submit-btn" id="vlog-submit-${safeKey}" onclick="vlogSubmit('${key}','${safeKey}')">Mark All as Attended →</button>
+    <div id="vlog-status-${safeKey}" style="margin-top:0.5rem;font-size:0.85rem;"></div>`;
+}
+
+function buildVlogRow(key, safeKey, i, entry) {
+  const firstName = entry.firstName || '';
+  const lastName  = entry.lastName  || '';
+  const memberId  = entry.memberId  || '';
+  const type      = entry.type      || '';
+  const typePill  = type ? `<span class="vlog-type-pill att-type-${type.toLowerCase()}">${type}</span>` : '';
+  return `<div class="vlog-name-row" id="vlog-row-${safeKey}-${i}">
+    <div class="vlog-wrap-input">
+      <input class="vlog-name-input" type="text" placeholder="First name"
+             id="vlog-first-${safeKey}-${i}"
+             value="${firstName}"
+             oninput="vlogAC(this,'${key}',${i},'first')"
+             onblur="vlogHideAC('${safeKey}',${i})"
+             autocomplete="off">
+      <div class="vlog-autocomplete" id="vlog-ac-first-${safeKey}-${i}" style="display:none;"></div>
+    </div>
+    <div class="vlog-wrap-input">
+      <input class="vlog-name-input" type="text" placeholder="Last name"
+             id="vlog-last-${safeKey}-${i}"
+             value="${lastName}"
+             oninput="vlogAC(this,'${key}',${i},'last')"
+             onblur="vlogHideAC('${safeKey}',${i})"
+             autocomplete="off">
+      <div class="vlog-autocomplete" id="vlog-ac-last-${safeKey}-${i}" style="display:none;"></div>
+    </div>
+    <span id="vlog-typepill-${safeKey}-${i}">${typePill}</span>
+    <input type="hidden" id="vlog-memberid-${safeKey}-${i}" value="${memberId}">
+    <input type="hidden" id="vlog-type-${safeKey}-${i}" value="${type}">
+    <input type="hidden" id="vlog-email-${safeKey}-${i}" value="${entry.email||''}">
+    <button class="vlog-remove-btn" onclick="vlogRemoveRow('${key}','${safeKey}',${i})">✕</button>
+  </div>`;
+}
+
+function vlogAddRow(key, safeKey) {
+  if (!videoLogEntries[key]) videoLogEntries[key] = [];
+  const i = document.querySelectorAll('#vlog-rows-'+safeKey+' .vlog-name-row').length;
+  videoLogEntries[key].push({});
+  const container = document.getElementById('vlog-rows-'+safeKey);
+  if (!container) return;
+  const div = document.createElement('div');
+  div.innerHTML = buildVlogRow(key, safeKey, i, {});
+  container.appendChild(div.firstElementChild);
+}
+
+function vlogRemoveRow(key, safeKey, i) {
+  const row = document.getElementById('vlog-row-'+safeKey+'-'+i);
+  if (row) row.remove();
+}
+
+// Autocomplete — search loaded roster
+function vlogAC(input, key, i, field) {
+  const safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');
+  const val = input.value.trim().toLowerCase();
+  const acEl = document.getElementById('vlog-ac-'+field+'-'+safeKey+'-'+i);
+  if (!acEl) return;
+  const roster = rosterMembers || [];
+  if (val.length < 2 || !roster.length) { acEl.style.display='none'; return; }
+  const matches = roster.filter(m => {
+    return (m.firstName||'').toLowerCase().startsWith(val) || (m.lastName||'').toLowerCase().startsWith(val) ||
+           ((m.firstName||'')+' '+(m.lastName||'')).toLowerCase().includes(val);
+  }).slice(0, 8);
+  if (!matches.length) { acEl.style.display='none'; return; }
+  const typeLabel = {RM:'RM',WL:'WL',VM:'VM'};
+  acEl.innerHTML = matches.map(m => {
+    const tl = typeLabel[m.membership] || m.membership;
+    return `<div class="vlog-ac-item" onmousedown="vlogSelectMember(event,'${key}',${i},'${m.firstName.replace(/'/g,"\\'")}','${m.lastName.replace(/'/g,"\\'")}','${m.memberId||''}','${m.membership||''}','${m.email||''}')">${m.firstName} ${m.lastName} <span style="color:#aaa;font-size:0.78rem;">${tl}</span></div>`;
+  }).join('');
+  acEl.style.display = 'block';
+}
+
+function vlogHideAC(safeKey, i) {
+  // Slight delay so mousedown on item fires first
+  setTimeout(() => {
+    ['first','last'].forEach(f => {
+      const el = document.getElementById('vlog-ac-'+f+'-'+safeKey+'-'+i);
+      if (el) el.style.display = 'none';
+    });
+  }, 180);
+}
+
+function vlogSelectMember(event, key, i, firstName, lastName, memberId, memberType, email) {
+  event.preventDefault();
+  const safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');
+  const firstEl = document.getElementById('vlog-first-'+safeKey+'-'+i);
+  const lastEl  = document.getElementById('vlog-last-'+safeKey+'-'+i);
+  const midEl   = document.getElementById('vlog-memberid-'+safeKey+'-'+i);
+  const typeEl  = document.getElementById('vlog-type-'+safeKey+'-'+i);
+  const emailEl = document.getElementById('vlog-email-'+safeKey+'-'+i);
+  const pillEl  = document.getElementById('vlog-typepill-'+safeKey+'-'+i);
+  if (firstEl) firstEl.value = firstName;
+  if (lastEl)  lastEl.value  = lastName;
+  if (midEl)   midEl.value   = memberId;
+  if (typeEl)  typeEl.value  = memberType;
+  if (emailEl) emailEl.value = email;
+  // Determine abbreviated type
+  const abbr = memberType.includes('Regular')?'RM':memberType.includes('Waitlist')?'WL':memberType.includes('Video')?'VM':'';
+  const cls  = abbr==='RM'?'att-type-rm':abbr==='WL'?'att-type-wl':abbr==='VM'?'att-type-vm':'';
+  if (pillEl && abbr) pillEl.innerHTML = `<span class="vlog-type-pill ${cls}">${abbr}</span>`;
+  vlogHideAC(safeKey, i);
+}
+
+async function vlogSubmit(key, safeKey) {
+  const btn = document.getElementById('vlog-submit-'+safeKey);
+  const statusEl = document.getElementById('vlog-status-'+safeKey);
+  // Collect all rows
+  const rowEls = document.querySelectorAll('#vlog-rows-'+safeKey+' .vlog-name-row');
+  const rows = [];
+  const parts = key.split('|');
+  const tourDate = parts[0];
+  const tourName = parts.slice(1).join('|');
+  rowEls.forEach((rowEl, idx) => {
+    const firstEl = rowEl.querySelector('[id^="vlog-first-"]');
+    const lastEl  = rowEl.querySelector('[id^="vlog-last-"]');
+    const midEl   = rowEl.querySelector('[id^="vlog-memberid-"]');
+    const typeEl  = rowEl.querySelector('[id^="vlog-type-"]');
+    const emailEl = rowEl.querySelector('[id^="vlog-email-"]');
+    const first = (firstEl && firstEl.value.trim()) || '';
+    const last  = (lastEl  && lastEl.value.trim())  || '';
+    if (!first && !last) return; // skip blank rows
+    const abbr = (typeEl && typeEl.value) || '';
+    const type = abbr.includes('Regular')?'RM':abbr.includes('Waitlist')?'WL':abbr.includes('Video')?'VM':abbr||'VM';
+    rows.push({
+      date: tourDate, tourName, firstName: first, lastName: last,
+      memberId: (midEl && midEl.value) || '',
+      type, arrived: 'Y', feePaid: 0, extraPaid: 0, extraReason: '',
+      email: (emailEl && emailEl.value) || ''
+    });
+  });
+  if (rows.length === 0) {
+    if (statusEl) { statusEl.style.color='#e74c3c'; statusEl.textContent='Please add at least one name.'; }
+    return;
+  }
+  if (!confirm('Mark ' + rows.length + ' people as attended for:\n' + tourName + ' (' + tourDate + ')\n\nThis will write to the Google Sheet and cannot be undone.')) return;
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+  if (statusEl) { statusEl.style.color='rgba(255,255,255,0.5)'; statusEl.textContent='Saving…'; }
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'savevideolog', token: plannerToken || '', tourKey: key, rows })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      videoLogSubmitted.push(key);
+      const bodyEl = document.getElementById('vlog-body-'+safeKey);
+      if (bodyEl) bodyEl.innerHTML = '<div style="color:#27ae60;font-size:0.88rem;padding:0.5rem 0;">✓ ' + rows.length + ' attendees saved. Data is in the Google Sheet.</div>';
+      // Update badge
+      const blockEl = document.getElementById('vlog-block-'+safeKey);
+      if (blockEl) {
+        const badge = blockEl.querySelector('.vlog-tour-badge');
+        if (badge) { badge.className='vlog-tour-badge vlog-badge-done'; badge.textContent='✓ Submitted'; }
+      }
+    } else {
+      if (btn) { btn.disabled=false; btn.textContent='Mark All as Attended →'; }
+      if (statusEl) { statusEl.style.color='#e74c3c'; statusEl.textContent='Error: '+(data.error||'Unknown error'); }
+    }
+  } catch(err) {
+    if (btn) { btn.disabled=false; btn.textContent='Mark All as Attended →'; }
+    if (statusEl) { statusEl.style.color='#e74c3c'; statusEl.textContent='Could not connect. Please try again.'; }
+  }
+}
+
 function mobWalkinFee(n) {
   const sel = document.getElementById('wi'+n+'-type');
   const feeEl = document.getElementById('wi'+n+'-fee');
@@ -4144,8 +4481,15 @@ async function loadSignupLists() {
       if (!grouped[key]) grouped[key] = { rows: [] };
       grouped[key].rows.push(s);
     });
-    const futureTours = tours.filter(t => !t.cancelled && new Date(t.date) >= today)
-                             .sort((a,b) => new Date(a.date) - new Date(b.date));
+    const futureTours = tours.filter(t => {
+      if (t.cancelled) return false;
+      const d = new Date(t.date); d.setHours(0,0,0,0);
+      if (t.type === 'video') {
+        const cutoff = new Date(d); cutoff.setDate(cutoff.getDate() + 30);
+        return cutoff >= today;
+      }
+      return d >= today;
+    }).sort((a,b) => new Date(a.date) - new Date(b.date));
     if (futureTours.length === 0) { container.innerHTML = '<div class="signup-loading">No upcoming tours.</div>'; return; }
     container.innerHTML = '';
     futureTours.forEach(t => {
@@ -4185,20 +4529,42 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
   const tooLate = daysOut <= 10;
   const isAdmin = plannerUser && plannerUser.role === 'admin';
 
-  let html = '<table class="signup-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Phone</th><th>Type</th><th>Guests/Guest of</th><th>Signed Up</th><th>Status</th><th></th></tr></thead><tbody>';
+  // Abbreviate member type for display
+  function typeAbbr(mt) {
+    if (!mt) return '—';
+    if (mt.includes('Regular')) return '<span class="att-type-rm">RM</span>';
+    if (mt.includes('Waitlist')) return '<span class="att-type-wl">WL</span>';
+    if (mt.includes('Video'))   return '<span class="att-type-vm">VM</span>';
+    if (mt.includes('Guest'))   return '<span class="att-type-guest">Guest</span>';
+    return mt;
+  }
+
+  let html = '<table class="signup-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Phone</th><th>Type</th><th>Guests/Guest of</th><th>Signed Up</th><th>Status</th><th>Extra Due</th><th></th></tr></thead><tbody>';
   signups.forEach((s, idx) => {
     const isCancelled = s.status.indexOf('Cancel') !== -1;
     const isConfirmed = s.status === 'Confirmed';
     const isGuest = (s.memberType || '').includes('Guest');
+    const extraDueCell = isAdmin
+      ? '<input class="att-extra-input" type="number" min="0" placeholder="0" value="' + (s.extraDue||'') + '" style="width:60px;" onchange="adminUpdateExtraDue(this,\'' + s.email.replace(/'/g,"\\'") + '\',\'' + tourDate + '\',\'' + tourName.replace(/'/g,"\\'") + '\')">'
+      : (s.extraDue ? '<span style="color:#D4AF37;font-weight:700;">€' + s.extraDue + '</span>' : '—');
+    // Status display: compact badge
+    let statusCell = '';
+    if (isConfirmed) {
+      statusCell = '<span class="confirmed-badge">✓</span>';
+    } else if (isCancelled) {
+      statusCell = '<span style="color:#e74c3c;font-size:0.78rem;">' + s.status + '</span>';
+    } else {
+      statusCell = '<span style="font-size:0.82rem;color:rgba(255,255,255,0.6);">Signed Up</span>';
+      if (isAdmin) statusCell += ' <button class="confirm-btn" onclick="adminConfirmSignup(this,\''+s.email.replace(/'/g,"\\'")+'\',\''+tourDate+'\',\''+tourName.replace(/'/g,"\\'")+'\',\''+(s.firstName||'').replace(/'/g,"\\'")+'\',\''+(s.lastName||'').replace(/'/g,"\\'")+'\')">✓ Confirm</button>';
+    }
     html += '<tr class="' + (isCancelled ? 'cancelled-signup' : '') + '" data-isguest="' + (isGuest ? '1' : '0') + '" data-status="' + s.status + '">' +
       '<td>' + (s.firstName || '') + '</td><td>' + (s.lastName || '') + '</td><td>' + (s.phone || '<span style="color:#aaa;font-size:0.8rem;">no phone</span>') + '</td>' +
-      '<td>' + (s.memberType === 'Guest' ? '<span style="color:#CE93D8">Guest</span>' : s.memberType) + '</td>' +
+      '<td>' + typeAbbr(s.memberType) + '</td>' +
       '<td>' + (s.invitedBy ? '<span style="font-size:0.8rem;color:#CE93D8;">of ' + s.invitedBy + '</span>' : (s.guests > 0 ? '+' + s.guests + ' guest' + (s.guests>1?'s':'') : '—')) + '</td>' +
       '<td>' + s.signupDate + '</td>' +
-      '<td>' + s.status + (isAdmin && !isCancelled && !isConfirmed ?
-        ' <button class="confirm-btn" onclick="adminConfirmSignup(this,\''+s.email.replace(/'/g,"\\'")+'\',\''+tourDate+'\',\''+tourName.replace(/'/g,"\\'")+'\',\''+( s.firstName||'').replace(/'/g,"\\'")+'\',\''+( s.lastName||'').replace(/'/g,"\\'")+'\')">✓ Confirm</button>' :
-        (isConfirmed ? ' <span class="confirmed-badge">✓ Confirmed</span>' : '')) +
-      '</td><td>';
+      '<td>' + statusCell + '</td>' +
+      '<td>' + extraDueCell + '</td>' +
+      '<td>';
     if (!isCancelled) {
       // Admin can always remove; members get cancel button
       if (isAdmin) {
@@ -4250,7 +4616,7 @@ async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, las
     const data = await resp.json();
     if (data.success) {
       const td = btn.closest('td');
-      if (td) td.innerHTML = '<span class="confirmed-badge">✓ Confirmed</span>';
+      if (td) td.innerHTML = '<span class="confirmed-badge">✓</span>';
       setTimeout(() => loadSignupLists(), 800);
     } else {
       btn.disabled = false; btn.textContent = '✓ Confirm';
@@ -4259,6 +4625,29 @@ async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, las
   } catch(err) {
     btn.disabled = false; btn.textContent = '✓ Confirm';
     alert('Could not connect. Please try again.');
+  }
+}
+
+async function adminUpdateExtraDue(input, email, tourDate, tourName) {
+  if (!plannerUser || plannerUser.role !== 'admin') return;
+  const amount = parseFloat(input.value) || 0;
+  input.style.borderColor = '#D4AF37';
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'updateextradue', token: plannerToken || '', email, tourDate, tourName, extraDue: amount })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      input.style.borderColor = '#27ae60';
+      setTimeout(() => { input.style.borderColor = ''; }, 1500);
+    } else {
+      input.style.borderColor = '#e74c3c';
+      alert('Could not save extra due: ' + (data.error || 'Unknown error'));
+    }
+  } catch(err) {
+    input.style.borderColor = '#e74c3c';
+    alert('Could not connect.');
   }
 }
 
