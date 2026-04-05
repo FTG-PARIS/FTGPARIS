@@ -4427,7 +4427,9 @@ async function submitAttendance() {
     else if (extraDiffInput && extraDiffInput.value) extraPaid = parseFloat(extraDiffInput.value)||0;
     if (unexpAmt && unexpAmt.value) { extraPaid += parseFloat(unexpAmt.value)||0; if (unexpReason && unexpReason.value) extraReason = (extraReason ? extraReason+'; ' : '') + unexpReason.value; }
     return { date: ti.date, tourName: ti.name, firstName: p.firstName, lastName: p.lastName,
-             memberId: p.id||'', type: p.type, arrived, feePaid, extraPaid, extraReason };
+             memberId: p.id||'', type: p.type, arrived, feePaid,
+             extraDue: p.extraDue||0, extraPaid, extraReason,
+             email: p.email||'', phone: p.phone||'' };
   });
 
   // Walk-ins
