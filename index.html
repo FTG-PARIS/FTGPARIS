@@ -4137,11 +4137,6 @@ async function submitCashCount() {
 // VIDEO LOG — Post-tour attendance for video tours
 // ============================================================
 
-// State: submitted video tour dates (loaded from Apps Script)
-var videoLogSubmitted = [];
-// Per-tour attendee lists: { [tourKey]: [ {firstName, lastName, memberId, type, email} ] }
-var videoLogEntries = {};
-
 async function renderVideoLog() {
   const container = document.getElementById('videolog-container');
   if (!container) return;
