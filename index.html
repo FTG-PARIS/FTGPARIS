@@ -3191,6 +3191,8 @@ async function openReserveModal() {
   document.getElementById('rm-type-row').style.display = 'none';
   document.getElementById('rm-tours-head').style.display = 'none';
   document.getElementById('rm-submit-btn').style.display = 'none';
+  document.getElementById('rm-submit-btn').disabled = false;
+  document.getElementById('rm-submit-btn').textContent = 'Reserve My Spot(s)';
   document.getElementById('rm-not-found').style.display = 'none';
   document.getElementById('rm-guarantee-notice').style.display = 'none';
   document.getElementById('rm-guidelines-check').style.display = 'none';
