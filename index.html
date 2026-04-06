@@ -3652,9 +3652,9 @@ function plannerSubTabSwitch(tab) {
 }
 
 // --- MARK TOUR READY FOR TOUR DAY (Admin only) ---
-function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups) {
+function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, signups) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
-  attendanceTourInfo = {name: tourName, date: tourDate, rmFee: rmFee, wlFee: wlFee, guestFee: guestFee};
+  attendanceTourInfo = {name: tourName, date: tourDate, rmFee: rmFee, wlFee: wlFee, guestFee: guestFee, tourType: tourType || 'walking'};
   // Build attendanceData from confirmed signups + all non-cancelled guests
   attendanceData = signups
     .filter(s => {
@@ -3865,6 +3865,13 @@ function renderMobileAttendance() {
         <span class="mob-diff-label" style="font-size:0.8rem;">Extra:</span>
         <input class="mob-diff-input" type="number" placeholder="€" id="wi${n}-extra">
         <input class="mob-diff-reason" type="text" placeholder="reason" id="wi${n}-reason">
+      </div>
+      <div class="mob-walkin-row" style="margin-top:0.4rem;">
+        <input class="mob-walkin-input" type="email" placeholder="Email" id="wi${n}-email" style="flex:2;">
+        <input class="mob-walkin-input" type="tel" placeholder="Phone" id="wi${n}-phone" style="flex:1;">
+      </div>
+      <div class="mob-walkin-row">
+        <input class="mob-walkin-input" type="text" placeholder="Invited by (e.g. Barb, Facebook, Insta)" id="wi${n}-invited" style="flex:1;">
       </div>
     </div>`).join('');
 
@@ -4341,10 +4348,9 @@ async function vlogSubmit(key, safeKey) {
     const abbr = (typeEl && typeEl.value) || '';
     const type = abbr.includes('Regular')?'RM':abbr.includes('Waitlist')?'WL':abbr.includes('Video')?'VM':abbr||'VM';
     rows.push({
-      date: tourDate, tourName, firstName: first, lastName: last,
+      date: tourDate, tourName, tourType: 'video', firstName: first, lastName: last,
       memberId: (midEl && midEl.value) || '',
-      type, arrived: 'Y', feePaid: 0, extraPaid: 0, extraReason: '',
-      email: (emailEl && emailEl.value) || ''
+      type, arrived: 'Y', feePaid: 0, extraPaid: 0, extraReason: ''
     });
   });
   if (rows.length === 0) {
@@ -4426,10 +4432,10 @@ async function submitAttendance() {
     if (extraTick && extraTick.classList.contains('ticked')) extraPaid = p.extraDue||0;
     else if (extraDiffInput && extraDiffInput.value) extraPaid = parseFloat(extraDiffInput.value)||0;
     if (unexpAmt && unexpAmt.value) { extraPaid += parseFloat(unexpAmt.value)||0; if (unexpReason && unexpReason.value) extraReason = (extraReason ? extraReason+'; ' : '') + unexpReason.value; }
-    return { date: ti.date, tourName: ti.name, firstName: p.firstName, lastName: p.lastName,
+    return { date: ti.date, tourName: ti.name, tourType: ti.tourType||'', firstName: p.firstName, lastName: p.lastName,
              memberId: p.id||'', type: p.type, arrived, feePaid,
              extraDue: p.extraDue||0, extraPaid, extraReason,
-             email: p.email||'', phone: p.phone||'' };
+             phone: p.phone||'', invitedBy: p.invitedBy||'' };
   });
 
   // Walk-ins
@@ -4443,8 +4449,12 @@ async function submitAttendance() {
     const feePaid = (tick && tick.classList.contains('ticked')) ? (parseFloat((feeEl||{}).textContent.replace('€',''))||0) : 0;
     const extra = parseFloat((document.getElementById('wi'+n+'-extra')||{}).value)||0;
     const reason = (document.getElementById('wi'+n+'-reason')||{}).value||'';
-    rows.push({ date: ti.date, tourName: ti.name, firstName: first, lastName: last,
-                memberId: 'WALKIN', type: type||'Guest', arrived: 'Y', feePaid, extraPaid: extra, extraReason: reason });
+    const wiEmail    = (document.getElementById('wi'+n+'-email')||{}).value||'';
+    const wiPhone    = (document.getElementById('wi'+n+'-phone')||{}).value||'';
+    const wiInvited  = (document.getElementById('wi'+n+'-invited')||{}).value||'';
+    rows.push({ date: ti.date, tourName: ti.name, tourType: ti.tourType||'', firstName: first, lastName: last,
+                memberId: 'WALKIN', type: type||'Guest', arrived: 'Y', feePaid, extraPaid: extra, extraReason: reason,
+                email: wiEmail, phone: wiPhone, invitedBy: wiInvited });
   });
 
   try {
@@ -4598,10 +4608,11 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
     html += '<span style="color:rgba(255,255,255,0.5);font-size:0.8rem;">'+countInfo+'</span>';
     // Parse numeric fees from tour data (e.g. "10€" → 10)
     const parseFee = s => { const m = (s||'').match(/\d+/); return m ? parseInt(m[0]) : 0; };
-    const rmFee  = tourObj ? parseFee(tourObj.cost_regular)  : 10;
-    const wlFee  = tourObj ? parseFee(tourObj.cost_waitlist) : 20;
-    const gstFee = tourObj ? parseFee(tourObj.cost_guest)    : 25;
-    html += '<button class="ready-tour-btn" onclick="adminReadyForTourDay(\''+safeName+'\',\''+safeDate+'\','+rmFee+','+wlFee+','+gstFee+',this)">📱 Mark Ready for Tour Day</button>';
+    const rmFee   = tourObj ? parseFee(tourObj.cost_regular)  : 10;
+    const wlFee   = tourObj ? parseFee(tourObj.cost_waitlist) : 20;
+    const gstFee  = tourObj ? parseFee(tourObj.cost_guest)    : 25;
+    const tourType = tourObj ? (tourObj.type || 'walking') : 'walking';
+    html += '<button class="ready-tour-btn" onclick="adminReadyForTourDay(\''+safeName+'\',\''+safeDate+'\','+rmFee+','+wlFee+','+gstFee+',\''+tourType+'\',this)">📱 Mark Ready for Tour Day</button>';
     html += '</div>';
   }
 
@@ -4662,7 +4673,7 @@ async function adminUpdateExtraDue(input, email, tourDate, tourName) {
   }
 }
 
-function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
+function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, btn) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
   // Scrape the rendered table
   const rows = btn.closest('div').previousElementSibling
@@ -4712,7 +4723,7 @@ function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, btn) {
       }
     }
   });
-  markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, signups);
+  markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, signups);
   btn.textContent = '✅ Ready! Opening attendance view…';
   btn.disabled = true;
 }
