@@ -1092,7 +1092,8 @@
 <nav>
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <span id="nav-site-title">Fridays in Paris</span>
-    <span>2025–2026</span>
+    <span id="nav-site-year">2025–2026</span>
+    <span id="nav-member-email" style="display:none;font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.7);font-family:'DM Sans',sans-serif;text-transform:none;">ftg.membership@gmail.com</span>
   </a>
   <ul class="nav-links">
     <li><button class="visitors-nav-btn" onclick="showPublicTab('about')">About Us</button></li>
@@ -1172,9 +1173,8 @@
 <!-- MEMBERS PAGE -->
 <div id="page-members" class="page">
   <div id="members-header">
-    <h1>Friday Tour Group 2025&#8211;2026</h1>
-    <p style="margin-bottom:0.25rem;">Full tour details</p>
-    <p style="margin:0;"><a href="mailto:ftg.membership@gmail.com" style="color:rgba(255,255,255,0.9);text-decoration:none;font-weight:600;">ftg.membership@gmail.com</a></p>
+    <h1>Friday Tour Group</h1>
+    <p>Full tour details &nbsp;&middot;&nbsp; Season 2025&#8211;2026</p>
   </div>
   <div class="members-tabs">
     <button class="members-tab active" onclick="membersTab('tours', this)">Tour Details</button>
@@ -2609,6 +2609,9 @@ function showPage(name, fromPopState) {
   if (fn) fn.textContent = onMembers ? 'Friday Tour Group' : 'Fridays in Paris';
   const nt = document.getElementById('nav-site-title');
   if (nt) nt.textContent = onMembers ? 'Friday Tour Group' : 'Fridays in Paris';
+  const ne = document.getElementById('nav-member-email');
+  if (ne) ne.style.display = onMembers ? '' : 'none';
+  if (typeof setFooterEmail === 'function') setFooterEmail(onMembers);
   return false;
 }
 
@@ -3141,11 +3144,17 @@ window.addEventListener('scroll', () => {
   updateFloatingBtn();
 }, { passive: true });
 
-(function() {
-  const u='fridaysinparis', d='gmail.com';
-  const el=document.getElementById('footer-email');
-  if(el) el.innerHTML='<a href="mai'+'lto:'+u+'@'+d+'" style="color:var(--gold);text-decoration:none;">'+u+'@'+d+'</a>';
-})();
+function setFooterEmail(onMembers) {
+  const el = document.getElementById('footer-email');
+  if (!el) return;
+  if (onMembers) {
+    el.innerHTML = '<a href="mailto:ftg.membership@gmail.com" style="color:var(--gold);text-decoration:none;">ftg.membership@gmail.com</a>';
+  } else {
+    const u='fridaysinparis', d='gmail.com';
+    el.innerHTML = '<a href="mai'+'lto:'+u+'@'+d+'" style="color:var(--gold);text-decoration:none;">'+u+'@'+d+'</a>';
+  }
+}
+setFooterEmail(false);
 
 renderPublicCalendar();
 
