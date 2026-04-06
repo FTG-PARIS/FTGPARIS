@@ -1092,8 +1092,7 @@
 <nav>
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <span id="nav-site-title">Fridays in Paris</span>
-    <span id="nav-site-year">2025–2026</span>
-    <span id="nav-member-email" style="display:none;font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.7);font-family:'DM Sans',sans-serif;text-transform:none;">ftg.membership@gmail.com</span>
+    <span>2025–2026</span>
   </a>
   <ul class="nav-links">
     <li><button class="visitors-nav-btn" onclick="showPublicTab('about')">About Us</button></li>
@@ -1240,9 +1239,9 @@
           <div style="font-family:'Playfair Display',serif;font-weight:700;color:#C9A030;font-size:1rem;margin-bottom:1rem;">Why Become a Regular Member?</div>
           <div style="font-size:1rem;color:#2C343E;line-height:1.85;">
             <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Unlimited access</strong> — attend as many tours as you like</div>
-            <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Simple</strong> — just sign up, show up and enjoy</div>
-            <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Value</strong> — high-quality visits at an affordable cost</div>
-            <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Expert Guides</strong> — tours led by specialists that deepen understanding and bring places to life</div>
+            <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Simple</strong> — just show up and enjoy</div>
+            <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Excellent value</strong> — high-quality visits at an affordable cost</div>
+            <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Expert guidance</strong> — tours led by specialists that deepen understanding and bring places to life</div>
             <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Variety</strong> — a different theme or experience almost every week</div>
             <div style="padding:0.4rem 0;"><strong style="color:#1A3A2A;">Community</strong> — a welcoming group of engaged, intellectually curious members</div>
           </div>
@@ -2609,9 +2608,6 @@ function showPage(name, fromPopState) {
   if (fn) fn.textContent = onMembers ? 'Friday Tour Group' : 'Fridays in Paris';
   const nt = document.getElementById('nav-site-title');
   if (nt) nt.textContent = onMembers ? 'Friday Tour Group' : 'Fridays in Paris';
-  const ne = document.getElementById('nav-member-email');
-  if (ne) ne.style.display = onMembers ? '' : 'none';
-  if (typeof setFooterEmail === 'function') setFooterEmail(onMembers);
   return false;
 }
 
@@ -3144,17 +3140,11 @@ window.addEventListener('scroll', () => {
   updateFloatingBtn();
 }, { passive: true });
 
-function setFooterEmail(onMembers) {
-  const el = document.getElementById('footer-email');
-  if (!el) return;
-  if (onMembers) {
-    el.innerHTML = '<a href="mailto:ftg.membership@gmail.com" style="color:var(--gold);text-decoration:none;">ftg.membership@gmail.com</a>';
-  } else {
-    const u='fridaysinparis', d='gmail.com';
-    el.innerHTML = '<a href="mai'+'lto:'+u+'@'+d+'" style="color:var(--gold);text-decoration:none;">'+u+'@'+d+'</a>';
-  }
-}
-setFooterEmail(false);
+(function() {
+  const u='fridaysinparis', d='gmail.com';
+  const el=document.getElementById('footer-email');
+  if(el) el.innerHTML='<a href="mai'+'lto:'+u+'@'+d+'" style="color:var(--gold);text-decoration:none;">'+u+'@'+d+'</a>';
+})();
 
 renderPublicCalendar();
 
@@ -3175,9 +3165,13 @@ async function loadRoster() {
       rosterLoaded = true;
     } else {
       console.warn('Roster returned empty or error:', JSON.stringify(data));
+      rosterMembers = [];
+      rosterLoaded = false;
     }
   } catch(e) {
     console.warn('Roster load failed:', e);
+    rosterMembers = [];
+    rosterLoaded = false;
   }
 }
 
@@ -3195,10 +3189,16 @@ async function openReserveModal() {
   document.getElementById('rm-guidelines-check').style.display = 'none';
   document.getElementById('rm-calendar-btn-wrap').style.display = 'none';
   document.getElementById('rm-status').textContent = '';
-  // Populate dropdown — await roster if not yet loaded
+  // Populate dropdown — always attempt load (resets if previous attempt failed)
   const sel = document.getElementById('rm-member-select');
   sel.innerHTML = '<option value="">— Loading members… —</option>';
   if (!rosterLoaded) await loadRoster();
+  if (!rosterLoaded) {
+    // Second attempt failed — show retry option
+    sel.innerHTML = '<option value="">— Name list unavailable — please try again —</option>';
+    setTimeout(async () => { rosterLoaded = false; await loadRoster(); populateRosterDropdown(); }, 3000);
+    return;
+  }
   populateRosterDropdown();
 }
 
@@ -4520,15 +4520,22 @@ async function loadSignupLists() {
       const signups = (grouped[key] || { rows: [] }).rows;
       const confirmed = signups.filter(s => s.status === 'Confirmed').length;
       const totalActive = signups.filter(s => s.status.indexOf('Cancel') === -1).length;
-      // Count named guest rows (memberType='Guest') PLUS declared guest integers on member rows
-      const guestCount = signups.filter(s => s.status.indexOf('Cancel') === -1).reduce((sum, s) => {
-        if ((s.memberType||'').includes('Guest')) return sum + 1; // named guest row
-        return sum + (parseInt(s.guests) || 0); // declared guests on member row
+      // Count is simply totalActive — every person (member or guest) has their own row.
+      // We no longer use the guests integer on member rows to avoid double-counting.
+      // For legacy rows where guests integer is set but no guest rows exist, add the difference.
+      const namedGuestRows = signups.filter(s => s.status.indexOf('Cancel') === -1 && (s.memberType||'').includes('Guest'));
+      const namedGuestSet = new Set(namedGuestRows.map(s => (s.invitedBy||'').toLowerCase()));
+      const legacyGuestCount = signups.filter(s => s.status.indexOf('Cancel') === -1 && !(s.memberType||'').includes('Guest')).reduce((sum, s) => {
+        // Only count the host's integer if there are NO named guest rows for this host
+        const hostKey = ((s.firstName||'') + ' ' + (s.lastName||'')).toLowerCase().trim();
+        if (namedGuestSet.has(hostKey)) return sum; // named rows exist — don't double count
+        return sum + (parseInt(s.guests) || 0);
       }, 0);
-      const guestLabel = guestCount > 0 ? ' / ' + guestCount + ' guest' + (guestCount>1?'s':'') : '';
-      const countLabel = (confirmed > 0
-        ? confirmed + ' confirmed' + (totalActive > confirmed ? ' / ' + totalActive + ' signed up' : '')
-        : totalActive + ' signed up') + guestLabel;
+      const totalCount = totalActive + legacyGuestCount;
+      const confirmedCount = confirmed;
+      const countLabel = confirmedCount > 0
+        ? confirmedCount + ' confirmed' + (totalCount > confirmedCount ? ' / ' + totalCount + ' total' : '')
+        : totalCount + ' signed up';
       const tourDate = new Date(t.date);
       const dateStr = tourDate.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'long'});
       const daysOut = Math.round((tourDate - today) / (1000*60*60*24));
@@ -4562,7 +4569,19 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
     return mt;
   }
 
-  let html = '<table class="signup-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Phone</th><th>Type</th><th>Guests/Guest of</th><th>Signed Up</th><th>Status</th><th>Extra Due</th><th></th></tr></thead><tbody>';
+  // Unique ID for this tour's email toggle
+  const safeKey = (tourDate + tourName).replace(/[^a-zA-Z0-9]/g,'_');
+  const toggleId = 'email-toggle-' + safeKey;
+
+  let emailToggle = '';
+  if (isAdmin) {
+    emailToggle = '<div style="margin-bottom:0.6rem;display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.7);">' +
+      '<label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;">' +
+      '<input type="checkbox" id="' + toggleId + '" checked style="cursor:pointer;accent-color:#27ae60;">' +
+      '📧 Send confirmation email when confirming</label></div>';
+  }
+
+  let html = emailToggle + '<table class="signup-table"><thead><tr><th>First Name</th><th>Last Name</th><th>Phone</th><th>Type</th><th>Guests/Guest of</th><th>Signed Up</th><th>Status</th><th>Extra Due</th><th></th></tr></thead><tbody>';
   signups.forEach((s, idx) => {
     const isCancelled = s.status.indexOf('Cancel') !== -1;
     const isConfirmed = s.status === 'Confirmed';
@@ -4578,7 +4597,7 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
       statusCell = '<span style="color:#e74c3c;font-size:0.78rem;">' + s.status + '</span>';
     } else {
       statusCell = '<span style="font-size:0.82rem;color:rgba(255,255,255,0.6);">Signed Up</span>';
-      if (isAdmin) statusCell += ' <button class="confirm-btn" onclick="adminConfirmSignup(this,\''+s.email.replace(/'/g,"\\'")+'\',\''+tourDate+'\',\''+tourName.replace(/'/g,"\\'")+'\',\''+(s.firstName||'').replace(/'/g,"\\'")+'\',\''+(s.lastName||'').replace(/'/g,"\\'")+'\')">✓ Confirm</button>';
+      if (isAdmin) statusCell += ' <button class="confirm-btn" onclick="adminConfirmSignup(this,\''+s.email.replace(/'/g,"\\'")+'\',\''+tourDate+'\',\''+tourName.replace(/'/g,"\\'")+'\',\''+(s.firstName||'').replace(/'/g,"\\'")+'\',\''+(s.lastName||'').replace(/'/g,"\\'")+'\',\''+toggleId+'\')">✓ Confirm</button>';
     }
     html += '<tr class="' + (isCancelled ? 'cancelled-signup' : '') + '" data-isguest="' + (isGuest ? '1' : '0') + '" data-status="' + s.status + '" data-extradue="' + (s.extraDue||0) + '" data-extrareason="' + (s.extraReason||'').replace(/"/g,'&quot;') + '" data-email="' + (s.email||'').replace(/"/g,'&quot;') + '">' +
       '<td>' + (s.firstName || '') + '</td><td>' + (s.lastName || '') + '</td><td>' + (s.phone || '<span style="color:#aaa;font-size:0.8rem;">no phone</span>') + '</td>' +
@@ -4629,18 +4648,20 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
   return html;
 }
 
-async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, lastName) {
+async function adminConfirmSignup(btn, email, tourDate, tourName, firstName, lastName, toggleId) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
+  const toggle = toggleId ? document.getElementById(toggleId) : null;
+  const sendEmail = toggle ? toggle.checked : true;
   btn.disabled = true; btn.textContent = 'Saving…';
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action:'confirm', token: plannerToken || '', email, tourDate, tourName, firstName: firstName||'', lastName: lastName||'' })
+      body: JSON.stringify({ action:'confirm', token: plannerToken || '', email, tourDate, tourName, firstName: firstName||'', lastName: lastName||'', sendEmail: sendEmail })
     });
     const data = await resp.json();
     if (data.success) {
       const td = btn.closest('td');
-      if (td) td.innerHTML = '<span class="confirmed-badge">✓</span>';
+      if (td) td.innerHTML = '<span class="confirmed-badge">✓</span>' + (sendEmail && email && email.includes('@') ? ' <span style="font-size:0.7rem;color:#81C784;">📧</span>' : '');
       setTimeout(() => loadSignupLists(), 800);
     } else {
       btn.disabled = false; btn.textContent = '✓ Confirm';
