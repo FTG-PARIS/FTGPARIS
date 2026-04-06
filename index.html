@@ -3158,7 +3158,14 @@ let rosterLoaded = false;
 async function loadRoster() {
   if (rosterLoaded) return;
   try {
-    const resp = await fetch(APPS_SCRIPT_URL + '?action=getroster&token=' + encodeURIComponent(plannerToken || ''));
+    // Use planner token if logged in as planner, otherwise use member password for public Reserve a Spot
+    let url = APPS_SCRIPT_URL + '?action=getroster';
+    if (plannerToken) {
+      url += '&token=' + encodeURIComponent(plannerToken);
+    } else {
+      url += '&pw=' + encodeURIComponent('ftgspring26');
+    }
+    const resp = await fetch(url);
     const data = await resp.json();
     if (data.success && data.members && data.members.length > 0) {
       rosterMembers = data.members;
@@ -4575,7 +4582,7 @@ function buildSignupTable(signups, tourDate, tourName, daysOut, tourObj) {
 
   let emailToggle = '';
   if (isAdmin) {
-    emailToggle = '<div style="margin-bottom:0.6rem;display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:rgba(255,255,255,0.7);">' +
+    emailToggle = '<div style="margin-bottom:0.6rem;display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:#444;background:#f0ede8;padding:0.4rem 0.7rem;border-radius:5px;border:1px solid #ddd;">' +
       '<label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;">' +
       '<input type="checkbox" id="' + toggleId + '" checked style="cursor:pointer;accent-color:#27ae60;">' +
       '📧 Send confirmation email when confirming</label></div>';
