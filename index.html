@@ -3198,6 +3198,9 @@ async function openReserveModal() {
   document.getElementById('rm-guidelines-check').style.display = 'none';
   document.getElementById('rm-calendar-btn-wrap').style.display = 'none';
   document.getElementById('rm-status').textContent = '';
+  document.getElementById('rm-guests').value = '0';
+  document.getElementById('rm-guest-fields').innerHTML = '';
+  document.getElementById('rm-guest-fields').style.display = 'none';
   // Populate dropdown — always attempt load (resets if previous attempt failed)
   const sel = document.getElementById('rm-member-select');
   sel.innerHTML = '<option value="">— Loading members… —</option>';
@@ -3386,6 +3389,9 @@ async function submitReserveForm(e) {
       status.style.color = 'green';
       status.textContent = '✓ ' + data.message;
       document.getElementById('reserve-form').reset();
+      document.getElementById('rm-guests').value = '0';
+      document.getElementById('rm-guest-fields').innerHTML = '';
+      document.getElementById('rm-guest-fields').style.display = 'none';
       document.querySelectorAll('.rm-type-btn').forEach(b => b.classList.remove('selected'));
       document.querySelectorAll('.rm-tour-item').forEach(i => i.classList.remove('rm-selected'));
       document.getElementById('rm-guarantee-notice').style.display = 'none';
