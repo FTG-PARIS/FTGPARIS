@@ -3686,13 +3686,13 @@ function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourTyp
     })
     .map(s => {
       const mtype = s.membershipType || s.type || 'WL';
-      const fee = mtype.includes('Regular') ? rmFee : mtype.includes('Video') ? wlFee : wlFee;
+      const isRM = mtype === 'RM' || mtype.includes('Regular'); const isGuestType = mtype === 'Guest' || mtype.includes('Guest'); const fee = isRM ? rmFee : wlFee;
       return {
         id: s.memberId || '',
         firstName: s.firstName || '',
         lastName: s.lastName || '',
-        type: mtype.includes('Guest') ? 'Guest' : mtype.includes('Regular') ? 'RM' : mtype.includes('Video') ? 'VM' : 'WL',
-        fee: mtype.includes('Guest') ? guestFee : fee,
+        type: isGuestType ? 'Guest' : isRM ? 'RM' : 'WL',
+        fee: isGuestType ? guestFee : fee,
         extraDue: parseFloat(s.extraDue) || 0,
         extraReason: s.extraReason || '',
         email: s.email || '',
