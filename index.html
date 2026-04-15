@@ -1837,7 +1837,7 @@
   <div id="reserve-modal">
     <button class="rm-close" onclick="closeReserveModal(null)" title="Close">&times;</button>
     <h2>Reserve a Spot 🌿</h2>
-    <p class="rm-intro">Select your name from the list. Your details will fill in automatically.</p>
+    <p class="rm-intro">Select your name from the list, then enter your email address below.</p>
     <p style="font-size:0.83rem;color:#555;margin:0 0 0.5rem;line-height:1.5;">📺 <strong>Video tours?</strong> No need to sign up — just mark your calendar and enjoy!</p>
     <p style="font-size:0.83rem;color:#555;margin:0 0 1.2rem;line-height:1.5;">To cancel a tour or remove a guest after signing up, email <a href="mailto:ftg.membership@gmail.com" style="color:#C9A030;text-decoration:underline;">ftg.membership@gmail.com</a></p>
     <form id="reserve-form" onsubmit="submitReserveForm(event)">
@@ -3227,7 +3227,7 @@ function populateRosterDropdown() {
     opt.textContent = m.lastName + ', ' + m.firstName;
     opt.dataset.first = m.firstName;
     opt.dataset.last = m.lastName;
-    opt.dataset.email = m.email;
+    opt.dataset.email = m.email || '';
     opt.dataset.membership = m.membership;
     sel.appendChild(opt);
   });
@@ -3560,7 +3560,7 @@ async function openAdminAddModal() {
       opt.textContent = m.lastName + ', ' + m.firstName;
       opt.dataset.first = m.firstName;
       opt.dataset.last = m.lastName;
-      opt.dataset.email = m.email;
+      opt.dataset.email = m.email || '';
       opt.dataset.membership = m.membership;
       sel.appendChild(opt);
     });
