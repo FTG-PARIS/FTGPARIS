@@ -1837,18 +1837,25 @@
   <div id="reserve-modal">
     <button class="rm-close" onclick="closeReserveModal(null)" title="Close">&times;</button>
     <h2>Reserve a Spot 🌿</h2>
-    <p class="rm-intro">Select your name from the list, then enter your email address below.</p>
-    <p style="font-size:0.83rem;color:#555;margin:0 0 0.5rem;line-height:1.5;">📺 <strong>Video tours?</strong> No need to sign up — just mark your calendar and enjoy!</p>
+<p class="rm-intro">Type the first 3 letters of your last name, then select your name from the list.</p>
+<p style="font-size:0.83rem;color:#555;margin:0 0 0.5rem;line-height:1.5;">📺 <strong>Video tours?</strong> No need to sign up — just mark your calendar and enjoy!</p>
     <p style="font-size:0.83rem;color:#555;margin:0 0 1.2rem;line-height:1.5;">To cancel a tour or remove a guest after signing up, email <a href="mailto:ftg.membership@gmail.com" style="color:#C9A030;text-decoration:underline;">ftg.membership@gmail.com</a></p>
     <form id="reserve-form" onsubmit="submitReserveForm(event)">
       <div class="rm-row">
-        <div class="rm-field" style="flex:1;">
-          <label for="rm-member-select">Your Name *</label>
-          <select id="rm-member-select" required onchange="rosterSelectMember(this)">
-            <option value="">— Loading members… —</option>
-          </select>
-        </div>
-      </div>
+<div class="rm-field" style="flex:1;position:relative;">
+          <label for="rm-name-input">Your Name *</label>
+          <input type="text" id="rm-name-input" autocomplete="off"
+            placeholder="Type the first 3 letters of your last name"
+            oninput="filterRosterTypeahead(this.value)"
+            style="width:100%;padding:0.55rem 0.75rem;border:1px solid #c5b89a;
+                   font-family:'DM Sans',sans-serif;font-size:0.93rem;background:#fff;">
+          <div id="rm-typeahead-list"
+            style="display:none;position:absolute;top:100%;left:0;right:0;
+                   background:#fff;border:1px solid #c5b89a;max-height:220px;
+                   overflow-y:auto;z-index:200;box-shadow:0 4px 12px rgba(0,0,0,0.12);">
+          </div>
+        </div>      
+		</div>
       <div class="rm-row" id="rm-details-row" style="display:none;">
         <div class="rm-field">
           <label>First Name</label>
@@ -3201,77 +3208,77 @@ async function openReserveModal() {
   document.getElementById('rm-guests').value = '0';
   document.getElementById('rm-guest-fields').innerHTML = '';
   document.getElementById('rm-guest-fields').style.display = 'none';
-  // Populate dropdown — always attempt load (resets if previous attempt failed)
-  const sel = document.getElementById('rm-member-select');
-  sel.innerHTML = '<option value="">— Loading members… —</option>';
+// Typeahead — reset input and dropdown list
+  const nameInput = document.getElementById('rm-name-input');
+  if (nameInput) { nameInput.value = ''; }
+  const typeaheadList = document.getElementById('rm-typeahead-list');
+  if (typeaheadList) { typeaheadList.style.display = 'none'; typeaheadList.innerHTML = ''; }
   if (!rosterLoaded) await loadRoster();
   if (!rosterLoaded) {
-    // Second attempt failed — show retry option
-    sel.innerHTML = '<option value="">— Name list unavailable — please try again —</option>';
-    setTimeout(async () => { rosterLoaded = false; await loadRoster(); populateRosterDropdown(); }, 3000);
+    if (nameInput) nameInput.placeholder = 'Name list unavailable — please refresh and try again';
     return;
-  }
-  populateRosterDropdown();
-}
+  }}
 
 function populateRosterDropdown() {
-  const sel = document.getElementById('rm-member-select');
-  if (rosterMembers.length === 0) {
-    sel.innerHTML = '<option value="">— Name list unavailable — please try again —</option>';
-    return;
-  }
-  sel.innerHTML = '<option value="">— Select your name —</option>';
-  rosterMembers.forEach(m => {
-    const opt = document.createElement('option');
-    opt.value = m.memberId;
-    opt.textContent = m.lastName + ', ' + m.firstName;
-    opt.dataset.first = m.firstName;
-    opt.dataset.last = m.lastName;
-    opt.dataset.email = m.email || '';
-    opt.dataset.membership = m.membership;
-    sel.appendChild(opt);
+  // No longer used — replaced by filterRosterTypeahead typeahead
+}
+function filterRosterTypeahead(val) {
+  const list = document.getElementById('rm-typeahead-list');
+  const query = val.trim().toLowerCase();
+  if (query.length < 3) { list.style.display = 'none'; list.innerHTML = ''; return; }
+  const matches = rosterMembers.filter(m => m.lastName.toLowerCase().startsWith(query));
+  if (matches.length === 0) { list.style.display = 'none'; list.innerHTML = ''; return; }
+  list.innerHTML = '';
+  matches.forEach(m => {
+    const item = document.createElement('div');
+    item.textContent = m.lastName + ', ' + m.firstName;
+    item.style.cssText = 'padding:0.55rem 0.75rem;cursor:pointer;font-size:0.93rem;font-family:DM Sans,sans-serif;border-bottom:1px solid #f0ece4;';
+    item.onmouseenter = () => item.style.background = '#f8f5f0';
+    item.onmouseleave = () => item.style.background = '#fff';
+    item.onclick = () => {
+      document.getElementById('rm-name-input').value = m.lastName + ', ' + m.firstName;
+      list.style.display = 'none';
+      rosterSelectMember(m);
+    };
+    list.appendChild(item);
   });
+  list.style.display = 'block';
 }
 
-function rosterSelectMember(sel) {
-  const notFound = document.getElementById('rm-not-found');
+function rosterSelectMember(m) {
+  const notFound   = document.getElementById('rm-not-found');
   const detailsRow = document.getElementById('rm-details-row');
-  const emailRow = document.getElementById('rm-email-row');
-  const typeRow = document.getElementById('rm-type-row');
-  const toursHead = document.getElementById('rm-tours-head');
-  const submitBtn = document.getElementById('rm-submit-btn');
+  const emailRow   = document.getElementById('rm-email-row');
+  const typeRow    = document.getElementById('rm-type-row');
+  const toursHead  = document.getElementById('rm-tours-head');
+  const submitBtn  = document.getElementById('rm-submit-btn');
 
-  if (!sel.value) {
-    detailsRow.style.display = 'none';
-    emailRow.style.display = 'none';
-    typeRow.style.display = 'none';
-    toursHead.style.display = 'none';
-    submitBtn.style.display = 'none';
-    notFound.style.display = 'none';
+  if (!m) {
+    detailsRow.style.display = 'none'; emailRow.style.display = 'none';
+    typeRow.style.display = 'none'; toursHead.style.display = 'none';
+    submitBtn.style.display = 'none'; notFound.style.display = 'none';
     return;
   }
 
-  const opt = sel.options[sel.selectedIndex];
-  const firstName = opt.dataset.first || '';
-  const lastName = opt.dataset.last || '';
-  const email = opt.dataset.email || '';
-  const membership = opt.dataset.membership || '';
+  const firstName  = m.firstName  || '';
+  const lastName   = m.lastName   || '';
+  const email      = m.email      || '';
+  const membership = m.membership || '';
 
-  // Map membership type to display label
   const typeMap = {RM:'Regular Member', WL:'Waitlist Member', VM:'Video Member'};
-  const typeLabel = typeMap[membership] || membership;
-  const typeDisplay = membership === 'RM' ? '🔵 Regular Member' : membership === 'WL' ? '🟢 Waitlist Member' : '🟠 Video Member';
+  const typeLabel   = typeMap[membership] || membership;
+  const typeDisplay = membership === 'RM' ? '🔵 Regular Member'
+                    : membership === 'WL' ? '🟢 Waitlist Member'
+                    : '🟠 Video Member';
 
-  document.getElementById('rm-firstname').value = firstName;
-  document.getElementById('rm-lastname').value = lastName;
-  document.getElementById('rm-email').value = email;
+  document.getElementById('rm-firstname').value   = firstName;
+  document.getElementById('rm-lastname').value    = lastName;
+  document.getElementById('rm-email').value       = email;
   document.getElementById('rm-member-type').value = typeLabel;
   document.getElementById('rm-type-display').textContent = typeDisplay;
 
-  detailsRow.style.display = '';
-  emailRow.style.display = '';
-  typeRow.style.display = '';
-  toursHead.style.display = '';
+  detailsRow.style.display = ''; emailRow.style.display = '';
+  typeRow.style.display = ''; toursHead.style.display = '';
   submitBtn.style.display = '';
   notFound.style.display = 'none';
   document.getElementById('rm-guarantee-notice').style.display = '';
@@ -3279,6 +3286,13 @@ function rosterSelectMember(sel) {
   document.getElementById('rm-calendar-btn-wrap').style.display = 'none';
 }
 
+document.addEventListener('click', function(e) {
+  const list = document.getElementById('rm-typeahead-list');
+  const input = document.getElementById('rm-name-input');
+  if (list && input && !list.contains(e.target) && e.target !== input) {
+    list.style.display = 'none';
+  }
+});
 function closeReserveModal(e) {
   if (e && e.target !== document.getElementById('reserve-modal-overlay')) return;
   document.getElementById('reserve-modal-overlay').classList.remove('open');
