@@ -2626,9 +2626,13 @@ function showPage(name, fromPopState) {
   if (name === 'members') {
     renderMemberTours();
     setTimeout(() => { heroHeight=0; observeCards(); updateDaysCountdown(); }, 100);
-    // Fetch counts in background and patch availability lines when ready
-    tourCountsCache = {};
-    fetchTourCounts().then(function() { patchAvailLines(); });
+    // If counts already loaded (pre-fetched at login), patch immediately.
+    // Otherwise re-fetch (e.g. member navigates away and back).
+    if (Object.keys(tourCountsCache).length > 0) {
+      patchAvailLines();
+    } else {
+      fetchTourCounts().then(function() { patchAvailLines(); });
+    }
   }
   const onMembers = (name === 'members');
   document.getElementById('btn-members').style.display = onMembers ? 'none' : '';
@@ -2673,6 +2677,7 @@ async function tryLogin() {
     const data = await resp.json();
     if (data.success) {
       isLoggedIn = true;
+      fetchTourCounts(); // pre-fetch in background so counts are ready when cards render
       closeLoginModal();
       showPage('members');
     } else {
