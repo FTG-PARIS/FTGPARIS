@@ -916,6 +916,24 @@
   .slide-footer-contact { color: #555; font-size: 0.67rem; }
 
   /* Floating button */
+  /* TOUR AVAILABILITY LINE — member-facing tour cards */
+  .tour-avail-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin: 0.6rem 0 0.8rem;
+    padding: 0.5rem 0;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1A3A2A;
+  }
+  .tal-item { white-space: nowrap; }
+  .tal-item strong { text-decoration: underline; }
+  @media (max-width: 600px) {
+    .tour-avail-line { font-size: 0.88rem; gap: 0.8rem; }
+  }
+
   .floating-reserve-btn {
     position: fixed; bottom: 1.5rem; right: 1.5rem;
     background: #D4AF37; color: #000;
@@ -1837,25 +1855,18 @@
   <div id="reserve-modal">
     <button class="rm-close" onclick="closeReserveModal(null)" title="Close">&times;</button>
     <h2>Reserve a Spot 🌿</h2>
-<p class="rm-intro">Type the first 3 letters of your last name, then select your name from the list.</p>
-<p style="font-size:0.83rem;color:#555;margin:0 0 0.5rem;line-height:1.5;">📺 <strong>Video tours?</strong> No need to sign up — just mark your calendar and enjoy!</p>
+    <p class="rm-intro">Select your name from the list, then enter your email address below.</p>
+    <p style="font-size:0.83rem;color:#555;margin:0 0 0.5rem;line-height:1.5;">📺 <strong>Video tours?</strong> No need to sign up — just mark your calendar and enjoy!</p>
     <p style="font-size:0.83rem;color:#555;margin:0 0 1.2rem;line-height:1.5;">To cancel a tour or remove a guest after signing up, email <a href="mailto:ftg.membership@gmail.com" style="color:#C9A030;text-decoration:underline;">ftg.membership@gmail.com</a></p>
     <form id="reserve-form" onsubmit="submitReserveForm(event)">
       <div class="rm-row">
-<div class="rm-field" style="flex:1;position:relative;">
-          <label for="rm-name-input">Your Name *</label>
-          <input type="text" id="rm-name-input" autocomplete="off"
-            placeholder="Type the first 3 letters of your last name"
-            oninput="filterRosterTypeahead(this.value)"
-            style="width:100%;padding:0.55rem 0.75rem;border:1px solid #c5b89a;
-                   font-family:'DM Sans',sans-serif;font-size:0.93rem;background:#fff;">
-          <div id="rm-typeahead-list"
-            style="display:none;position:absolute;top:100%;left:0;right:0;
-                   background:#fff;border:1px solid #c5b89a;max-height:220px;
-                   overflow-y:auto;z-index:200;box-shadow:0 4px 12px rgba(0,0,0,0.12);">
-          </div>
-        </div>      
-		</div>
+        <div class="rm-field" style="flex:1;">
+          <label for="rm-member-select">Your Name *</label>
+          <select id="rm-member-select" required onchange="rosterSelectMember(this)">
+            <option value="">— Loading members… —</option>
+          </select>
+        </div>
+      </div>
       <div class="rm-row" id="rm-details-row" style="display:none;">
         <div class="rm-field">
           <label>First Name</label>
@@ -1897,14 +1908,14 @@
       <div id="rm-guarantee-notice" style="display:none;margin:0.6rem 0 0.8rem;padding:0.65rem 0.8rem;background:#fdf8e8;border-left:3px solid #D4AF37;border-radius:4px;font-size:0.82rem;color:#666;line-height:1.5;">
         ℹ️ Signing up indicates your interest but does not guarantee your spot. <strong>Regular Members</strong> have priority. Waitlist and Video Members will receive a confirmation email if space is available.
       </div>
-      <button type="submit" class="rm-submit" id="rm-submit-btn" style="display:none;">Reserve My Spot(s)</button>
-      <div id="rm-status"></div>
       <div id="rm-guidelines-check" style="display:none;margin:0.8rem 0 0.6rem;padding:0.5rem 0.2rem;font-size:0.83rem;color:#444;line-height:1.5;">
         <label style="display:flex;align-items:flex-start;gap:0.5rem;cursor:pointer;">
           <input type="checkbox" id="rm-guidelines-cb" required style="margin-top:3px;flex-shrink:0;">
           <span>I have read and accept the <button type="button" onclick="membersTab('guidelines', document.querySelector('[onclick*=guidelines]')); window.scrollTo(0,0); closeReserveModal(null);" style="background:none;border:none;color:#D4AF37;text-decoration:underline;cursor:pointer;font-size:0.83rem;padding:0;">FTG Guidelines</button>. I understand that signing up is a commitment to attend.</span>
         </label>
       </div>
+      <button type="submit" class="rm-submit" id="rm-submit-btn" style="display:none;">Reserve My Spot(s)</button>
+      <div id="rm-status"></div>
     </form>
     <div id="rm-calendar-btn-wrap" style="display:none;margin-top:0.8rem;text-align:center;">
       <button type="button" onclick="downloadICS()" style="background:#1A3A2A;color:#fff;border:none;padding:0.55rem 1.2rem;border-radius:5px;font-size:0.85rem;cursor:pointer;">📅 Add to My Calendar</button>
@@ -2648,6 +2659,7 @@ async function tryLogin() {
     if (data.success) {
       isLoggedIn = true;
       closeLoginModal();
+      fetchTourCounts(); // fire-and-forget — populates tourCountsCache before cards render
       showPage('members');
     } else {
       document.getElementById('pw-error').style.display = 'block';
@@ -2945,6 +2957,26 @@ function renderMemberTours() {
           readAheadHTML += '</div>';
         }
 
+        // Build availability line for non-video, non-cancelled, upcoming tours with a set limit
+        var availLine = '';
+        var tourLimit = parseInt(t.limit);
+        var today2 = new Date(); today2.setHours(0,0,0,0);
+        var tourDateObj = new Date(t.date); tourDateObj.setHours(0,0,0,0);
+        var isUpcoming = tourDateObj >= today2;
+        var isVideo = (t.type === 'video');
+        var isCancelled = !!t.cancelled;
+        if (!isVideo && !isCancelled && isUpcoming && !isNaN(tourLimit) && tourLimit > 0) {
+          var countKey = t.date + '|' + t.name;
+          var counts = tourCountsCache[countKey] || { total: 0, confirmed: 0 };
+          var available = Math.max(0, tourLimit - counts.total);
+          var wlWaiting = Math.max(0, counts.total - counts.confirmed);
+          availLine = '<div class="tour-avail-line">'
+            + '<span class="tal-item">Limit: ' + tourLimit + ' spots</span>'
+            + '<span class="tal-item">Available: <strong>' + available + '</strong></span>'
+            + '<span class="tal-item">WL Waiting: <strong>' + wlWaiting + '</strong></span>'
+            + '</div>';
+        }
+
         card.innerHTML =
           // TOP HERO
           '<div class="slide-top">'
@@ -2967,6 +2999,7 @@ function renderMemberTours() {
           + '<div class="slide-body">'
           + '<div class="slide-logistics">' + timelineHTML + '</div>'
           + '<div class="slide-description">'
+          + availLine
           + '<div class="slide-desc-text">' + descMain + '</div>'
           + readAheadHTML
           + '</div>'
@@ -2984,6 +3017,7 @@ function renderMemberTours() {
         '<div class="detail-body">' + meetSection +
         '<div class="detail-section"><div class="detail-section-label">Walk Level</div><div class="detail-section-value">' + walkLevelHTML(t.walk_dots, t.walk_level) + '</div></div>' +
         '<div class="detail-section"><div class="detail-section-label">Cost</div><div class="detail-section-value"><div class="costs-grid"><div class="cost-item"><div class="ci-label">Regular Members</div><div class="ci-val">' + t.cost_regular + '</div></div><div class="cost-item"><div class="ci-label">Waitlist Members</div><div class="ci-val">' + t.cost_waitlist + '</div></div><div class="cost-item"><div class="ci-label">Guests</div><div class="ci-val">' + t.cost_guest + '</div></div><div class="cost-item"><div class="ci-label">No Show Fee</div><div class="ci-val">' + (t.no_show||'10€') + '</div></div></div><div class="no-show-note">Limit: ' + (t.limit||'N/A') + ' participants.</div></div></div>' +
+        availLine +
         '<div class="detail-desc-section"><div class="detail-desc">' + t.desc + '</div>' + (t.note?'<div class="detail-note">&#8505; ' + t.note + '</div>':'') + '</div>' +
         '<div class="detail-guide-section"><div class="guide-photo">' + t.emoji + '</div><div class="guide-info"><h4>Guide: ' + makeGuideLink(t.guide) + '</h4><div class="planner">Tour Planner: ' + t.tour_planner + '</div></div></div>' +
         '</div>';
@@ -3158,6 +3192,25 @@ renderPublicCalendar();
 // --- RESERVE A SPOT ---
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0RuNO_0Yqd1bZUiZDzjACnAI1FM3w0NyiR0-57Zj1j5Y8S_aqyTaokqQwE0PI0_8W/exec';
 
+// Tour counts cache — keyed by "tourDate|tourName"
+var tourCountsCache = {};
+
+async function fetchTourCounts() {
+  try {
+    var resp = await fetch(APPS_SCRIPT_URL + '?action=getcounts');
+    var data = await resp.json();
+    if (data.success && data.counts) {
+      data.counts.forEach(function(c) {
+        var key = c.tourDate + '|' + c.tourName;
+        tourCountsCache[key] = { total: c.total, confirmed: c.confirmed };
+      });
+    }
+  } catch(e) {
+    console.warn('getCounts failed:', e);
+    // Non-fatal — availability line simply will not appear if this fails
+  }
+}
+
 // Roster cache
 let rosterMembers = [];
 let rosterLoaded = false;
@@ -3208,77 +3261,77 @@ async function openReserveModal() {
   document.getElementById('rm-guests').value = '0';
   document.getElementById('rm-guest-fields').innerHTML = '';
   document.getElementById('rm-guest-fields').style.display = 'none';
-// Typeahead — reset input and dropdown list
-  const nameInput = document.getElementById('rm-name-input');
-  if (nameInput) { nameInput.value = ''; }
-  const typeaheadList = document.getElementById('rm-typeahead-list');
-  if (typeaheadList) { typeaheadList.style.display = 'none'; typeaheadList.innerHTML = ''; }
+  // Populate dropdown — always attempt load (resets if previous attempt failed)
+  const sel = document.getElementById('rm-member-select');
+  sel.innerHTML = '<option value="">— Loading members… —</option>';
   if (!rosterLoaded) await loadRoster();
   if (!rosterLoaded) {
-    if (nameInput) nameInput.placeholder = 'Name list unavailable — please refresh and try again';
+    // Second attempt failed — show retry option
+    sel.innerHTML = '<option value="">— Name list unavailable — please try again —</option>';
+    setTimeout(async () => { rosterLoaded = false; await loadRoster(); populateRosterDropdown(); }, 3000);
     return;
-  }}
+  }
+  populateRosterDropdown();
+}
 
 function populateRosterDropdown() {
-  // No longer used — replaced by filterRosterTypeahead typeahead
-}
-function filterRosterTypeahead(val) {
-  const list = document.getElementById('rm-typeahead-list');
-  const query = val.trim().toLowerCase();
-  if (query.length < 3) { list.style.display = 'none'; list.innerHTML = ''; return; }
-  const matches = rosterMembers.filter(m => m.lastName.toLowerCase().startsWith(query));
-  if (matches.length === 0) { list.style.display = 'none'; list.innerHTML = ''; return; }
-  list.innerHTML = '';
-  matches.forEach(m => {
-    const item = document.createElement('div');
-    item.textContent = m.lastName + ', ' + m.firstName;
-    item.style.cssText = 'padding:0.55rem 0.75rem;cursor:pointer;font-size:0.93rem;font-family:DM Sans,sans-serif;border-bottom:1px solid #f0ece4;';
-    item.onmouseenter = () => item.style.background = '#f8f5f0';
-    item.onmouseleave = () => item.style.background = '#fff';
-    item.onclick = () => {
-      document.getElementById('rm-name-input').value = m.lastName + ', ' + m.firstName;
-      list.style.display = 'none';
-      rosterSelectMember(m);
-    };
-    list.appendChild(item);
+  const sel = document.getElementById('rm-member-select');
+  if (rosterMembers.length === 0) {
+    sel.innerHTML = '<option value="">— Name list unavailable — please try again —</option>';
+    return;
+  }
+  sel.innerHTML = '<option value="">— Select your name —</option>';
+  rosterMembers.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.memberId;
+    opt.textContent = m.lastName + ', ' + m.firstName;
+    opt.dataset.first = m.firstName;
+    opt.dataset.last = m.lastName;
+    opt.dataset.email = m.email || '';
+    opt.dataset.membership = m.membership;
+    sel.appendChild(opt);
   });
-  list.style.display = 'block';
 }
 
-function rosterSelectMember(m) {
-  const notFound   = document.getElementById('rm-not-found');
+function rosterSelectMember(sel) {
+  const notFound = document.getElementById('rm-not-found');
   const detailsRow = document.getElementById('rm-details-row');
-  const emailRow   = document.getElementById('rm-email-row');
-  const typeRow    = document.getElementById('rm-type-row');
-  const toursHead  = document.getElementById('rm-tours-head');
-  const submitBtn  = document.getElementById('rm-submit-btn');
+  const emailRow = document.getElementById('rm-email-row');
+  const typeRow = document.getElementById('rm-type-row');
+  const toursHead = document.getElementById('rm-tours-head');
+  const submitBtn = document.getElementById('rm-submit-btn');
 
-  if (!m) {
-    detailsRow.style.display = 'none'; emailRow.style.display = 'none';
-    typeRow.style.display = 'none'; toursHead.style.display = 'none';
-    submitBtn.style.display = 'none'; notFound.style.display = 'none';
+  if (!sel.value) {
+    detailsRow.style.display = 'none';
+    emailRow.style.display = 'none';
+    typeRow.style.display = 'none';
+    toursHead.style.display = 'none';
+    submitBtn.style.display = 'none';
+    notFound.style.display = 'none';
     return;
   }
 
-  const firstName  = m.firstName  || '';
-  const lastName   = m.lastName   || '';
-  const email      = m.email      || '';
-  const membership = m.membership || '';
+  const opt = sel.options[sel.selectedIndex];
+  const firstName = opt.dataset.first || '';
+  const lastName = opt.dataset.last || '';
+  const email = opt.dataset.email || '';
+  const membership = opt.dataset.membership || '';
 
+  // Map membership type to display label
   const typeMap = {RM:'Regular Member', WL:'Waitlist Member', VM:'Video Member'};
-  const typeLabel   = typeMap[membership] || membership;
-  const typeDisplay = membership === 'RM' ? '🔵 Regular Member'
-                    : membership === 'WL' ? '🟢 Waitlist Member'
-                    : '🟠 Video Member';
+  const typeLabel = typeMap[membership] || membership;
+  const typeDisplay = membership === 'RM' ? '🔵 Regular Member' : membership === 'WL' ? '🟢 Waitlist Member' : '🟠 Video Member';
 
-  document.getElementById('rm-firstname').value   = firstName;
-  document.getElementById('rm-lastname').value    = lastName;
-  document.getElementById('rm-email').value       = email;
+  document.getElementById('rm-firstname').value = firstName;
+  document.getElementById('rm-lastname').value = lastName;
+  document.getElementById('rm-email').value = email;
   document.getElementById('rm-member-type').value = typeLabel;
   document.getElementById('rm-type-display').textContent = typeDisplay;
 
-  detailsRow.style.display = ''; emailRow.style.display = '';
-  typeRow.style.display = ''; toursHead.style.display = '';
+  detailsRow.style.display = '';
+  emailRow.style.display = '';
+  typeRow.style.display = '';
+  toursHead.style.display = '';
   submitBtn.style.display = '';
   notFound.style.display = 'none';
   document.getElementById('rm-guarantee-notice').style.display = '';
@@ -3286,13 +3339,6 @@ function rosterSelectMember(m) {
   document.getElementById('rm-calendar-btn-wrap').style.display = 'none';
 }
 
-document.addEventListener('click', function(e) {
-  const list = document.getElementById('rm-typeahead-list');
-  const input = document.getElementById('rm-name-input');
-  if (list && input && !list.contains(e.target) && e.target !== input) {
-    list.style.display = 'none';
-  }
-});
 function closeReserveModal(e) {
   if (e && e.target !== document.getElementById('reserve-modal-overlay')) return;
   document.getElementById('reserve-modal-overlay').classList.remove('open');
