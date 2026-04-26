@@ -920,7 +920,7 @@
   .tour-avail-line {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.2rem;
+    gap: 0.3rem 1.2rem;
     margin: 0.5rem 0 0;
     padding: 0.4rem 0 0;
     font-family: system-ui, "Helvetica Neue", sans-serif;
@@ -928,11 +928,12 @@
     font-weight: 700;
     color: #1A3A2A;
     letter-spacing: 0.02em;
+    padding-right: 3rem; /* keep clear of the footprint icon */
   }
   .tal-item { white-space: nowrap; }
   .tal-item strong { text-decoration: underline; }
   @media (max-width: 600px) {
-    .tour-avail-line { font-size: 0.72rem; gap: 0.8rem; }
+    .tour-avail-line { font-size: 0.72rem; gap: 0.2rem 0.8rem; }
   }
 
   .floating-reserve-btn {
@@ -2615,7 +2616,14 @@ function showPage(name, fromPopState) {
   if (navEl) navEl.classList.add('active');
   window.scrollTo(0,0);
   if (!fromPopState) history.pushState({ page: name }, '', '#' + name);
-  if (name === 'members') { renderMemberTours(); setTimeout(() => { heroHeight=0; observeCards(); updateDaysCountdown(); }, 100); }
+  if (name === 'members') {
+    renderMemberTours();
+    setTimeout(() => { heroHeight=0; observeCards(); updateDaysCountdown(); }, 100);
+    // Fetch counts in background and patch availability lines when ready
+    if (Object.keys(tourCountsCache).length === 0) {
+      fetchTourCounts().then(function() { patchAvailLines(); });
+    }
+  }
   const onMembers = (name === 'members');
   document.getElementById('btn-members').style.display = onMembers ? 'none' : '';
   document.getElementById('btn-home').style.display = onMembers ? '' : 'none';
@@ -2842,8 +2850,7 @@ function filterMonth(month, btn) {
   }
 }
 
-async function renderMemberTours() {
-  await fetchTourCounts(); // ensure counts are loaded before building cards
+function renderMemberTours() {
   const list = document.getElementById('member-tours-list');
   list.innerHTML = '';
   const months = [...new Set(tours.map(t => t.month))];
@@ -2968,13 +2975,15 @@ async function renderMemberTours() {
         var isCancelled = !!t.cancelled;
         if (!isVideo && !isCancelled && isUpcoming && !isNaN(tourLimit) && tourLimit > 0) {
           var countKey = t.date + '|' + t.name;
+          var availId = 'avail-' + t.date + '-' + t.name.replace(/[^a-zA-Z0-9]/g,'_');
           var counts = tourCountsCache[countKey] || { total: 0, confirmed: 0 };
-          var available = Math.max(0, tourLimit - counts.total);
-          var wlWaiting = Math.max(0, counts.total - counts.confirmed);
-          availLine = '<div class="tour-avail-line">'
+          var hasCounts = Object.keys(tourCountsCache).length > 0;
+          var available = hasCounts ? Math.max(0, tourLimit - counts.total) : '…';
+          var wlWaiting = hasCounts ? Math.max(0, counts.total - counts.confirmed) : '…';
+          availLine = '<div class="tour-avail-line" id="' + availId + '">'
             + '<span class="tal-item">Limit: ' + tourLimit + ' spots</span>'
             + '<span class="tal-item">Available: <strong>' + available + '</strong></span>'
-            + '<span class="tal-item">WL Waiting: <strong>' + wlWaiting + '</strong></span>'
+            + '<span class="tal-item">WL&nbsp;Waiting: <strong>' + wlWaiting + '</strong></span>'
             + '</div>';
         }
 
@@ -3211,6 +3220,28 @@ async function fetchTourCounts() {
     console.warn('getCounts failed:', e);
     // Non-fatal — availability line simply will not appear if this fails
   }
+}
+
+// Patch availability lines in-place after counts load — no full re-render needed
+function patchAvailLines() {
+  var today2 = new Date(); today2.setHours(0,0,0,0);
+  tours.forEach(function(t) {
+    if (t.type === 'video' || t.cancelled) return;
+    var tourLimit = parseInt(t.limit);
+    if (isNaN(tourLimit) || tourLimit <= 0) return;
+    var tourDateObj = new Date(t.date); tourDateObj.setHours(0,0,0,0);
+    if (tourDateObj < today2) return;
+    var availId = 'avail-' + t.date + '-' + t.name.replace(/[^a-zA-Z0-9]/g,'_');
+    var el = document.getElementById(availId);
+    if (!el) return;
+    var countKey = t.date + '|' + t.name;
+    var counts = tourCountsCache[countKey] || { total: 0, confirmed: 0 };
+    var available = Math.max(0, tourLimit - counts.total);
+    var wlWaiting = Math.max(0, counts.total - counts.confirmed);
+    el.innerHTML = '<span class="tal-item">Limit: ' + tourLimit + ' spots</span>'
+      + '<span class="tal-item">Available: <strong>' + available + '</strong></span>'
+      + '<span class="tal-item">WL&nbsp;Waiting: <strong>' + wlWaiting + '</strong></span>';
+  });
 }
 
 // Roster cache
