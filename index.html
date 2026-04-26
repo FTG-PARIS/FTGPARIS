@@ -921,17 +921,18 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1.2rem;
-    margin: 0.6rem 0 0.8rem;
-    padding: 0.5rem 0;
-    font-family: "DM Sans", sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
+    margin: 0.5rem 0 0;
+    padding: 0.4rem 0 0;
+    font-family: system-ui, "Helvetica Neue", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
     color: #1A3A2A;
+    letter-spacing: 0.02em;
   }
   .tal-item { white-space: nowrap; }
   .tal-item strong { text-decoration: underline; }
   @media (max-width: 600px) {
-    .tour-avail-line { font-size: 0.88rem; gap: 0.8rem; }
+    .tour-avail-line { font-size: 0.72rem; gap: 0.8rem; }
   }
 
   .floating-reserve-btn {
@@ -2659,7 +2660,6 @@ async function tryLogin() {
     if (data.success) {
       isLoggedIn = true;
       closeLoginModal();
-      fetchTourCounts(); // fire-and-forget — populates tourCountsCache before cards render
       showPage('members');
     } else {
       document.getElementById('pw-error').style.display = 'block';
@@ -2842,7 +2842,8 @@ function filterMonth(month, btn) {
   }
 }
 
-function renderMemberTours() {
+async function renderMemberTours() {
+  await fetchTourCounts(); // ensure counts are loaded before building cards
   const list = document.getElementById('member-tours-list');
   list.innerHTML = '';
   const months = [...new Set(tours.map(t => t.month))];
@@ -2991,6 +2992,7 @@ function renderMemberTours() {
             ? '<button class="slide-cta-btn video-cal-btn" onclick="downloadVideoICS(\'' + t.date + '\')"><svg width="13" height="13" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:5px;"><rect x="3" y="4" width="18" height="17" rx="2" fill="none" stroke="#C9A030" stroke-width="2"/><line x1="16" y1="2" x2="16" y2="6" stroke="#C9A030" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="#C9A030" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="9" x2="21" y2="9" stroke="#C9A030" stroke-width="2"/></svg>Mark Your Calendar</button>'
             : '<button class="slide-cta-btn" onclick="openReserveModal()">Reserve a Spot</button>')
           + '</div>'
+          + availLine
           + '<div class="slide-days-badge" id="' + daysEl_id + '"></div>'
           + '<div class="slide-type-badge">' + (ti.slideIcon || '<img src="' + ti.img + '" style="width:52px;height:52px;object-fit:contain;">') + '</div>'
           + '</div>'
@@ -2999,7 +3001,6 @@ function renderMemberTours() {
           + '<div class="slide-body">'
           + '<div class="slide-logistics">' + timelineHTML + '</div>'
           + '<div class="slide-description">'
-          + availLine
           + '<div class="slide-desc-text">' + descMain + '</div>'
           + readAheadHTML
           + '</div>'
@@ -3196,6 +3197,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0RuNO_0Yqd1bZ
 var tourCountsCache = {};
 
 async function fetchTourCounts() {
+  if (Object.keys(tourCountsCache).length > 0) return; // already loaded
   try {
     var resp = await fetch(APPS_SCRIPT_URL + '?action=getcounts');
     var data = await resp.json();
