@@ -2627,9 +2627,8 @@ function showPage(name, fromPopState) {
     renderMemberTours();
     setTimeout(() => { heroHeight=0; observeCards(); updateDaysCountdown(); }, 100);
     // Fetch counts in background and patch availability lines when ready
-    if (Object.keys(tourCountsCache).length === 0) {
-      fetchTourCounts().then(function() { patchAvailLines(); });
-    }
+    tourCountsCache = {};
+    fetchTourCounts().then(function() { patchAvailLines(); });
   }
   const onMembers = (name === 'members');
   document.getElementById('btn-members').style.display = onMembers ? 'none' : '';
@@ -3213,7 +3212,6 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0RuNO_0Yqd1bZ
 var tourCountsCache = {};
 
 async function fetchTourCounts() {
-  if (Object.keys(tourCountsCache).length > 0) return; // already loaded
   try {
     var resp = await fetch(APPS_SCRIPT_URL + '?action=getcounts');
     var data = await resp.json();
