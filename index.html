@@ -3218,7 +3218,7 @@ var tourCountsCache = {};
 
 async function fetchTourCounts() {
   try {
-    var resp = await fetch(APPS_SCRIPT_URL + '?action=getcounts');
+    var resp = await fetch(APPS_SCRIPT_URL + '?action=getcounts&_=' + Date.now());
     var data = await resp.json();
     if (data.success && data.counts) {
       data.counts.forEach(function(c) {
