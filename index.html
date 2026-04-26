@@ -2626,13 +2626,8 @@ function showPage(name, fromPopState) {
   if (name === 'members') {
     renderMemberTours();
     setTimeout(() => { heroHeight=0; observeCards(); updateDaysCountdown(); }, 100);
-    // If counts already loaded (pre-fetched at login), patch immediately.
-    // Otherwise re-fetch (e.g. member navigates away and back).
-    if (Object.keys(tourCountsCache).length > 0) {
-      patchAvailLines();
-    } else {
-      fetchTourCounts().then(function() { patchAvailLines(); });
-    }
+    // Always re-fetch counts so the display is current after signing up or navigating away
+    fetchTourCounts().then(function() { patchAvailLines(); });
   }
   const onMembers = (name === 'members');
   document.getElementById('btn-members').style.display = onMembers ? 'none' : '';
@@ -3217,6 +3212,7 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0RuNO_0Yqd1bZ
 var tourCountsCache = {};
 
 async function fetchTourCounts() {
+  tourCountsCache = {};
   try {
     var resp = await fetch(APPS_SCRIPT_URL + '?action=getcounts&_=' + Date.now());
     var data = await resp.json();
