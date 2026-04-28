@@ -1944,6 +1944,7 @@
 
 /* PLANNER AUTHENTICATION */
 // Planner passwords validated server-side — not stored in HTML
+let memberPassword = ''; // captured at login, used for roster/API calls
 let plannerUser = null; // {name, role} set on planner login
 let plannerToken = null; // raw password sent as token on every API call
 let plannerSubTab = 'signup'; // 'signup' | 'attendance' | 'mobile' | 'videolog' | 'tool'
@@ -2672,6 +2673,7 @@ async function tryLogin() {
     const data = await resp.json();
     if (data.success) {
       isLoggedIn = true;
+      memberPassword = pw; // store for use in subsequent API calls (e.g. loadRoster)
       fetchTourCounts(); // pre-fetch in background so counts are ready when cards render
       closeLoginModal();
       showPage('members');
@@ -3262,7 +3264,7 @@ async function loadRoster() {
     if (plannerToken) {
       url += '&token=' + encodeURIComponent(plannerToken);
     } else {
-      url += '&pw=' + encodeURIComponent('ftgspring26');
+      url += '&pw=' + encodeURIComponent(memberPassword);
     }
     const resp = await fetch(url);
     const data = await resp.json();
