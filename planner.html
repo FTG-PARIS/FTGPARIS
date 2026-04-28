@@ -979,51 +979,65 @@
 
 <script>
 // ════════════════════════════════════════════════
-// USERS & AUTH
+// AUTH
 // ════════════════════════════════════════════════
-const USERS = {
-  'paul':     { password: 'paulFTG2026!',     displayName: 'Paul',     isAdmin: false },
-  'barb':     { password: 'isntitPLae1!',     displayName: 'Barb',     isAdmin: true  },
-  'lee':      { password: 'leeFTG2026!',      displayName: 'Lee',      isAdmin: false },
-  'dee':      { password: 'deeFTG2026!',      displayName: 'Dee',      isAdmin: false },
-  'planner1': { password: 'planner1FTG2026!', displayName: 'Planner 1',isAdmin: false },
-  'planner2': { password: 'planner2FTG2026!', displayName: 'Planner 2',isAdmin: false },
-};
+// Planner credentials are validated server-side via Apps Script PLANNER_TOKENS.
+// No passwords are stored in this file.
 
-let currentUser = null; // { username, displayName, isAdmin }
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0RuNO_0Yqd1bZUiZDzjACnAI1FM3w0NyiR0-57Zj1j5Y8S_aqyTaokqQwE0PI0_8W/exec';
+
+let currentUser = null; // { username, displayName, isAdmin, token }
 let currentDraftId = null;
 let currentTourType = null;
 let modalTourType = null;
 let walkDots = [false, false, false, false, false];
 let autoSaveTimer = null;
 
-function doLogin() {
+async function doLogin() {
   const nameInput = document.getElementById('login-name').value.trim().toLowerCase();
   const passInput = document.getElementById('login-password').value;
   const errEl = document.getElementById('login-error');
+  const btn = document.querySelector('.login-btn');
   errEl.textContent = '';
 
-  const user = USERS[nameInput];
-  if (!user || user.password !== passInput) {
-    errEl.textContent = 'Incorrect name or password. Please try again.';
-    document.getElementById('login-password').value = '';
+  if (!nameInput || !passInput) {
+    errEl.textContent = 'Please enter your name and password.';
     return;
   }
-  currentUser = { username: nameInput, displayName: user.displayName, isAdmin: user.isAdmin };
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  document.getElementById('nav-username').textContent = user.displayName;
-  if (user.isAdmin) {
-    document.getElementById('admin-filter').style.display = 'flex';
-    activeFilterPlanner = 'all';
-  } else {
-    activeFilterPlanner = nameInput;
+
+  btn.disabled = true;
+  btn.textContent = 'Checking…';
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=validateplanner&token=' + encodeURIComponent(passInput));
+    const data = await resp.json();
+    if (!data.success) {
+      errEl.textContent = 'Incorrect name or password. Please try again.';
+      document.getElementById('login-password').value = '';
+      return;
+    }
+    const isAdmin = data.role === 'admin';
+    currentUser = { username: nameInput, displayName: data.name, isAdmin: isAdmin, token: passInput };
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('nav-username').textContent = data.name;
+    if (isAdmin) {
+      document.getElementById('admin-filter').style.display = 'flex';
+      activeFilterPlanner = 'all';
+    } else {
+      activeFilterPlanner = nameInput;
+    }
+    // Warn if running from local file — drafts won't persist
+    if (window.location.protocol === 'file:') {
+      setTimeout(() => showStatus('⚠ You are viewing this file locally. Drafts will NOT save. Upload to GitHub Pages first.', 'error'), 500);
+    }
+    renderDashboard();
+  } catch(err) {
+    errEl.textContent = 'Could not connect. Please try again.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Sign In →';
   }
-  // Warn if running from local file — drafts won't persist
-  if (window.location.protocol === 'file:') {
-    setTimeout(() => showStatus('⚠ You are viewing this file locally. Drafts will NOT save. Upload to GitHub Pages first.', 'error'), 500);
-  }
-  renderDashboard();
 }
 
 // Allow Enter key on login
