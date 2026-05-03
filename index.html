@@ -3369,7 +3369,8 @@ function filterRosterTypeahead(val) {
   const query = val.trim().toLowerCase();
   if (query.length < 3) { list.style.display = 'none'; list.innerHTML = ''; return; }
   const matches = rosterMembers.filter(m =>
-    m.lastName.toLowerCase().startsWith(query)
+    m.lastName.toLowerCase().startsWith(query) &&
+    m.membership !== 'Guest' && m.membership !== ''
   );
   if (matches.length === 0) { list.style.display = 'none'; list.innerHTML = ''; return; }
   list.innerHTML = '';
