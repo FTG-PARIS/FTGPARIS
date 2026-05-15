@@ -2147,12 +2147,15 @@ async function pushToPool(draftId) {
     showStatus('Add a tour title before pushing to pool.', 'error');
     return;
   }
+  if (draft.planner !== currentUser.username && !currentUser.isAdmin) {
+    showStatus('Only the author can push a draft to the pool.', 'error');
+    return;
+  }
   if (!confirm(`Push "${draft.title}" to the shared pool for collaborative editing?`)) return;
 
   try {
     const resp = await fetch(PLANNER_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         action: 'saveToPool',
         token: currentUser.token,
@@ -2181,7 +2184,6 @@ async function confirmDeletePool(templateId, title) {
   try {
     const resp = await fetch(PLANNER_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         action: 'deleteFromPool',
         token: currentUser.token,
