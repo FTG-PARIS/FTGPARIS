@@ -263,7 +263,7 @@
   .status-ready { background: #fdf6b2; color: #8e4b10; }
 
   .draft-card-actions { display: flex; gap: 0.5rem; align-items: center; }
-  .btn-edit, .btn-delete {
+  .btn-edit, .btn-delete, .btn-pool {
     border: none; border-radius: 6px;
     padding: 0.45rem 0.9rem;
     font-size: 0.8rem;
@@ -276,6 +276,67 @@
   .btn-edit:hover { background: #0f2418; }
   .btn-delete { background: #fde8e8; color: var(--red); }
   .btn-delete:hover { background: #fbd5d5; }
+  .btn-pool { background: #e8f0fe; color: #1a3a6a; }
+  .btn-pool:hover { background: #d0e1fc; }
+
+  /* ── DASHBOARD TABS ── */
+  .dash-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--warm-border);
+    margin-bottom: 1.2rem;
+  }
+  .dash-tab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    padding: 0.6rem 1.2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--stone);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .dash-tab:hover { color: var(--text); }
+  .dash-tab.active { color: #1A3A2A; border-bottom-color: #1A3A2A; }
+
+  /* ── POOL ── */
+  .pool-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .pool-hint { font-size: 0.82rem; color: var(--stone); }
+  .btn-refresh {
+    background: none;
+    border: 1.5px solid var(--warm-border);
+    border-radius: 6px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--stone);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-refresh:hover { border-color: var(--gold); color: var(--text); }
+  .pool-card {
+    background: var(--white);
+    border: 1.5px solid var(--warm-border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+    transition: box-shadow 0.15s;
+  }
+  .pool-card:hover { box-shadow: var(--shadow-lg); border-color: var(--gold); }
+  .status-approved { background: #e6f4ea; color: #1a5a2a; }
+  .status-submitted { background: #e8e0f0; color: #4a1a6a; }
 
   /* ── EDITOR ── */
   .editor-topbar {
@@ -384,6 +445,29 @@
     border-radius: 4px;
     margin-left: 0.5rem;
     vertical-align: middle;
+  }
+  .s9-category {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--admin-border);
+  }
+  .s9-category:last-of-type {
+    border-bottom: none;
+  }
+  .s9-category-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #7a5c00;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.6rem;
+    margin-top: 0.25rem;
+  }
+  .s9-subtotal {
+    background: #f5f0e8 !important;
+    color: #5a4000;
+    font-weight: 600;
+    cursor: default;
   }
 
   /* ── FORM FIELDS ── */
@@ -624,25 +708,42 @@
     <!-- ── DASHBOARD ── -->
     <div id="dashboard-view">
       <div class="dash-header">
-        <div class="dash-title">My Drafts <span id="drafts-count"></span></div>
+        <div class="dash-title">Templates <span id="drafts-count"></span></div>
         <div style="display:flex;gap:0.7rem;align-items:center;">
           <button class="btn-new" onclick="openNewModal()">＋ New Template</button>
-          <button onclick="clearAllDrafts()" style="background:none;border:1.5px solid var(--warm-border);border-radius:8px;padding:0.6rem 1rem;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--stone);cursor:pointer;" title="Clear all saved drafts from this browser">🗑 Clear All Drafts</button>
         </div>
       </div>
 
-      <!-- Admin planner filter (admin only) -->
-      <div class="admin-filter" id="admin-filter" style="display:none;">
-        <button class="filter-btn active" id="filter-all" onclick="filterByPlanner('all', this)">All Planners</button>
-        <button class="filter-btn" onclick="filterByPlanner('paul', this)">Paul</button>
-        <button class="filter-btn" onclick="filterByPlanner('barb', this)">Barb</button>
-        <button class="filter-btn" onclick="filterByPlanner('lee', this)">Lee</button>
-        <button class="filter-btn" onclick="filterByPlanner('dee', this)">Dee</button>
-        <button class="filter-btn" onclick="filterByPlanner('planner1', this)">Planner 1</button>
-        <button class="filter-btn" onclick="filterByPlanner('planner2', this)">Planner 2</button>
+      <!-- Tab bar -->
+      <div class="dash-tabs">
+        <button class="dash-tab active" id="tab-drafts" onclick="showDashTab('drafts')">My Drafts</button>
+        <button class="dash-tab" id="tab-pool" onclick="showDashTab('pool')">📬 Pool — Ready for Editing</button>
       </div>
 
-      <div id="drafts-list"></div>
+      <!-- MY DRAFTS panel -->
+      <div id="panel-drafts">
+        <!-- Admin planner filter (admin only) -->
+        <div class="admin-filter" id="admin-filter" style="display:none;">
+          <button class="filter-btn active" id="filter-all" onclick="filterByPlanner('all', this)">All Planners</button>
+          <button class="filter-btn" onclick="filterByPlanner('paul', this)">Paul</button>
+          <button class="filter-btn" onclick="filterByPlanner('barb', this)">Barb</button>
+          <button class="filter-btn" onclick="filterByPlanner('lee', this)">Lee</button>
+          <button class="filter-btn" onclick="filterByPlanner('dee', this)">Dee</button>
+          <button class="filter-btn" onclick="filterByPlanner('planner1', this)">Planner 1</button>
+          <button class="filter-btn" onclick="filterByPlanner('planner2', this)">Planner 2</button>
+        </div>
+        <div id="drafts-list"></div>
+      </div>
+
+      <!-- POOL panel -->
+      <div id="panel-pool" style="display:none;">
+        <div class="pool-toolbar">
+          <span class="pool-hint">Templates pushed here are visible to all planners for collaborative editing.</span>
+          <button class="btn-refresh" onclick="loadPool()">↻ Refresh</button>
+        </div>
+        <div id="pool-list"><div class="drafts-empty"><div class="empty-icon">📬</div>Loading pool…</div></div>
+      </div>
+
     </div>
 
     <!-- ── EDITOR ── -->
@@ -653,7 +754,7 @@
         <div class="editor-actions">
           <span class="save-indicator" id="save-indicator"></span>
           <button class="btn-save" onclick="saveDraft()">💾 Save Draft</button>
-          <button class="btn-submit" id="submit-btn" onclick="submitTemplate()">✉ Submit to Barb</button>
+          <button class="btn-submit" id="submit-btn" onclick="submitTemplate()" style="display:none;">✉ Submit to Barb</button>
         </div>
       </div>
 
@@ -781,7 +882,7 @@
             </div>
             <div class="field">
               <label>Participant Limit</label>
-              <input type="number" id="f-limit" placeholder="e.g. 25" min="1" max="99" oninput="onFieldChange()">
+              <input type="number" id="f-limit" placeholder="e.g. 25" min="1" max="99" oninput="onFieldChange(); autoFillHeadcount();">
               <div class="tbd-row">
                 <input type="checkbox" id="f-no-limit" onchange="toggleNoLimit()">
                 <label for="f-no-limit">No maximum limit</label>
@@ -886,64 +987,213 @@
           </div>
         </div>
 
-        <!-- SECTION 9: ADMIN ONLY -->
+        <!-- SECTION 9: COST DATA (ADMIN ONLY) -->
         <div class="form-section admin-section">
           <div class="form-section-title">
             <span class="section-num" id="admin-section-num">9</span>
             Cost Data <span class="admin-label">Admin Only</span>
             <span style="font-size:0.78rem;font-weight:400;color:#7a5c00;font-family:'DM Sans',sans-serif;margin-left:0.3rem;">— not shown on website</span>
           </div>
-          <div class="fields-grid" id="admin-walk-fields">
-            <div class="field">
-              <label>Guide Fee — Walk</label>
-              <input type="text" id="f-admin-guide-walk" placeholder="€" oninput="onFieldChange()">
+
+          <!-- WALK / MUSEUM FORM -->
+          <div id="s9-walk-fields">
+
+            <!-- Guide Costs -->
+            <div class="s9-category">
+              <div class="s9-category-title">Guide Costs</div>
+              <div class="fields-grid">
+                <div class="field">
+                  <label>Guide Name</label>
+                  <input type="text" id="f-s9-guide-name" placeholder="Name" oninput="onFieldChange()">
+                </div>
+                <div class="field">
+                  <label>Guide Fee — Walk</label>
+                  <input type="text" id="f-s9-guide-walk" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Guide Fee — Museum</label>
+                  <input type="text" id="f-s9-guide-museum" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Guide Fee — Full Day</label>
+                  <input type="text" id="f-s9-guide-fullday" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Extra / Tip</label>
+                  <input type="text" id="f-s9-guide-tip" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Discount <span class="hint">(enter as negative)</span></label>
+                  <input type="text" id="f-s9-guide-discount" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Guide Subtotal</label>
+                  <input type="text" id="f-s9-guide-subtotal" placeholder="€" readonly class="s9-subtotal">
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label>Guide Fee — Museum</label>
-              <input type="text" id="f-admin-guide-museum" placeholder="€" oninput="onFieldChange()">
+
+            <!-- Museum Costs -->
+            <div class="s9-category">
+              <div class="s9-category-title">Museum Costs</div>
+              <div class="fields-grid">
+                <div class="field">
+                  <label>Museum Name</label>
+                  <input type="text" id="f-s9-museum-name" placeholder="Name" oninput="onFieldChange()">
+                </div>
+                <div class="field">
+                  <label>Museum Guide Fee</label>
+                  <input type="text" id="f-s9-museum-guide-fee" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Droit de Parole</label>
+                  <input type="text" id="f-s9-droit-parole" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Museum Group Fee</label>
+                  <input type="text" id="f-s9-museum-group-fee" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Entry Fee per Person</label>
+                  <input type="text" id="f-s9-entry-pp" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Max Headcount</label>
+                  <input type="text" id="f-s9-museum-headcount" placeholder="auto-filled" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Proposed Entry Total</label>
+                  <input type="text" id="f-s9-entry-total" placeholder="€" readonly class="s9-subtotal">
+                </div>
+                <div class="field">
+                  <label>Extra / Discount</label>
+                  <input type="text" id="f-s9-museum-extra" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Museum Subtotal</label>
+                  <input type="text" id="f-s9-museum-subtotal" placeholder="€" readonly class="s9-subtotal">
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label>Guide Fee — Full Day</label>
-              <input type="text" id="f-admin-guide-fullday" placeholder="€" oninput="onFieldChange()">
+
+            <!-- Headset Costs -->
+            <div class="s9-category">
+              <div class="s9-category-title">Headset Costs</div>
+              <div class="fields-grid">
+                <div class="field">
+                  <label>Cost per Headset</label>
+                  <input type="text" id="f-s9-headset-pp" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Max Headcount</label>
+                  <input type="text" id="f-s9-headset-headcount" placeholder="auto-filled" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Proposed Total</label>
+                  <input type="text" id="f-s9-headset-total" placeholder="€" readonly class="s9-subtotal">
+                </div>
+                <div class="field">
+                  <label>Extra / Discount</label>
+                  <input type="text" id="f-s9-headset-extra" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Headset Subtotal</label>
+                  <input type="text" id="f-s9-headset-subtotal" placeholder="€" readonly class="s9-subtotal">
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label>Museum Group Fee</label>
-              <input type="text" id="f-admin-museum-group" placeholder="€" oninput="onFieldChange()">
+
+            <!-- Restaurant Costs -->
+            <div class="s9-category">
+              <div class="s9-category-title">Restaurant Costs</div>
+              <div class="fields-grid">
+                <div class="field">
+                  <label>Cost per Person</label>
+                  <input type="text" id="f-s9-rest-pp" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Max Headcount</label>
+                  <input type="text" id="f-s9-rest-headcount" placeholder="auto-filled" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Proposed Total</label>
+                  <input type="text" id="f-s9-rest-total" placeholder="€" readonly class="s9-subtotal">
+                </div>
+                <div class="field">
+                  <label>Deposit Paid</label>
+                  <input type="text" id="f-s9-rest-deposit" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Cash Needed on Day</label>
+                  <input type="text" id="f-s9-rest-cash" placeholder="€" readonly class="s9-subtotal">
+                </div>
+                <div class="field">
+                  <label>Restaurant Subtotal</label>
+                  <input type="text" id="f-s9-rest-subtotal" placeholder="€" readonly class="s9-subtotal">
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label>Per Person Entry Fee</label>
-              <input type="text" id="f-admin-museum-pp" placeholder="€" oninput="onFieldChange()">
+
+            <!-- Transport Costs -->
+            <div class="s9-category">
+              <div class="s9-category-title">Transport Costs</div>
+              <div class="fields-grid">
+                <div class="field">
+                  <label>Flat Fee</label>
+                  <input type="text" id="f-s9-transport-flat" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Per Person Cost</label>
+                  <input type="text" id="f-s9-transport-pp" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Max Headcount</label>
+                  <input type="text" id="f-s9-transport-headcount" placeholder="auto-filled" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Misc Transport</label>
+                  <input type="text" id="f-s9-transport-misc" placeholder="€" oninput="onFieldChange(); recalcS9();">
+                </div>
+                <div class="field">
+                  <label>Misc Description</label>
+                  <input type="text" id="f-s9-transport-misc-desc" placeholder="e.g. taxi, boat, tram deposit" oninput="onFieldChange()">
+                </div>
+                <div class="field">
+                  <label>Transport Subtotal</label>
+                  <input type="text" id="f-s9-transport-subtotal" placeholder="€" readonly class="s9-subtotal">
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label>Restaurant Deposit</label>
-              <input type="text" id="f-admin-restaurant-deposit" placeholder="€" oninput="onFieldChange()">
-            </div>
-            <div class="field">
-              <label>Restaurant Est. Total</label>
-              <input type="text" id="f-admin-restaurant-total" placeholder="€" oninput="onFieldChange()">
-            </div>
-            <div class="field">
-              <label>Headset Costs</label>
-              <input type="text" id="f-admin-headsets" placeholder="€" oninput="onFieldChange()">
-            </div>
-            <div class="field">
-              <label>Extra Tour Fees</label>
-              <input type="text" id="f-admin-extra" placeholder="€" oninput="onFieldChange()">
-            </div>
-          </div>
-          <div id="admin-zoom-fields" style="display:none;">
+
+          </div><!-- end #s9-walk-fields -->
+
+          <!-- ZOOM SIMPLIFIED FORM -->
+          <div id="s9-zoom-fields" style="display:none;">
             <div class="fields-grid">
               <div class="field">
                 <label>Guide Fee — Video</label>
-                <input type="text" id="f-admin-guide-zoom" placeholder="€" oninput="onFieldChange()">
+                <input type="text" id="f-s9-guide-zoom" placeholder="€" oninput="onFieldChange()">
+              </div>
+              <div class="field">
+                <label>Admin / Other Cost</label>
+                <input type="text" id="f-s9-zoom-admin" placeholder="€" oninput="onFieldChange()">
+              </div>
+              <div class="field">
+                <label>Admin Cost Description <span class="hint">(optional)</span></label>
+                <input type="text" id="f-s9-zoom-admin-desc" placeholder="Description" oninput="onFieldChange()">
               </div>
             </div>
-          </div>
+          </div><!-- end #s9-zoom-fields -->
+
+          <!-- SHARED NOTES (all tour types) -->
           <div class="field" style="margin-top:1rem;">
             <label>Notes — deposits, group rules, special conditions <span class="hint">150 words max</span></label>
-            <textarea id="f-admin-notes" rows="4" placeholder="Notes for Admin about this tour's logistics, deposits, booking rules, etc." oninput="onAdminNotesInput()"></textarea>
+            <textarea id="f-s9-notes" rows="4" placeholder="Notes about logistics, deposits, booking rules, prepaid arrangements, etc." oninput="onAdminNotesInput()"></textarea>
             <div class="word-count" id="admin-notes-count">0 / 150 words</div>
           </div>
+
+        </div>
+
         </div>
 
       </form><!-- end #tour-form -->
@@ -985,6 +1235,7 @@
 // No passwords are stored in this file.
 
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0RuNO_0Yqd1bZUiZDzjACnAI1FM3w0NyiR0-57Zj1j5Y8S_aqyTaokqQwE0PI0_8W/exec';
+const PLANNER_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyqAXp-nZtZR-mBTHJT74rcxODgl8MZ27oOhSw7YXAFgF5Ce5Y7HYW5M8BxvEW_QV-P0A/exec';
 
 let currentUser = null; // { username, displayName, isAdmin, token }
 let currentDraftId = null;
@@ -1057,14 +1308,6 @@ function doLogout() {
 // ════════════════════════════════════════════════
 // LOCAL STORAGE HELPERS
 // ════════════════════════════════════════════════
-function clearAllDrafts() {
-  if (confirm('Clear ALL saved drafts from this browser? This cannot be undone.')) {
-    localStorage.removeItem('ftg_drafts');
-    renderDashboard();
-    showStatus('All drafts cleared.', 'success');
-  }
-}
-
 function getAllDrafts() {
   try {
     const raw = localStorage.getItem('ftg_drafts');
@@ -1146,6 +1389,7 @@ function renderDashboard() {
       </div>
       <div class="draft-card-actions">
         <button class="btn-edit" onclick="openDraft('${d.id}')">Edit</button>
+        <button class="btn-pool" onclick="pushToPool('${d.id}')">Push to Pool</button>
         <button class="btn-delete" onclick="confirmDelete('${d.id}')">Delete</button>
       </div>`;
     listEl.appendChild(card);
@@ -1274,17 +1518,35 @@ function populateForm(draft) {
   setVal('f-link2', f.link2 || '');
   setVal('f-link3', f.link3 || '');
   // Admin
-  setVal('f-admin-guide-walk', f.adminGuideWalk || '');
-  setVal('f-admin-guide-museum', f.adminGuideMuseum || '');
-  setVal('f-admin-guide-fullday', f.adminGuideFullday || '');
-  setVal('f-admin-guide-zoom', f.adminGuideZoom || '');
-  setVal('f-admin-museum-group', f.adminMuseumGroup || '');
-  setVal('f-admin-museum-pp', f.adminMuseumPp || '');
-  setVal('f-admin-restaurant-deposit', f.adminRestDeposit || '');
-  setVal('f-admin-restaurant-total', f.adminRestTotal || '');
-  setVal('f-admin-headsets', f.adminHeadsets || '');
-  setVal('f-admin-extra', f.adminExtra || '');
-  setVal('f-admin-notes', f.adminNotes || '');
+  setVal('f-s9-guide-name', f.s9GuideName || '');
+  setVal('f-s9-guide-walk', f.s9GuideWalk || '');
+  setVal('f-s9-guide-museum', f.s9GuideMuseum || '');
+  setVal('f-s9-guide-fullday', f.s9GuideFullday || '');
+  setVal('f-s9-guide-tip', f.s9GuideTip || '');
+  setVal('f-s9-guide-discount', f.s9GuideDiscount || '');
+  setVal('f-s9-museum-name', f.s9MuseumName || '');
+  setVal('f-s9-museum-guide-fee', f.s9MuseumGuideFee || '');
+  setVal('f-s9-droit-parole', f.s9DroitParole || '');
+  setVal('f-s9-museum-group-fee', f.s9MuseumGroupFee || '');
+  setVal('f-s9-entry-pp', f.s9EntryPp || '');
+  setVal('f-s9-museum-headcount', f.s9MuseumHeadcount || '');
+  setVal('f-s9-museum-extra', f.s9MuseumExtra || '');
+  setVal('f-s9-headset-pp', f.s9HeadsetPp || '');
+  setVal('f-s9-headset-headcount', f.s9HeadsetHeadcount || '');
+  setVal('f-s9-headset-extra', f.s9HeadsetExtra || '');
+  setVal('f-s9-rest-pp', f.s9RestPp || '');
+  setVal('f-s9-rest-headcount', f.s9RestHeadcount || '');
+  setVal('f-s9-rest-deposit', f.s9RestDeposit || '');
+  setVal('f-s9-transport-flat', f.s9TransportFlat || '');
+  setVal('f-s9-transport-pp', f.s9TransportPp || '');
+  setVal('f-s9-transport-headcount', f.s9TransportHeadcount || '');
+  setVal('f-s9-transport-misc', f.s9TransportMisc || '');
+  setVal('f-s9-transport-misc-desc', f.s9TransportMiscDesc || '');
+  setVal('f-s9-guide-zoom', f.s9GuideZoom || '');
+  setVal('f-s9-zoom-admin', f.s9ZoomAdmin || '');
+  setVal('f-s9-zoom-admin-desc', f.s9ZoomAdminDesc || '');
+  setVal('f-s9-notes', f.s9Notes || '');
+  recalcS9();
   updateAdminNotesCount();
   document.getElementById('submit-btn').disabled = draft.status === 'submitted';
 }
@@ -1326,17 +1588,43 @@ function collectForm() {
     link1: val('f-link1'),
     link2: val('f-link2'),
     link3: val('f-link3'),
-    adminGuideWalk: val('f-admin-guide-walk'),
-    adminGuideMuseum: val('f-admin-guide-museum'),
-    adminGuideFullday: val('f-admin-guide-fullday'),
-    adminGuideZoom: val('f-admin-guide-zoom'),
-    adminMuseumGroup: val('f-admin-museum-group'),
-    adminMuseumPp: val('f-admin-museum-pp'),
-    adminRestDeposit: val('f-admin-restaurant-deposit'),
-    adminRestTotal: val('f-admin-restaurant-total'),
-    adminHeadsets: val('f-admin-headsets'),
-    adminExtra: val('f-admin-extra'),
-    adminNotes: val('f-admin-notes'),
+    s9GuideName: val('f-s9-guide-name'),
+    s9GuideWalk: val('f-s9-guide-walk'),
+    s9GuideMuseum: val('f-s9-guide-museum'),
+    s9GuideFullday: val('f-s9-guide-fullday'),
+    s9GuideTip: val('f-s9-guide-tip'),
+    s9GuideDiscount: val('f-s9-guide-discount'),
+    s9GuideSubtotal: val('f-s9-guide-subtotal'),
+    s9MuseumName: val('f-s9-museum-name'),
+    s9MuseumGuideFee: val('f-s9-museum-guide-fee'),
+    s9DroitParole: val('f-s9-droit-parole'),
+    s9MuseumGroupFee: val('f-s9-museum-group-fee'),
+    s9EntryPp: val('f-s9-entry-pp'),
+    s9MuseumHeadcount: val('f-s9-museum-headcount'),
+    s9EntryTotal: val('f-s9-entry-total'),
+    s9MuseumExtra: val('f-s9-museum-extra'),
+    s9MuseumSubtotal: val('f-s9-museum-subtotal'),
+    s9HeadsetPp: val('f-s9-headset-pp'),
+    s9HeadsetHeadcount: val('f-s9-headset-headcount'),
+    s9HeadsetTotal: val('f-s9-headset-total'),
+    s9HeadsetExtra: val('f-s9-headset-extra'),
+    s9HeadsetSubtotal: val('f-s9-headset-subtotal'),
+    s9RestPp: val('f-s9-rest-pp'),
+    s9RestHeadcount: val('f-s9-rest-headcount'),
+    s9RestTotal: val('f-s9-rest-total'),
+    s9RestDeposit: val('f-s9-rest-deposit'),
+    s9RestCash: val('f-s9-rest-cash'),
+    s9RestSubtotal: val('f-s9-rest-subtotal'),
+    s9TransportFlat: val('f-s9-transport-flat'),
+    s9TransportPp: val('f-s9-transport-pp'),
+    s9TransportHeadcount: val('f-s9-transport-headcount'),
+    s9TransportMisc: val('f-s9-transport-misc'),
+    s9TransportMiscDesc: val('f-s9-transport-misc-desc'),
+    s9TransportSubtotal: val('f-s9-transport-subtotal'),
+    s9GuideZoom: val('f-s9-guide-zoom'),
+    s9ZoomAdmin: val('f-s9-zoom-admin'),
+    s9ZoomAdminDesc: val('f-s9-zoom-admin-desc'),
+    s9Notes: val('f-s9-notes'),
   };
 }
 
@@ -1358,6 +1646,51 @@ function saveDraft() {
   const draftName = [date, title].filter(Boolean).join(' — ') || 'Untitled draft';
   showSaveIndicator('Saved ✓');
   showStatus('Draft saved: ' + draftName, 'success');
+}
+
+function n(id) {
+  const v = parseFloat((document.getElementById(id) || {}).value || '');
+  return isNaN(v) ? 0 : v;
+}
+function setComputed(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.value = value === 0 ? '' : value.toFixed(2);
+}
+
+function recalcS9() {
+  // Guide subtotal
+  const guideSubtotal = n('f-s9-guide-walk') + n('f-s9-guide-museum') + n('f-s9-guide-fullday') + n('f-s9-guide-tip') + n('f-s9-guide-discount');
+  setComputed('f-s9-guide-subtotal', guideSubtotal);
+
+  // Museum: entry total = entry pp × headcount; museum subtotal = all museum fields
+  const entryTotal = n('f-s9-entry-pp') * n('f-s9-museum-headcount');
+  setComputed('f-s9-entry-total', entryTotal);
+  const museumSubtotal = n('f-s9-museum-guide-fee') + n('f-s9-droit-parole') + n('f-s9-museum-group-fee') + entryTotal + n('f-s9-museum-extra');
+  setComputed('f-s9-museum-subtotal', museumSubtotal);
+
+  // Headsets: proposed = cost pp × headcount; subtotal = proposed + extra
+  const headsetProposed = n('f-s9-headset-pp') * n('f-s9-headset-headcount');
+  setComputed('f-s9-headset-total', headsetProposed);
+  setComputed('f-s9-headset-subtotal', headsetProposed + n('f-s9-headset-extra'));
+
+  // Restaurant: proposed total = pp × headcount; cash = proposed - deposit; subtotal = proposed total
+  const restProposed = n('f-s9-rest-pp') * n('f-s9-rest-headcount');
+  setComputed('f-s9-rest-total', restProposed);
+  setComputed('f-s9-rest-cash', restProposed - n('f-s9-rest-deposit'));
+  setComputed('f-s9-rest-subtotal', restProposed);
+
+  // Transport subtotal = flat + (pp × headcount) + misc
+  setComputed('f-s9-transport-subtotal', n('f-s9-transport-flat') + (n('f-s9-transport-pp') * n('f-s9-transport-headcount')) + n('f-s9-transport-misc'));
+}
+
+function autoFillHeadcount() {
+  const limit = val('f-limit');
+  if (!limit) return;
+  ['f-s9-museum-headcount', 'f-s9-headset-headcount', 'f-s9-rest-headcount', 'f-s9-transport-headcount'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = limit;
+  });
+  recalcS9();
 }
 
 function onFieldChange() {
@@ -1443,8 +1776,8 @@ function applyTourTypeUI(type) {
   document.getElementById('zoom-meeting-note').style.display = isZoom ? '' : 'none';
 
   // Admin fields
-  document.getElementById('admin-walk-fields').style.display = isZoom ? 'none' : '';
-  document.getElementById('admin-zoom-fields').style.display = isZoom ? '' : 'none';
+  document.getElementById('s9-walk-fields').style.display = isZoom ? 'none' : '';
+  document.getElementById('s9-zoom-fields').style.display = isZoom ? '' : 'none';
 
   // Cost defaults hints
   document.getElementById('rm-default-hint').textContent =
@@ -1567,7 +1900,7 @@ function onAdminNotesInput() {
   onFieldChange();
 }
 function updateAdminNotesCount() {
-  const n = countWords(val('f-admin-notes'));
+  const n = countWords(val('f-s9-notes'));
   const el = document.getElementById('admin-notes-count');
   el.textContent = n + ' / 150 words';
   el.classList.toggle('over', n > 150);
@@ -1647,20 +1980,55 @@ async function submitTemplate() {
     '',
     '── ADMIN ONLY (not for website) ──',
     '',
-    isZoom ? 'Guide Fee (Video): ' + (f.adminGuideZoom || '—') : [
-      'Guide Fee — Walk: ' + (f.adminGuideWalk || '—'),
-      'Guide Fee — Museum: ' + (f.adminGuideMuseum || '—'),
-      'Guide Fee — Full Day: ' + (f.adminGuideFullday || '—'),
-      'Museum Group Fee: ' + (f.adminMuseumGroup || '—'),
-      'Per Person Entry Fee: ' + (f.adminMuseumPp || '—'),
-      'Restaurant Deposit: ' + (f.adminRestDeposit || '—'),
-      'Restaurant Est. Total: ' + (f.adminRestTotal || '—'),
-      'Headset Costs: ' + (f.adminHeadsets || '—'),
-      'Extra Tour Fees: ' + (f.adminExtra || '—'),
+    isZoom ? [
+      'Guide Fee (Video): ' + (f.s9GuideZoom || '—'),
+      'Admin / Other Cost: ' + (f.s9ZoomAdmin || '—') + (f.s9ZoomAdminDesc ? ' (' + f.s9ZoomAdminDesc + ')' : ''),
+    ].join('\n') : [
+      '— Guide Costs —',
+      'Guide Name: ' + (f.s9GuideName || '—'),
+      'Guide Fee — Walk: ' + (f.s9GuideWalk || '—'),
+      'Guide Fee — Museum: ' + (f.s9GuideMuseum || '—'),
+      'Guide Fee — Full Day: ' + (f.s9GuideFullday || '—'),
+      'Extra / Tip: ' + (f.s9GuideTip || '—'),
+      'Discount: ' + (f.s9GuideDiscount || '—'),
+      'Guide Subtotal: ' + (f.s9GuideSubtotal || '—'),
+      '',
+      '— Museum Costs —',
+      'Museum Name: ' + (f.s9MuseumName || '—'),
+      'Museum Guide Fee: ' + (f.s9MuseumGuideFee || '—'),
+      'Droit de Parole: ' + (f.s9DroitParole || '—'),
+      'Museum Group Fee: ' + (f.s9MuseumGroupFee || '—'),
+      'Entry Fee per Person: ' + (f.s9EntryPp || '—'),
+      'Headcount: ' + (f.s9MuseumHeadcount || '—'),
+      'Proposed Entry Total: ' + (f.s9EntryTotal || '—'),
+      'Extra / Discount: ' + (f.s9MuseumExtra || '—'),
+      'Museum Subtotal: ' + (f.s9MuseumSubtotal || '—'),
+      '',
+      '— Headset Costs —',
+      'Cost per Headset: ' + (f.s9HeadsetPp || '—'),
+      'Headcount: ' + (f.s9HeadsetHeadcount || '—'),
+      'Proposed Total: ' + (f.s9HeadsetTotal || '—'),
+      'Extra / Discount: ' + (f.s9HeadsetExtra || '—'),
+      'Headset Subtotal: ' + (f.s9HeadsetSubtotal || '—'),
+      '',
+      '— Restaurant Costs —',
+      'Cost per Person: ' + (f.s9RestPp || '—'),
+      'Headcount: ' + (f.s9RestHeadcount || '—'),
+      'Proposed Total: ' + (f.s9RestTotal || '—'),
+      'Deposit Paid: ' + (f.s9RestDeposit || '—'),
+      'Cash Needed on Day: ' + (f.s9RestCash || '—'),
+      'Restaurant Subtotal: ' + (f.s9RestSubtotal || '—'),
+      '',
+      '— Transport Costs —',
+      'Flat Fee: ' + (f.s9TransportFlat || '—'),
+      'Per Person Cost: ' + (f.s9TransportPp || '—'),
+      'Headcount: ' + (f.s9TransportHeadcount || '—'),
+      'Misc Transport: ' + (f.s9TransportMisc || '—') + (f.s9TransportMiscDesc ? ' (' + f.s9TransportMiscDesc + ')' : ''),
+      'Transport Subtotal: ' + (f.s9TransportSubtotal || '—'),
     ].join('\n'),
     '',
     'Notes:',
-    f.adminNotes || '—',
+    f.s9Notes || '—',
   ].filter(l => l !== null).join('\n');
 
   const btn = document.getElementById('submit-btn');
@@ -1707,6 +2075,126 @@ function setVal(id, v) { const el = document.getElementById(id); if (el) el.valu
 function showView(name) {
   document.getElementById('dashboard-view').classList.toggle('active', name === 'dashboard');
   document.getElementById('editor-view').classList.toggle('active', name === 'editor');
+}
+
+function showDashTab(tab) {
+  const isDrafts = tab === 'drafts';
+  document.getElementById('panel-drafts').style.display = isDrafts ? '' : 'none';
+  document.getElementById('panel-pool').style.display = isDrafts ? 'none' : '';
+  document.getElementById('tab-drafts').classList.toggle('active', isDrafts);
+  document.getElementById('tab-pool').classList.toggle('active', !isDrafts);
+  if (!isDrafts) loadPool();
+}
+
+// ════════════════════════════════════════════════
+// POOL — shared template store
+// ════════════════════════════════════════════════
+
+async function loadPool() {
+  const listEl = document.getElementById('pool-list');
+  listEl.innerHTML = '<div class="drafts-empty"><div class="empty-icon">⏳</div>Loading pool…</div>';
+  try {
+    const url = PLANNER_SCRIPT_URL + '?action=getPool&token=' + encodeURIComponent(currentUser.token);
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'Failed to load pool');
+    renderPool(data.templates || []);
+  } catch(e) {
+    listEl.innerHTML = '<div class="drafts-empty"><div class="empty-icon">⚠️</div>Could not load pool: ' + e.message + '</div>';
+  }
+}
+
+function renderPool(templates) {
+  const listEl = document.getElementById('pool-list');
+  if (!templates.length) {
+    listEl.innerHTML = '<div class="drafts-empty"><div class="empty-icon">📬</div>Pool is empty. Push a draft to get started.</div>';
+    return;
+  }
+  listEl.innerHTML = '';
+  templates.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'pool-card';
+    const statusClass = t.Status === 'submitted' ? 'status-submitted' : t.Status === 'approved' ? 'status-approved' : 'status-ready';
+    const statusLabel = t.Status === 'submitted' ? 'Submitted' : t.Status === 'approved' ? 'Approved' : 'Ready';
+    const submitted = new Date(t.SubmittedAt).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const typeIcon = t.TourType === 'zoom' ? '💻' : t.TourType === 'museum' ? '🏛' : '🚶';
+    const isLocked = t.Status === 'submitted';
+    const canDelete = currentUser.isAdmin;
+    card.innerHTML = `
+      <div class="draft-card-left">
+        <div class="draft-card-name">${t.TourTitle || '(Untitled)'}</div>
+        <div class="draft-card-meta">
+          <span class="meta-planner">${t.PlannerDisplayName || t.PlannerUsername}</span>
+          <span class="status-badge ${statusClass}">${statusLabel}</span>
+          <span>${typeIcon} ${t.TourType === 'zoom' ? 'Zoom' : t.TourType === 'museum' ? 'Museum' : 'Walk'}</span>
+          <span>${t.TourDate || 'No date'}</span>
+          <span>Pushed: ${submitted}</span>
+        </div>
+      </div>
+      <div class="draft-card-actions">
+        ${!isLocked ? `<button class="btn-edit" onclick="openPoolTemplate('${t.TemplateID}')">Edit</button>` : ''}
+        ${canDelete ? `<button class="btn-delete" onclick="confirmDeletePool('${t.TemplateID}', '${(t.TourTitle||'').replace(/'/g,"\\'")}')">Delete</button>` : ''}
+        ${isLocked ? '<span style="color:var(--stone);font-size:0.8rem;font-style:italic;">Locked — submitted</span>' : ''}
+      </div>`;
+    listEl.appendChild(card);
+  });
+}
+
+async function pushToPool(draftId) {
+  const draft = getDraft(draftId);
+  if (!draft) return;
+  if (!draft.title) {
+    showStatus('Add a tour title before pushing to pool.', 'error');
+    return;
+  }
+  if (!confirm(`Push "${draft.title}" to the shared pool for collaborative editing?`)) return;
+
+  try {
+    const resp = await fetch(PLANNER_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'saveToPool',
+        token: currentUser.token,
+        plannerUsername: currentUser.username,
+        tourTitle: draft.title,
+        tourDate: draft.date || '',
+        tourType: draft.tourType || 'walk',
+        templateData: draft.fields || {}
+      })
+    });
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'Push failed');
+    showStatus(`"${draft.title}" pushed to pool.`, 'success');
+  } catch(e) {
+    showStatus('Could not push to pool: ' + e.message, 'error');
+  }
+}
+
+function openPoolTemplate(templateId) {
+  // Step 7 — collaborative editing. For now show a placeholder message.
+  showStatus('Collaborative editing coming in next build step.', 'success');
+}
+
+async function confirmDeletePool(templateId, title) {
+  if (!confirm(`Delete "${title}" from the pool? This cannot be undone.`)) return;
+  try {
+    const resp = await fetch(PLANNER_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'deleteFromPool',
+        token: currentUser.token,
+        templateId: templateId
+      })
+    });
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'Delete failed');
+    showStatus('Template deleted from pool.', 'success');
+    loadPool();
+  } catch(e) {
+    showStatus('Could not delete: ' + e.message, 'error');
+  }
 }
 
 function showStatus(msg, type) {
