@@ -2117,16 +2117,16 @@ async function submitTemplate() {
   btn.textContent = 'Sending…';
 
   try {
-    const resp = await fetch('https://formsubmit.co/ajax/fridaysinparis@gmail.com', {
+    const resp = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
-        _subject: 'FTG Tour Template: ' + draft.title + ' (' + draft.date + ') — from ' + draft.plannerDisplay,
-        _replyto: 'no-reply@ftgparis.org',
-        _captcha: 'false',
+        access_key: 'eeb66435-a785-415e-9269-f4b0a7cf165d',
+        subject: 'FTG Tour Template: ' + draft.title + ' (' + draft.date + ') — from ' + draft.plannerDisplay,
+        from_name: 'FTG Planner Tool',
+        replyto: 'no-reply@ftgparis.org',
         message: body
-      })
-    });
+      })\n    });
     const data = await resp.json();
     if (data.success === 'true' || data.success === true) {
       if (currentMode === 'pool') {
