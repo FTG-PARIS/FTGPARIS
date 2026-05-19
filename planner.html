@@ -752,11 +752,11 @@
     <!-- ── EDITOR ── -->
     <div id="editor-view">
       <div class="editor-topbar">
-        <button class="btn-back" onclick="backToDashboard()">← Back to Drafts</button>
+        <button class="btn-back" id="back-btn" onclick="backToDashboard()">← Back to Drafts</button>
         <div class="editor-title" id="editor-title">New Template</div>
         <div class="editor-actions">
           <span class="save-indicator" id="save-indicator"></span>
-          <button class="btn-save" onclick="saveDraft()">💾 Save Draft</button>
+          <button class="btn-save" id="save-btn" onclick="saveDraft()">💾 Save Draft</button>
           <button class="btn-submit" id="submit-btn" onclick="submitTemplate()" style="display:none;">✉ Submit to Barb</button>
         </div>
       </div>
@@ -1246,6 +1246,8 @@ let currentTourType = null;
 let modalTourType = null;
 let walkDots = [false, false, false, false, false];
 let autoSaveTimer = null;
+let currentMode = 'draft';       // 'draft' or 'pool'
+let currentPoolTemplateId = null; // TemplateID when editing from pool
 
 async function doLogin() {
   const nameInput = document.getElementById('login-name').value.trim().toLowerCase();
@@ -1632,6 +1634,10 @@ function collectForm() {
 }
 
 function saveDraft() {
+  if (currentMode === 'pool') {
+    savePoolTemplate();
+    return;
+  }
   if (!currentDraftId) return;
   const all = getAllDrafts();
   const draft = all[currentDraftId];
@@ -1649,6 +1655,40 @@ function saveDraft() {
   const draftName = [date, title].filter(Boolean).join(' — ') || 'Untitled draft';
   showSaveIndicator('Saved ✓');
   showStatus('Draft saved: ' + draftName, 'success');
+}
+
+async function savePoolTemplate() {
+  if (!currentPoolTemplateId) return;
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  try {
+    const fields = collectForm();
+    const title = val('f-title');
+    const date = val('f-date');
+    const resp = await fetch(PLANNER_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'updatePoolTemplate',
+        token: currentUser.token,
+        templateId: currentPoolTemplateId,
+        tourTitle: title,
+        tourDate: date,
+        tourType: currentTourType,
+        templateData: fields
+      })
+    });
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'Save failed');
+    document.getElementById('editor-title').textContent = title || 'Pool Template';
+    showSaveIndicator('Saved to Pool ✓');
+    showStatus('Pool template saved.', 'success');
+  } catch(e) {
+    showStatus('Could not save to pool: ' + e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 Save to Pool';
+  }
 }
 
 function n(id) {
@@ -1697,6 +1737,8 @@ function autoFillHeadcount() {
 }
 
 function onFieldChange() {
+  // In pool mode, no auto-save — planner saves manually
+  if (currentMode === 'pool') return;
   // Auto-save after 3 seconds of inactivity — silently, no indicator
   clearTimeout(autoSaveTimer);
   autoSaveTimer = setTimeout(() => {
@@ -1723,10 +1765,29 @@ function showSaveIndicator(msg) {
 }
 
 function backToDashboard() {
-  saveDraft();
+  const wasPool = currentMode === 'pool';
+  if (currentMode === 'draft') {
+    saveDraft();
+  }
+  // Reset mode
+  currentMode = 'draft';
+  currentPoolTemplateId = null;
   currentDraftId = null;
   currentTourType = null;
+  // Reset toolbar labels
+  document.getElementById('back-btn').textContent = '← Back to Drafts';
+  document.getElementById('save-btn').textContent = '💾 Save Draft';
+  document.getElementById('save-btn').style.display = '';
+  document.getElementById('submit-btn').style.display = 'none';
+  // Re-enable all form fields (in case they were locked)
+  document.querySelectorAll('#tour-form input, #tour-form textarea, #tour-form select').forEach(el => {
+    el.disabled = false;
+  });
   renderDashboard();
+  if (wasPool) {
+    // Switch to pool tab
+    showDashTab('pool');
+  }
 }
 
 // ════════════════════════════════════════════════
@@ -1913,12 +1974,29 @@ function updateAdminNotesCount() {
 // SUBMIT TO BARB
 // ════════════════════════════════════════════════
 async function submitTemplate() {
-  if (!currentDraftId) return;
-  saveDraft();
-  const draft = getDraft(currentDraftId);
-  if (!draft) return;
+  // Works in both draft mode and pool mode
+  const isPoolMode = currentMode === 'pool';
+  if (!isPoolMode && !currentDraftId) return;
 
-  const f = draft.fields || {};
+  // In pool mode, collect live form data; in draft mode, save then load
+  let draft, f;
+  if (isPoolMode) {
+    f = collectForm();
+    draft = {
+      title: val('f-title'),
+      date: val('f-date'),
+      tourType: currentTourType,
+      plannerDisplay: currentUser.displayName,
+      fields: f
+    };
+  } else {
+    saveDraft();
+    draft = getDraft(currentDraftId);
+    if (!draft) return;
+    f = draft.fields || {};
+  }
+
+  const f2 = f; // alias unused — f is used throughout
   if (!draft.title) { alert('Please fill in the Tour Title before submitting.'); return; }
   if (!draft.date) { alert('Please fill in the Tour Date before submitting.'); return; }
   if (!f.guide) { alert('Please fill in the Tour Guide before submitting.'); return; }
@@ -2051,10 +2129,60 @@ async function submitTemplate() {
     });
     const data = await resp.json();
     if (data.success === 'true' || data.success === true) {
-      // Mark as submitted
-      const all = getAllDrafts();
-      all[currentDraftId].status = 'submitted';
-      saveDrafts(all);
+      if (currentMode === 'pool') {
+        // 1. Save cost data to TourCosts sheet
+        try {
+          await fetch(PLANNER_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+              action: 'saveCosts',
+              token: currentUser.token,
+              tourId: currentPoolTemplateId,
+              tourTitle: draft.title,
+              tourDate: draft.date,
+              costData: {
+                guideSubtotal: f.s9GuideSubtotal,
+                museumSubtotal: f.s9MuseumSubtotal,
+                headsetSubtotal: f.s9HeadsetSubtotal,
+                restaurantSubtotal: f.s9RestSubtotal,
+                transportSubtotal: f.s9TransportSubtotal,
+                guideZoom: f.s9GuideZoom,
+                zoomAdmin: f.s9ZoomAdmin,
+                zoomAdminDesc: f.s9ZoomAdminDesc,
+                notes: f.s9Notes,
+                fullFields: f
+              },
+              notes: f.s9Notes || ''
+            })
+          });
+        } catch(costErr) {
+          // Non-fatal — log but don't block submission
+          console.warn('saveCosts failed:', costErr);
+        }
+        // 2. Lock pool record as submitted
+        try {
+          await fetch(PLANNER_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+              action: 'updatePoolTemplate',
+              token: currentUser.token,
+              templateId: currentPoolTemplateId,
+              tourTitle: draft.title,
+              tourDate: draft.date,
+              tourType: currentTourType,
+              status: 'submitted',
+              templateData: f
+            })
+          });
+        } catch(lockErr) {
+          console.warn('Lock pool record failed:', lockErr);
+        }
+      } else {
+        // Draft mode — mark local draft as submitted
+        const all = getAllDrafts();
+        all[currentDraftId].status = 'submitted';
+        saveDrafts(all);
+      }
       btn.textContent = '✓ Submitted';
       btn.style.background = 'var(--green)';
       btn.style.color = '#fff';
@@ -2179,9 +2307,74 @@ async function pushToPool(draftId) {
   }
 }
 
-function openPoolTemplate(templateId) {
-  // Step 7 — collaborative editing. For now show a placeholder message.
-  showStatus('Collaborative editing coming in next build step.', 'success');
+async function openPoolTemplate(templateId) {
+  // Load pool to get the current template data
+  try {
+    const url = PLANNER_SCRIPT_URL + '?action=getPool&token=' + encodeURIComponent(currentUser.token);
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'Failed to load pool');
+    const tmpl = (data.templates || []).find(t => t.TemplateID === templateId);
+    if (!tmpl) { showStatus('Template not found in pool.', 'error'); return; }
+
+    // Parse the JSON blob
+    let fields = {};
+    try { fields = JSON.parse(tmpl.TemplateJSON || '{}'); } catch(e) { fields = {}; }
+
+    const isLocked = tmpl.Status === 'submitted';
+
+    // Set mode
+    currentMode = 'pool';
+    currentPoolTemplateId = templateId;
+    currentDraftId = null;
+    currentTourType = tmpl.TourType || 'walk';
+    walkDots = fields.walkDots || [false,false,false,false,false];
+
+    // Build a synthetic draft object for populateForm
+    const syntheticDraft = {
+      title: tmpl.TourTitle || '',
+      date: tmpl.TourDate || '',
+      tourType: currentTourType,
+      fields: fields
+    };
+
+    showView('editor');
+    document.getElementById('editor-title').textContent = (tmpl.TourTitle || 'Pool Template') + (isLocked ? ' [Read Only]' : '');
+    populateForm(syntheticDraft);
+    applyTourTypeUI(currentTourType);
+    updateWalkDots();
+
+    // Update toolbar for pool mode
+    document.getElementById('back-btn').textContent = '← Back to Pool';
+    document.getElementById('save-btn').textContent = isLocked ? '' : '💾 Save to Pool';
+    document.getElementById('save-btn').style.display = isLocked ? 'none' : '';
+    document.getElementById('submit-btn').style.display = isLocked ? 'none' : '';
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('submit-btn').textContent = '✉ Submit to Barb';
+    document.getElementById('submit-btn').style.background = '';
+    document.getElementById('submit-btn').style.color = '';
+
+    // Show last edited by info
+    if (tmpl.LastEditedBy) showStatus('Last edited by: ' + tmpl.LastEditedBy, 'success');
+
+    // If locked, disable all form fields
+    if (isLocked) {
+      document.querySelectorAll('#tour-form input, #tour-form textarea, #tour-form select').forEach(el => {
+        el.disabled = true;
+      });
+      showStatus('This template has been submitted and is locked — read only.', 'error');
+    } else {
+      // Ensure fields are enabled (populateForm already called above)
+      document.querySelectorAll('#tour-form input, #tour-form textarea, #tour-form select').forEach(el => {
+        el.disabled = false;
+      });
+      // Show submit button
+      document.getElementById('submit-btn').style.display = '';
+    }
+
+  } catch(e) {
+    showStatus('Could not open pool template: ' + e.message, 'error');
+  }
 }
 
 async function confirmDeletePool(templateId, title) {
