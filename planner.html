@@ -2126,7 +2126,8 @@ async function submitTemplate() {
         from_name: 'FTG Planner Tool',
         replyto: 'no-reply@ftgparis.org',
         message: body
-      })\n    });
+      })
+    });
     const data = await resp.json();
     if (data.success === 'true' || data.success === true) {
       if (currentMode === 'pool') {
