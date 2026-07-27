@@ -1259,7 +1259,7 @@
           <div style="font-family:'Playfair Display',serif;font-weight:700;color:#C9A030;font-size:1rem;margin-bottom:1rem;">Why Become a Regular Member?</div>
           <div style="font-size:1rem;color:#2C343E;line-height:1.85;">
             <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Unlimited access</strong> — attend as many tours as you like</div>
-            <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Simple</strong> — just show up and enjoy</div>
+            <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Simple</strong> — just sign up, show up and enjoy</div>
             <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Excellent value</strong> — high-quality visits at an affordable cost</div>
             <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Expert guidance</strong> — tours led by specialists that deepen understanding and bring places to life</div>
             <div style="padding:0.4rem 0;border-bottom:1px solid #f0ede8;"><strong style="color:#1A3A2A;">Variety</strong> — a different theme or experience almost every week</div>
@@ -1991,6 +1991,7 @@ const VENDOME_SQUARE_IMG = '';
 const BRIDGES_IMG = 'photos/photo35.jpg';
 const POIRET_FASHION_IMG = 'photos/photo11.jpg';
 const MEUDON_IMG = 'photos/MeudonMay22.jpg';
+const KICKOFF_IMG = 'photos/photo36.jpg';
 
 const tours = [
   // SEPTEMBER 2025
@@ -2438,6 +2439,25 @@ const tours = [
     desc:'Who hasn\'t dreamed of being transported back in time? At the current show at the Museum of Decorative Arts, it is almost possible since we are invited to visit an 18th century manor dating from 1780. We will see furniture, sculpted wood panels, wallpaper, ceramics, silverware, clothes and accessories, toys and jewelry as we go from room to room. We will be like privileged guests in a house complete with sounds and smells from the time. Join us as our guide takes us through this exhibit with over 550 different objects, mostly from the museum\'s collection, and be transported back to the 18th century.' },
 ];
 
+// 2026-27 SEASON — Members Tour Details only, for now.
+// The public calendar (renderPublicCalendar) intentionally keeps reading
+// from `tours` above (2025-26, untouched) until the season swap happens.
+const toursMembers = [
+  // SEPTEMBER 2026
+  { date:'2026-09-11', photo_url: KICKOFF_IMG, name:'Kick-off Meeting and Welcome Back Lunch', month:'September', type:'walking', emoji:'🥂',
+    meet_time:'To be confirmed', start_time:'', finish_time:'',
+    meeting:'To be confirmed', transport:'To be confirmed',
+    guide:'',
+    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'Free',
+    note:'Open to all — no capacity limit',
+    limit:'', walk_level:'To be confirmed',
+    walk_dots: [false,false,false,false,false],
+    tour_planner:'Barbara TRIMPI',
+    day_contact:'Paul GAVORA · Lee HUBERT',
+    read_ahead:'',
+    desc:'Start the new FTG season with us as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program.<br><br>Behind every Friday is a community of members and volunteers. At our kickoff meeting, we\'ll show you the new FTG website and how it makes it easier to join tours, stay connected, and become part of what keeps FTG going. We\'ll begin with the public page you can share with friends, then explore the members\' area where you\'ll register for tours, meet our guides, find membership information, discover volunteer opportunities, and share your ideas. We\'ll also visit our new Facebook page, where members can relive past tours, post photos, exchange comments, and invite friends to join us.<br><br>Part two of the kickoff is lunch—a chance to catch up after the summer break, welcome new members, and enjoy the conversations that make FTG more than just a Friday outing.<br><br>Join us as we reconnect and look forward to another wonderful season together.' },
+];
+
 const pastTours = [
   { photo_url: VINCENNES_IMG, name:'Listening for Birdsong – Bois de Boulogne', year:2025, emoji:'&#55358;&#56732;' },
   { name:'The Impressionists at the Orsay', year:2024, emoji:'&#55356;&#57256;' },
@@ -2861,9 +2881,9 @@ function filterMonth(month, btn) {
 function renderMemberTours() {
   const list = document.getElementById('member-tours-list');
   list.innerHTML = '';
-  const months = [...new Set(tours.map(t => t.month))];
+  const months = [...new Set(toursMembers.map(t => t.month))];
   months.forEach(month => {
-    const mt = tours.filter(t => t.month === month);
+    const mt = toursMembers.filter(t => t.month === month);
     if (!mt.length) return;
     const h = document.createElement('div');
     h.className = 'members-month-head';
@@ -3002,7 +3022,7 @@ function renderMemberTours() {
           + '<div class="slide-title-panel">'
           + '<div class="slide-date-chip">' + dateStr + '</div>'
           + '<div class="slide-title">' + t.name + '</div>'
-          + '<div class="slide-subtitle">Guide &nbsp;·&nbsp; ' + makeGuideLink(t.guide) + '</div>'
+          + (t.guide ? '<div class="slide-subtitle">Guide &nbsp;·&nbsp; ' + makeGuideLink(t.guide) + '</div>' : '')
           + '<div class="slide-meet-time">MEET TIME: ' + (t.meet_time||'16h45') + '</div>'
           + '<div class="slide-cta-row">'
           + (t.type === 'video'
