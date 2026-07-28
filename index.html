@@ -711,7 +711,7 @@
     border-right: 1px solid #D4AF37;
   }
   .slide-photo-panel img {
-    width: 100%; height: 100%; object-fit: contain;
+    width: 100%; height: 100%; object-fit: cover; object-position: center top;
     background: #f0ede8; display: block;
     animation: kenBurns 12s ease-out forwards;
   }
@@ -1993,6 +1993,8 @@ const POIRET_FASHION_IMG = 'photos/photo11.jpg';
 const MEUDON_IMG = 'photos/MeudonMay22.jpg';
 const KICKOFF_IMG = 'photos/photo36.jpg';
 const MONTMARTRE_TREES_IMG = 'photos/photo37.jpg';
+const SAINT_GERMAIN_IMG = 'photos/photo38.jpg';
+const OCCUPATION_IMG = 'photos/photo39.jpg';
 
 const tours = [
   // SEPTEMBER 2025
@@ -2456,7 +2458,7 @@ const toursMembers = [
     tour_planner:'Barbara TRIMPI',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'',
-    desc:'Start the new FTG season with us as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program.<br><br>Behind every Friday is a community of members and volunteers. At our kickoff meeting, we\'ll show you the new FTG website and how it makes it easier to join tours, stay connected, and become part of what keeps FTG going. We\'ll begin with the public page you can share with friends, then explore the members\' area where you\'ll register for tours, meet our guides, find membership information, discover volunteer opportunities, and share your ideas. We\'ll also visit our new Facebook page, where members can relive past tours, post photos, exchange comments, and invite friends to join us.<br><br>Part two of the kickoff is lunch—a chance to catch up after the summer break, welcome new members, and enjoy the conversations that make FTG more than just a Friday outing.<br><br>Join us as we reconnect and look forward to another wonderful season together.' },
+    desc:'Start the new FTG season with us as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program. Behind every Friday is a community of members and volunteers. At our kickoff meeting, we\'ll show you the new FTG website and how it makes it easier to join tours, stay connected, and become part of what keeps FTG going. We\'ll begin with the public page you can share with friends, then explore the members\' area where you\'ll register for tours, meet our guides, find membership information, discover volunteer opportunities, and share your ideas. We\'ll also visit our new Facebook page, where members can relive past tours, post photos, exchange comments, and invite friends to join us. Part two of the kickoff is lunch—a chance to catch up after the summer break, welcome new members, and enjoy the conversations that make FTG more than just a Friday outing.' },
 
   { date:'2026-09-18', photo_url: MONTMARTRE_TREES_IMG, name:'Trees in Montmartre', month:'September', type:'walking', emoji:'🌳',
     meet_time:'10h15', start_time:'10h30', finish_time:'12h30',
@@ -2472,6 +2474,36 @@ const toursMembers = [
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://paris.vivarbre.fr/arrondissement18?idtm=1724404115777">paris.vivarbre.fr</a> · <a href="https://fr.wikipedia.org/wiki/Cimeti%C3%A8re_Saint-Vincent">Wikipedia: Cimetière Saint-Vincent</a>',
     desc:'Did you know that Paris was one of the most wooded capitals in Europe? Paris had 200,000 trees planted along its streets, and in its parks, gardens and cemeteries in 2019. An additional planting project will raise this number to 370,000 by the end of 2026. Despite the absence of any large parks, Montmartre and the 18th arrondissement account for more than 10,000 trees. Join Amy Kupec-Larue for a bucolic walk on the top of the Butte to discover the trees of this neighborhood, from narrow alleys to shady squares. While many of the typical Parisian trees can be found in Montmartre, the arboreal heritage of the Butte is also quite varied. Our stop at the cemetery Saint-Vincent will allow us to see many lesser-known tree species as well as others well adapted to the constraints of this site and climate change.' },
+
+  { date:'2026-10-02', photo_url: SAINT_GERMAIN_IMG, name:'Église Saint-Germain l\'Auxerrois', month:'October', type:'walking', emoji:'🔔',
+    meet_time:'TBD', start_time:'TBD', finish_time:'—',
+    meeting:'In front of the church, 2 place du Louvre 75001 Paris',
+    transport:'Métro: M7 - Pont Neuf, M1 - Louvre Rivoli · Bus: 69 - Pont Neuf; 21, 67, 74/85 - Louvre-Rivoli',
+    guide:'Maud HACKER',
+    cost_regular:'Free', cost_waitlist:'15€', cost_guest:'25€',
+    no_show:'15€',
+    note:'(includes guide/entrance fees)',
+    limit:'25', walk_level:'Easy walk, few staircases',
+    walk_dots: [true,false,false,false,false],
+    tour_planner:'Barbara TRIMPI',
+    day_contact:'Paul GAVORA · Lee HUBERT',
+    read_ahead:'<a href="https://en.wikipedia.org/wiki/Saint-Germain_l%27Auxerrois">en.wikipedia.org</a> · <a href="https://saintgermainlauxerrois.fr/informations-pratiques/">saintgermainlauxerrois.fr</a>',
+    desc:'Our guide Maud Hacker will take us on an exploration of Saint-Germain-l\'Auxerrois and the historic quarter surrounding it, an area densely layered with Parisian history. Facing the Louvre, the church itself reflects centuries of rebuilding and change and is linked to one of France\'s most dramatic historical episodes: tradition holds that its bell Marie—cast in 1527 and still surviving—sounded on the night of the St. Bartholomew\'s Day Massacre signaling its beginning; however, historians continue to debate the story. Inside, we will examine the architecture and remarkable stained glass before turning to the world just beyond its doors. Around the church are traces of royal Paris, Haussmannian updates, and the shifting relationship between palace, church, and commerce. We will explore the Louvre\'s historic courtyards, Perrault\'s great colonnade, La Samaritaine, and the small streets where forgotten institutions and vanished trades once shaped everyday Paris.' },
+
+  { date:'2026-10-16', photo_url: OCCUPATION_IMG, name:'Paris During the Occupation and Liberation', month:'October', type:'walking', emoji:'🎖️',
+    meet_time:'10h15', start_time:'10h30', finish_time:'—',
+    meeting:'At the Tuileries Metro station on Rue de Rivoli',
+    transport:'Métro: M1 - Tuileries · Bus: 72',
+    guide:'Brad NEWFIELD',
+    cost_regular:'Free', cost_waitlist:'15€', cost_guest:'25€',
+    no_show:'15€',
+    note:'(includes guide fees)',
+    limit:'25', walk_level:'Easy walk, few staircases',
+    walk_dots: [true,false,false,false,false],
+    tour_planner:'Jackie COGHLAN',
+    day_contact:'Paul GAVORA · Lee HUBERT',
+    read_ahead:'<a href="https://jeudepaume.org/a-propos/histoire/rose-valland/">jeudepaume.org</a> · <a href="https://www.fondationresistance.org/">fondationresistance.org</a>',
+    desc:'Join historian Brad Newfield to explore how Parisians survived the dark years of the German Occupation from 1940 to 1944. Combining stories of daily life with the larger history of the Gestapo, the Resistance, and the Liberation, this tour offers a vivid picture of Paris under occupation. We will see traces of the last street battle fought in Paris and visit the site where General von Choltitz surrendered the German forces. We will also learn about Rose Valland\'s heroic efforts at the Jeu de Paume to save priceless artworks from Nazi plunder.<br><br>Throughout the tour, Brad will contrast instances of collaboration with stories of remarkable courage displayed by French citizens and foreigners alike in the face of arrest and deportation. Together, these episodes offer a compelling perspective on one of the most dramatic and contested chapters in Parisian history.' },
 ];
 
 const pastTours = [
