@@ -715,6 +715,9 @@
     background: #f0ede8; display: block;
     animation: kenBurns 12s ease-out forwards;
   }
+  .slide-photo-panel img.portrait-photo {
+    object-fit: contain; object-position: center;
+  }
 
   /* Title panel */
   .slide-title-panel {
@@ -3066,7 +3069,7 @@ function renderMemberTours() {
         card.innerHTML =
           // TOP HERO
           '<div class="slide-top">'
-          + '<div class="slide-photo-panel"><img src="' + photoSrc + '" alt="' + t.name + '"></div>'
+          + '<div class="slide-photo-panel"><img src="' + photoSrc + '" alt="' + t.name + '" onload="if(this.naturalWidth&lt;this.naturalHeight)this.classList.add(\'portrait-photo\')"></div>'
           + '<div class="slide-title-panel">'
           + '<div class="slide-date-chip">' + dateStr + '</div>'
           + '<div class="slide-title">' + t.name + '</div>'
