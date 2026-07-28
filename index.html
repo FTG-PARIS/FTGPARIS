@@ -2463,7 +2463,7 @@ const toursMembers = [
     read_ahead:'',
     desc:'Start the new FTG season with us as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program. Behind every Friday is a community of members and volunteers. At our kickoff meeting, we\'ll show you the new FTG website and how it makes it easier to join tours, stay connected, and become part of what keeps FTG going. We\'ll begin with the public page you can share with friends, then explore the members\' area where you\'ll register for tours, meet our guides, find membership information, discover volunteer opportunities, and share your ideas. We\'ll also visit our new Facebook page, where members can relive past tours, post photos, exchange comments, and invite friends to join us. Part two of the kickoff is lunch—a chance to catch up after the summer break, welcome new members, and enjoy the conversations that make FTG more than just a Friday outing.' },
 
-  { date:'2026-09-18', photo_url: MONTMARTRE_TREES_IMG, name:'Trees in Montmartre', month:'September', type:'walking', emoji:'🌳',
+  { date:'2026-09-18', photo_url: MONTMARTRE_TREES_IMG, photo_fit:'contain', name:'Trees in Montmartre', month:'September', type:'walking', emoji:'🌳',
     meet_time:'10h15', start_time:'10h30', finish_time:'12h30',
     meeting:'Courtyard of the St Pierre de Montmartre Church, 2 rue du Mont-Cenis, 75018 Paris',
     transport:'Métro: M2 & M4 Anvers then funicular, or M12 Abbesses, or M12 Lamarck – Caulaincourt from the back of the hill · Train: J, L · Bus: 30, 302, 43, 54, 40',
@@ -3069,7 +3069,7 @@ function renderMemberTours() {
         card.innerHTML =
           // TOP HERO
           '<div class="slide-top">'
-          + '<div class="slide-photo-panel"><img src="' + photoSrc + '" alt="' + t.name + '" onload="if(this.naturalWidth&lt;this.naturalHeight)this.classList.add(\'portrait-photo\')"></div>'
+          + '<div class="slide-photo-panel"><img src="' + photoSrc + '" alt="' + t.name + '" class="' + (t.photo_fit==='contain' ? 'portrait-photo' : '') + '"></div>'
           + '<div class="slide-title-panel">'
           + '<div class="slide-date-chip">' + dateStr + '</div>'
           + '<div class="slide-title">' + t.name + '</div>'
