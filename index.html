@@ -3114,24 +3114,34 @@ function renderMemberTours() {
         card0.className = 'detail-card slide-card';
         card0.id = 'tour-' + t.date + t.name.replace(/\s/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
         card0.dataset.date = t.date;
+        const isMidweek = /^Mid-Week/.test(t.name);
         if (t.combined && t.monthDates) {
           const n = t.monthDates.length;
-          const monthLabel = (t.month + ' ' + d0.getFullYear()).toUpperCase();
+          const monthLabel = t.month + ' ' + d0.getFullYear();
           card0.innerHTML =
-            '<div class="slide-top" style="grid-template-columns:1fr;height:auto;padding:2.2rem 1.5rem;background:var(--purple);border-bottom:1px solid #D4AF37;">'
-            + '<div class="slide-title-panel" style="background:transparent;padding:0;align-items:center;text-align:center;">'
-            + '<div class="slide-date-chip" style="margin-bottom:0.7rem;">' + monthLabel + '</div>'
-            + '<div class="slide-title" style="color:#fff;">' + n + ' Great Tours Coming This Month!</div>'
-            + '<div class="slide-subtitle" style="color:#D4AF37;margin-top:0.6rem;">' + t.monthDates.join(' &middot; ') + '</div>'
-            + '<div class="slide-subtitle" style="color:#eee;margin-top:0.4rem;">Want to help plan one? Volunteer today!</div>'
+            '<div class="slide-top" style="grid-template-columns:42% 58%;height:auto;">'
+            + '<div style="background:var(--purple);padding:2rem 1.5rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:0.6rem;border-right:1px solid #D4AF37;">'
+            + '<div style="color:#fff;font-family:system-ui,sans-serif;font-size:1.15rem;font-weight:700;line-height:1.3;">' + n + ' great tours coming in</div>'
+            + '<div style="color:#D4AF37;font-family:system-ui,sans-serif;font-size:1.4rem;font-weight:700;line-height:1.25;">' + monthLabel + '</div>'
+            + '</div>'
+            + '<div style="background:#FDFDFC;padding:2rem 1.8rem;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:0.7rem;">'
+            + '<div style="font-family:\'Playfair Display\',serif;font-size:2rem;font-weight:700;color:#000;">Save the date' + (n>1?'s':'') + '!</div>'
+            + '<div style="font-family:system-ui,sans-serif;font-size:0.9rem;color:#444;">' + t.monthDates.join(' &middot; ') + '</div>'
+            + '<div style="font-family:system-ui,sans-serif;font-size:0.95rem;color:#444;">Want to help plan one? Volunteer today!</div>'
+            + '<div style="border:1.5px dashed #D4AF37;color:#8a7220;font-family:system-ui,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.5rem 1.1rem;border-radius:2px;margin-top:0.2rem;">Details coming soon</div>'
             + '</div></div>';
         } else {
-          const dateStr0 = d0.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+          const dateStr0 = d0.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long'});
           card0.innerHTML =
-            '<div class="slide-top" style="grid-template-columns:1fr;height:auto;padding:2.2rem 1.5rem;background:var(--purple);border-bottom:1px solid #D4AF37;">'
-            + '<div class="slide-title-panel" style="background:transparent;padding:0;align-items:center;text-align:center;">'
-            + '<div class="slide-date-chip" style="margin-bottom:0.7rem;">' + dateStr0 + '</div>'
-            + '<div class="slide-title" style="color:#fff;">' + t.name + '</div>'
+            '<div class="slide-top" style="grid-template-columns:42% 58%;height:auto;">'
+            + '<div style="background:var(--purple);padding:2rem 1.5rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:0.6rem;border-right:1px solid #D4AF37;">'
+            + '<div style="color:#fff;font-family:system-ui,sans-serif;font-size:1.15rem;font-weight:700;line-height:1.3;">' + (isMidweek ? 'Mid-week tour! Mark your calendar for another great tour on' : 'Mark your calendar for another great tour on') + '</div>'
+            + '<div style="color:#D4AF37;font-family:system-ui,sans-serif;font-size:1.4rem;font-weight:700;line-height:1.25;">' + dateStr0 + '</div>'
+            + '</div>'
+            + '<div style="background:#FDFDFC;padding:2rem 1.8rem;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:0.7rem;">'
+            + '<div style="font-family:\'Playfair Display\',serif;font-size:2rem;font-weight:700;color:#000;">Save the date!</div>'
+            + '<div style="font-family:system-ui,sans-serif;font-size:0.95rem;color:#444;">You can help plan this tour &ndash; Volunteer today!</div>'
+            + '<div style="border:1.5px dashed #D4AF37;color:#8a7220;font-family:system-ui,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.5rem 1.1rem;border-radius:2px;margin-top:0.3rem;">Details coming soon</div>'
             + '</div></div>';
         }
         list.appendChild(card0);
