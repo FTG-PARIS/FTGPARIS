@@ -1999,14 +1999,17 @@ const MONTMARTRE_TREES_IMG = 'photos/photo37.jpg';
 const SAINT_GERMAIN_IMG = 'photos/photo38.jpg';
 const OCCUPATION_IMG = 'photos/photo39.jpg';
 const CASSATT_IMG = 'photos/photo40.jpg';
-const MAD_FASHION_IMG = 'photos/photo41.jpg';
+const MAD_FASHION_IMG = 'photos/photo52.jpg';
 const CAPA_IMG = 'photos/photo42.jpg';
 const FALL_FRANCE_IMG = 'photos/photo43.jpg';
 const LAUGHTER_ART_IMG = 'photos/photo44.jpg';
 const DASSIN_IMG = 'photos/photo45.jpg';
 const TROMPE_LOEIL_IMG = 'photos/photo46.jpg';
 const ANIMALS_ART_IMG = 'photos/photo47.jpg';
-const CEZANNE_IMG = 'photos/photo48.jpg';
+const CEZANNE_IMG = 'photos/photo48.jpg'; // retired — Cézanne tour replaced by Bourdelle, 11 Dec
+const BOURDELLE_IMG = 'photos/photo49.jpg';
+const CHAMPS_ELYSEES_IMG = 'photos/photo50.jpg';
+const GRAND_GALERIE_IMG = 'photos/photo51.jpg';
 
 const tours = [
   // SEPTEMBER 2025
@@ -2460,19 +2463,34 @@ const tours = [
 const toursMembers = [
   // SEPTEMBER 2026
   { date:'2026-09-11', photo_url: KICKOFF_IMG, name:'Kick-off Meeting and Welcome Back Lunch', month:'September', type:'walking', emoji:'🥂',
-    meet_time:'To be confirmed', start_time:'', finish_time:'',
-    meeting:'To be confirmed', transport:'To be confirmed',
+    meet_time:'10h15', start_time:'10h30', finish_time:'',
+    meeting:'Le Standard Rive Gauche, 1 Boulevard du Montparnasse, 75006 Paris', transport:'Métro: M13 - Duroc (Sortie 3) · Bus: 28, 70, 82, 86, 92',
     guide:'',
     cost_regular:'Free', cost_waitlist:'Free', cost_guest:'Free',
     note:'Open to all — no capacity limit',
-    limit:'', walk_level:'To be confirmed',
+    limit:'', walk_level:'N/A',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'',
-    desc:'Start the new FTG season with us as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program. Behind every Friday is a community of members and volunteers. At our kickoff meeting, we\'ll show you the new FTG website and how it makes it easier to join tours, stay connected, and become part of what keeps FTG going. We\'ll begin with the public page you can share with friends, then explore the members\' area where you\'ll register for tours, meet our guides, find membership information, discover volunteer opportunities, and share your ideas. We\'ll also visit our new Facebook page, where members can relive past tours, post photos, exchange comments, and invite friends to join us. Part two of the kickoff is lunch—a chance to catch up after the summer break, welcome new members, and enjoy the conversations that make FTG more than just a Friday outing.' },
+    desc:'Behind every Friday tour is an active community of members and volunteers. Start the new FTG season with us as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program. At our kickoff meeting, we will show you how the new FTG website works. We will begin with the public page you can share with friends. Then we will explore the members\' area where you can sign up for tours, read about our guides, find membership information, discover volunteer opportunities, and share your ideas. We will also show you our new Facebook page, where members can relive past tours, post photos & comments, and invite friends to join us. Part Two of the kickoff is lunch—a chance to catch up after the summer break, and enjoy the conversations that make FTG more than just a Friday outing. Bring a friend! The meeting is free, and the lunch is available at a reduced price. Please RSVP to <a href="mailto:ftg.membership@gmail.com">ftg.membership@gmail.com</a> for more information and to reserve your place.' },
 
-  { date:'2026-09-18', photo_url: MONTMARTRE_TREES_IMG, photo_fit:'contain', name:'Trees in Montmartre', month:'September', type:'walking', emoji:'🌳',
+  { date:'2026-09-18', photo_url: CHAMPS_ELYSEES_IMG, photo_fit:'contain', name:'Gardens and Birds of l\'Avenue des Champs-Élysées', month:'September', type:'walking', emoji:'🚶',
+    meet_time:'10h15', start_time:'10h30', finish_time:'12h30',
+    meeting:'At Place de la Concorde, at the foot of the obelisk',
+    transport:'Métro: M1, M8, M12 - Concorde · Bus: 45, 73, 72, 84, 94',
+    guide:'Jacky LIBAUD',
+    cost_regular:'Free', cost_waitlist:'15€', cost_guest:'25€',
+    no_show:'15€',
+    note:'(includes guide fees)',
+    limit:'25', walk_level:'Medium walk',
+    walk_dots: [true,true,true,false,false],
+    tour_planner:'Dee GAVORA',
+    day_contact:'Paul GAVORA · Lee HUBERT',
+    read_ahead:'<a href="https://en.wikipedia.org/wiki/Champs-Élysées">en.wikipedia.org</a> · <a href="https://www.baladesauxjardins.fr/balade-dans-les-jardins-des-champs-elysees/">baladesauxjardins.fr</a>',
+    desc:'Naturalist Jacky Libaud will lead us on a discovery walk through the gardens of the Champs-Élysées, a series of public gardens flanking the lower part of Paris\' famous avenue and stretching from the Place de la Concorde to the Rond-Point. Conceived by André Le Nôtre in 1667, these gardens feature fountains, statues, and theaters. And tucked behind the Grand Palais, there is even an English-style garden featuring a small pond, a trickling waterfall and rustic stone staircases. Here beeches, maples and lilacs create a green escape with shady benches that are often overlooked by tourists. But such welcoming locations are not overlooked by Paris\' feathered residents, and we should expect to see magpies, blackbirds and song thrushes. Overhead we may spot gulls and cormorants because of our proximity of the Seine. As they say, "il y a tout c\'que vous voulez aux Champs-Élysées."' },
+
+  { date:'2026-09-25', photo_url: MONTMARTRE_TREES_IMG, photo_fit:'contain', name:'Trees in Montmartre', month:'September', type:'walking', emoji:'🌳',
     meet_time:'10h15', start_time:'10h30', finish_time:'12h30',
     meeting:'Courtyard of the St Pierre de Montmartre Church, 2 rue du Mont-Cenis, 75018 Paris',
     transport:'Métro: M2 & M4 Anvers then funicular, or M12 Abbesses, or M12 Lamarck – Caulaincourt from the back of the hill · Train: J, L · Bus: 30, 302, 43, 54, 40',
@@ -2486,8 +2504,6 @@ const toursMembers = [
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://paris.vivarbre.fr/arrondissement18?idtm=1724404115777">paris.vivarbre.fr</a> · <a href="https://fr.wikipedia.org/wiki/Cimeti%C3%A8re_Saint-Vincent">Wikipedia: Cimetière Saint-Vincent</a>',
     desc:'Did you know that Paris was one of the most wooded capitals in Europe? Paris had 200,000 trees planted along its streets, and in its parks, gardens and cemeteries in 2019. An additional planting project will raise this number to 370,000 by the end of 2026. Despite the absence of any large parks, Montmartre and the 18th arrondissement account for more than 10,000 trees. Join Amy Kupec-Larue for a bucolic walk on the top of the Butte to discover the trees of this neighborhood, from narrow alleys to shady squares. While many of the typical Parisian trees can be found in Montmartre, the arboreal heritage of the Butte is also quite varied. Our stop at the cemetery Saint-Vincent will allow us to see many lesser-known tree species as well as others well adapted to the constraints of this site and climate change.' },
-
-  { date:'2026-09-25', month:'September', type:'placeholder', placeholder:true, name:'Save the Date' },
 
   { date:'2026-10-02', photo_url: SAINT_GERMAIN_IMG, name:'Église Saint-Germain l\'Auxerrois', month:'October', type:'walking', emoji:'🔔',
     meet_time:'TBD', start_time:'TBD', finish_time:'—',
@@ -2504,7 +2520,20 @@ const toursMembers = [
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Saint-Germain_l%27Auxerrois">en.wikipedia.org</a> · <a href="https://saintgermainlauxerrois.fr/informations-pratiques/">saintgermainlauxerrois.fr</a>',
     desc:'Our guide Maud Hacker will take us on an exploration of Saint-Germain-l\'Auxerrois and the historic quarter surrounding it, an area densely layered with Parisian history. Facing the Louvre, the church itself reflects centuries of rebuilding and change and is linked to one of France\'s most dramatic historical episodes: tradition holds that its bell Marie—cast in 1527 and still surviving—sounded on the night of the St. Bartholomew\'s Day Massacre signaling its beginning; however, historians continue to debate the story. Inside, we will examine the architecture and remarkable stained glass before turning to the world just beyond its doors. Around the church are traces of royal Paris, Haussmannian updates, and the shifting relationship between palace, church, and commerce. We will explore the Louvre\'s historic courtyards, Perrault\'s great colonnade, La Samaritaine, and the small streets where forgotten institutions and vanished trades once shaped everyday Paris.' },
 
-  { date:'2026-10-09', month:'October', type:'placeholder', placeholder:true, name:'Save the Date' },
+  { date:'2026-10-09', photo_url: GRAND_GALERIE_IMG, name:'The Grand Galerie de l\'Évolution', month:'October', type:'museum', emoji:'🏛️',
+    meet_time:'11h45', start_time:'12h00', finish_time:'14h00',
+    meeting:'36 rue Geoffroy Saint-Hilaire, 75005 Paris — go into the courtyard, enter through security, and meet at the Information sign/desk',
+    transport:'Métro: M5 - Gare d\'Austerlitz · M7 - Censier Daubenton · M10 - Jussieu or Gare d\'Austerlitz · RER: RER C - Gare d\'Austerlitz · Bus: 24, 57, 61, 63, 67, 89, 91',
+    guide:'Jean-Manuel TRAIMOND',
+    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'35€',
+    no_show:'25€',
+    note:'(includes guide/entrance fees)',
+    limit:'25', walk_level:'Easy walk, few staircases',
+    walk_dots: [true,true,false,false,false],
+    tour_planner:'Dee GAVORA',
+    day_contact:'Paul GAVORA · Lee HUBERT',
+    read_ahead:'<a href="https://www.jardindesplantesdeparis.fr/en/history-of-the-grande-galerie-de-l-evolution-the-gallery-of-evolution">jardindesplantesdeparis.fr</a> · <a href="https://www.encyclopedie-environnement.org/en/life/lamarck-and-darwin-two-divergent-visions-of-living-world-2/">Lamarck & Darwin: Two Divergent Visions</a> · <a href="https://www.encyclopedie-environnement.org/en/life/theory-of-evolution-misunderstandings-and-resistance-2/">Theory of Evolution: Misunderstandings & Resistance</a>',
+    desc:'The history of the Grande Galerie begins with Louis XIII in 1626 when he created the Jardin royal des plantes médicinales. Along with the land, the king included a chateau which eventually would become a natural history "cabinet." Enriched by 18th century French explorations, this "cabinet" eventually evolved into the Muséum d\'Histoire naturelle after the French revolution. Located today in a much modified yet magnificent building within the Jardin des Plantes, the museum traces the evolution of species through a spectacular parade of animals and showcases the diversity of life and evolution through a vast collection of over 7,000 animals. Part of the National Museum of Natural History, the Grande Galerie transports you back millions of years, helping you better understand the history of the living world as we know it today and the role of French scientists in the development of the theory of evolution. (For fun, watch the 2010 film The Extraordinary Adventures of Adèle Blanc-Sec.)' },
 
   { date:'2026-10-16', photo_url: OCCUPATION_IMG, name:'Paris During the Occupation and Liberation', month:'October', type:'walking', emoji:'🎖️',
     meet_time:'10h15', start_time:'10h30', finish_time:'—',
@@ -2536,7 +2565,7 @@ const toursMembers = [
     desc:'« Independent Mary Cassatt » at the Orsay marks the 100th anniversary of the artist\'s death. Mary Cassatt was particularly proud of being American and independent, and the show, featuring over 80 works, will examine her career through this prism. Mary Cassatt asserted herself as part of the Impressionist movement in an essentially masculine world. Although her paintings of mothers with their children were much in demand, she also painted elegant, vivacious, young women in society, at home or at the theatre. They are modern and independent, and they drew positive attention at the Paris Salon where she exhibited four times! Her financial independence enabled her to purchase a castle in the Oise area, and many colorful, vibrant paintings were done in her garden there. She was even commissioned to paint a huge mural entitled « Modern Women » for the 1893 Chicago World\'s Fair. She played a crucial role in advising her American friends and acquaintances to buy French Impressionist paintings. And she participated in the struggle for women\'s right to vote, even organizing an exhibition to fund the movement. Join Chris Boicos on this video talk about the decidedly independent Mary Cassatt.' },
 
   // NOVEMBER 2026
-  { date:'2026-11-06', photo_url: MAD_FASHION_IMG, name:'Look! 40 Years of Fashion', month:'November', type:'museum', emoji:'👗',
+  { date:'2026-11-06', photo_url: MAD_FASHION_IMG, photo_fit:'contain', name:'Look! 40 Years of Fashion', month:'November', type:'museum', emoji:'👗',
     meet_time:'09h30', start_time:'10h00', finish_time:'12h00',
     meeting:'Musée des Arts Décoratifs, 107-111 rue de Rivoli, 75001 Paris – Garden side',
     transport:'Métro: M1 - Tuileries or Palais Royal Musée du Louvre, M7 - Pyramides or Palais Royal · Bus: 21, 39, 68, 69, 72 - Palais Royal or Musée du Louvre',
@@ -2582,20 +2611,20 @@ const toursMembers = [
   // DECEMBER 2026
   { date:'2026-12-04', month:'December', type:'placeholder', placeholder:true, name:'Save the Date' },
 
-  { date:'2026-12-11', photo_url: CEZANNE_IMG, name:'Paul Cézanne at the Grand Palais', month:'December', type:'museum', emoji:'🎨',
-    meet_time:'To be confirmed', start_time:'To be confirmed', finish_time:'',
-    meeting:'Grand Palais, Square Jean Perrin, 17 avenue du Général Eisenhower',
-    transport:'Métro: M1 - Franklin D. Roosevelt or Champs-Élysées Clemenceau · M9 - Franklin D. Roosevelt · M13 - Champs-Élysées Clemenceau · Bus: 28, 42, 52, 63, 72, 73, 80, 83, 93',
+  { date:'2026-12-11', photo_url: BOURDELLE_IMG, photo_fit:'contain', name:'The Fabric of the Artist at the Bourdelle Museum', month:'December', type:'museum', emoji:'🏛️',
+    meet_time:'TBD', start_time:'TBD', finish_time:'—',
+    meeting:'Musée Bourdelle, 18 rue Antoine-Bourdelle, 75015 Paris',
+    transport:'Métro: M6, M12, M13 - Montparnasse-Bienvenüe (Sortie 2, Place Bienvenüe) · M12 - Falguière · Bus: 28, 39, 58, 82, 88, 91, 92, 94, 95, 96',
     guide:'Ingrid HELD',
-    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'35€',
-    no_show:'25€',
+    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'30€',
+    no_show:'20€',
     note:'(includes guide/entrance fees)',
-    limit:'25', walk_level:'To be confirmed',
+    limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
     day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://www.grandpalais.fr/fr/programme/cezanne-et-nous">grandpalais.fr: Cézanne et nous</a> · <a href="https://en.wikipedia.org/wiki/Paul_C%C3%A9zanne">en.wikipedia.org: Paul Cézanne</a>',
-    desc:'« Cézanne and us » is dedicated to Paul Cézanne and his artistic heritage. At the end of the 1880s artists and collectors discovered Cézanne’s work in Père Tanguy’s shop, and in it they found a radical way of painting which reinforced their search for « pure » art, which was already on its path to abstraction.<br><br>"Cézanne and us" is the first show to simultaneously examine Cézanne’s fundamental influence on modern art along with the artists who claim to be influenced by him. From Gauguin to Matisse, Picasso, Mondrian, Joan Mitchell, Bridget Riley & Peter Doig, more than 180 works explore the way Cézanne’s art was discovered, interpreted and transformed from the end of the 19th century to today.<br><br>From lyric abstraction to hard edge painting, Cézanne is a constant reference, sometimes claimed, sometimes reinvented, always debated. In the era of post-modernism, his status as the « father of modern art » continues to question us.<br><br>Join Ingrid Held to learn more about this multiple and complex story made of appropriation, brotherhood, and esthetic contrasts.' },
+    read_ahead:'<a href="https://www.bourdelle.paris.fr/visiter/expositions/expositions-venir">bourdelle.paris.fr</a>',
+    desc:'« The Fabric of the Artist » at the Bourdelle Museum presents more than 50 garments, accessories and objects worn by some of the world\'s most emblematic artists from Klimt to Sonia Delaunay. It all started with the discovery of Antoine Bourdelle\'s wardrobe in 2020. The show explores artists\' clothing from a new point of view at the crossroads of art history, sociology and fashion. While many artists dressed in a very conventional way at the end of the 19th century, others chose more elegant attire or wore smocks, overalls or flowing scarves to emphasize their individuality and create an image of the artist at work. Join Ingrid Held who will help us interpret these unique silhouettes, diligently composed by artists to affirm their identity, and which form part of their posterity.<br><br>If you\'ve never visited the Bourdelle Museum you\'re in for a treat: a lovely artist\'s studio in the 15th with a beautiful new underground extension.' },
 
   { date:'2026-12-17', photo_url: ANIMALS_ART_IMG, name:'Art with a Twist: Curiosities, Creatures & Clever Illusions – Part 1: Animals in Art', month:'December', type:'video', emoji:'🎬',
     meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
