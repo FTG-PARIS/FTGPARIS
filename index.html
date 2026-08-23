@@ -2010,6 +2010,8 @@ const CEZANNE_IMG = 'photos/photo48.jpg'; // retired — Cézanne tour replaced 
 const BOURDELLE_IMG = 'photos/photo49.jpg';
 const CHAMPS_ELYSEES_IMG = 'photos/photo50.jpg';
 const GRAND_GALERIE_IMG = 'photos/photo51.jpg';
+const OPERA_IMG = 'photos/photo54.jpg';
+const CHOCOLATE_IMG = 'photos/photo53.jpg';
 
 const tours = [
   // SEPTEMBER 2025
@@ -2467,13 +2469,13 @@ const toursMembers = [
     meeting:'Le Standard Rive Gauche, 1 Boulevard du Montparnasse, 75006 Paris', transport:'Métro: M13 - Duroc (Sortie 3) · Bus: 28, 70, 82, 86, 92',
     guide:'',
     cost_regular:'Free', cost_waitlist:'Free', cost_guest:'Free',
-    note:'Open to all — no capacity limit',
+    note:'Open to all — no capacity limit. Lunch is 20€.',
     limit:'', walk_level:'N/A',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Barbara TRIMPI',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'',
-    desc:'Behind every Friday tour is an active community of members and volunteers. Start the new FTG season with us as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program. At our kickoff meeting, we will show you how the new FTG website works. We will begin with the public page you can share with friends. Then we will explore the members\' area where you can sign up for tours, read about our guides, find membership information, discover volunteer opportunities, and share your ideas. We will also show you our new Facebook page, where members can relive past tours, post photos & comments, and invite friends to join us. Part Two of the kickoff is lunch—a chance to catch up after the summer break, and enjoy the conversations that make FTG more than just a Friday outing. Bring a friend! The meeting is free, and the lunch is available at a reduced price. Please RSVP to <a href="mailto:ftg.membership@gmail.com">ftg.membership@gmail.com</a> for more information and to reserve your place.' },
+    desc:'Start the new FTG season at our kickoff meeting on September 11th as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program.<br><br>We are proud to show you our new website. There is a public page you can share with friends which outlines all the tours for the season. There is also a members\' area where you can sign up for tours, read about our guides, find membership information, discover volunteer opportunities, and share your ideas.<br><br>We also have a Facebook page where members can relive past tours, post photos & comments, and invite friends to join us.<br><br>After any questions, there will be a short walking tour in the area.<br><br>Part Two of the kickoff is lunch — a chance to catch up after the summer break, greet new members, and enjoy the conversations that make FTG more than just a Friday outing.<br><br>The meeting and walk are free, and Friday Tour Group is happy to offer lunch for just 20€. Please feel free to bring friends.<br><br>Please RSVP to <a href="mailto:ftg.membership@gmail.com">ftg.membership@gmail.com</a> for more information and to reserve your place.' },
 
   { date:'2026-09-18', photo_url: CHAMPS_ELYSEES_IMG, photo_fit:'contain', name:'Gardens and Birds of l\'Avenue des Champs-Élysées', month:'September', type:'walking', emoji:'🚶',
     meet_time:'10h15', start_time:'10h30', finish_time:'12h30',
@@ -2655,11 +2657,37 @@ const toursMembers = [
     read_ahead:'<a href="https://www.arthistoricallondon.com">arthistoricallondon.com</a>',
     desc:'Time to look at Dutch Baroque painting the way it probably always wanted to be seen: as a little bit chaotic, a little bit cheeky, and very funny. In this lively lecture, we\'ll explore 17th-century Dutch art not as stiff "Old Masters," but as a world full of everyday drama, sly jokes, and wonderfully human moments. These paintings are packed with stories: people playing tricks on each other in busy taverns, maids nodding off mid-task, children behaving exactly as children always do (messy, loud, and slightly suspicious), and young lovers so smitten they seem to forget everything else exists. But it doesn\'t stop there. We\'ll also uncover the more mischievous side of Dutch genre painting—those hidden details that reward a second (and third) look: unexpected bare bottoms tucked into corners of the scene, dogs causing chaos in sacred spaces, and parties that feel one step away from getting out of hand. These works are full of visual punchlines, private jokes, and subtle commentary on everyday life. Along the way, we\'ll dive into why this sense of humor mattered so much. In the newly formed Dutch Republic of the 17th century—a place defined by trade, independence, and a booming middle class—art wasn\'t just about status or religion. It was about being honest with yourself—and recognizing that behind all the silliness and humour, there are often deeper moral lessons quietly at work. Join us as we explore how Dutch artists turned ordinary scenes into witty, observant, and often delightfully naughty snapshots of human behaviour—and discover why these paintings still make us smile, centuries later.' },
 
-  { date:'2027-01-15', month:'January', type:'placeholder', placeholder:true, name:'Save the Date' },
+  { date:'2027-01-15', photo_url: OPERA_IMG, name:'Backstage at the Paris Opera Bastille', month:'January', type:'museum', emoji:'🏛️',
+    meet_time:'TBD', start_time:'TBD', finish_time:'TBD',
+    meeting:'Opera Bastille, 120 rue de Lyon, 75012 Paris — meet at the entry door for the Backstage Tour, about 80 meters to the right of the main entrance (130 rue de Lyon). Look for the signs BOOKSTORE – INFORMATION.',
+    transport:'Métro: M1, M5, M8 - Bastille (follow signs to Opera) · M1, M14 - Gare de Lyon, plus a short walk · RER: Gare de Lyon (Line A), plus a short walk · Bus: 29, 69, 76, 86, 87, 91',
+    guide:'Provided by Opera Bastille',
+    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'30€',
+    no_show:'25€',
+    note:'(includes guide/entrance fees) Times and capacity still to be confirmed by the Opera.',
+    limit:'', walk_level:'Easy walk, few staircases',
+    walk_dots: [true,true,false,false,false],
+    tour_planner:'Dee GAVORA',
+    day_contact:'Paul GAVORA · Lee HUBERT',
+    read_ahead:'<a href="https://www.operadeparis.fr/en">operadeparis.fr</a>',
+    desc:'The Opera is a total performance where the director, the sets, the singers, the dancers and the musicians all work together to create a magical experience for the spectator. But what does it take behind the scenes to make everything coalesce into an extravagant production? Come with us on a backstage tour to see the wizardry used to create scenes and special effects. Our Opera Bastille tour guide will show us the jewels of the theatre, some unique stage operations, and where they store and assemble the monumental sets.<br><br>You don\'t have to be an opera fan to come to this tour, but we are sure the opera buffs will really enjoy this backstage view, and we hope they will share their anecdotes and experiences after the tour.' },
 
   { date:'2027-01-22', month:'January', type:'placeholder', placeholder:true, name:'Save the Date' },
 
-  { date:'2027-01-27', month:'January', type:'placeholder', placeholder:true, name:'Mid-Week Tour! Save the Date' },
+  { date:'2027-01-27', photo_url: CHOCOLATE_IMG, photo_fit:'contain', name:'The Chocolate Dynasty and the Pharmacy Museum', month:'January', type:'museum', emoji:'🏛️',
+    meet_time:'12h45', start_time:'13h00', finish_time:'',
+    meeting:'94 Boulevard de Courcelles, 75017 Paris — in front of Restaurant Le Courcelles',
+    transport:'Métro: M2 - Courcelles · Bus: 84, 30 - Courcelles',
+    guide:'Thierry HEIL',
+    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'35€',
+    no_show:'20€',
+    note:'(includes guide fees, entrance fees) — Note: this tour is on a WEDNESDAY, not the usual Friday.',
+    limit:'20', walk_level:'Easy walk, few staircases',
+    walk_dots: [true,false,false,false,false],
+    tour_planner:'Barbara TRIMPI',
+    day_contact:'Paul GAVORA · Lee HUBERT',
+    read_ahead:'<a href="https://www.artetpatrimoinepharmaceutique.fr/ws/web/app/collection/expo/13">artetpatrimoinepharmaceutique.fr</a> · <a href="https://fr.wikipedia.org/wiki/H%C3%B4tel_Menier">fr.wikipedia.org</a>',
+    desc:'The name Menier is synonymous with chocolate, but the family fortune began in pharmacy, because when it was first introduced, chocolate was used for medicinal purposes. On this visit in Parc Monceau, we\'ll explore the surprising story of the family who created one of the great chocolate empires of 19th-century France.<br><br>Our guide, Thierry Heil, will take us into the Pharmacy Museum to see a fascinating and little-known collection normally closed to the general public. Its historic objects, instruments and beautifully preserved interiors offer a glimpse into the practice of pharmacy before modern medicine—and a curious connection between bitter pills and chocolate.<br><br>We\'ll also discover the distinctive architecture of one of the Menier family\'s hôtels particuliers, with its grandiose staircase, beautiful inner courtyard, and other unexpected details. This visit reveals the intriguing intersection of Parisian architecture, industrial wealth, medicine, history, chocolate and everyday life.<br><br><strong>Note: Exceptionally, this tour is on a Wednesday.</strong>' },
 
   // FEBRUARY 2027
   { date:'2027-02-04', photo_url: DASSIN_IMG, name:'Songs of France – Joe Dassin', month:'February', type:'video', emoji:'🎵',
