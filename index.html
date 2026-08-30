@@ -707,16 +707,21 @@
     border-bottom: 1px solid #D4AF37;
   }
   .slide-photo-panel {
+    position: relative;
     overflow: hidden; background: #f0ede8;
     border-right: 1px solid #D4AF37;
   }
   .slide-photo-panel img {
+    position: absolute; inset: 0;
     width: 100%; height: 100%; object-fit: cover; object-position: center top;
     background: #f0ede8; display: block;
     animation: kenBurns 12s ease-out forwards;
   }
   .slide-photo-panel img.portrait-photo {
     object-fit: contain; object-position: center;
+  }
+  .slide-photo-panel img.center-crop {
+    object-position: center center;
   }
 
   /* Title panel */
@@ -2479,7 +2484,7 @@ const toursMembers = [
     read_ahead:'',
     desc:'Start the new FTG season at our kickoff meeting on September 11th as we welcome back familiar faces, greet new members, and introduce the 2026–27 tour program.<br><br>We are proud to show you our new website. There is a public page you can share with friends which outlines all the tours for the season. There is also a members\' area where you can sign up for tours, read about our guides, find membership information, discover volunteer opportunities, and share your ideas.<br><br>We also have a Facebook page where members can relive past tours, post photos & comments, and invite friends to join us.<br><br>After any questions, there will be a short walking tour in the area.<br><br>Part Two of the kickoff is lunch — a chance to catch up after the summer break, greet new members, and enjoy the conversations that make FTG more than just a Friday outing.<br><br>The meeting and walk are free, and Friday Tour Group is happy to offer lunch for just 20€. Please feel free to bring friends.<br><br>Please RSVP to <a href="mailto:ftg.membership@gmail.com">ftg.membership@gmail.com</a> for more information and to reserve your place.' },
 
-  { date:'2026-09-18', photo_url: CHAMPS_ELYSEES_IMG, photo_fit:'contain', name:'Gardens and Birds of l\'Avenue des Champs-Élysées', month:'September', type:'walking', emoji:'🚶',
+  { date:'2026-09-18', photo_url: CHAMPS_ELYSEES_IMG, photo_fit:'center', name:'Gardens and Birds of l\'Avenue des Champs-Élysées', month:'September', type:'walking', emoji:'🚶',
     meet_time:'10h15', start_time:'10h30', finish_time:'12h30',
     meeting:'At Place de la Concorde, at the foot of the obelisk',
     transport:'Métro: M1, M8, M12 - Concorde · Bus: 45, 73, 72, 84, 94',
@@ -2552,7 +2557,7 @@ const toursMembers = [
     tour_planner:'Jackie COGHLAN',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://jeudepaume.org/a-propos/histoire/rose-valland/">jeudepaume.org</a> · <a href="https://www.fondationresistance.org/">fondationresistance.org</a>',
-    desc:'Join historian Brad Newfield to explore how Parisians survived the dark years of the German Occupation from 1940 to 1944. Combining stories of daily life with the larger history of the Gestapo, the Resistance, and the Liberation, this tour offers a vivid picture of Paris under occupation. We will see traces of the last street battle fought in Paris and visit the site where General von Choltitz surrendered the German forces. We will also learn about Rose Valland\'s heroic efforts at the Jeu de Paume to save priceless artworks from Nazi plunder.<br><br>Throughout the tour, Brad will contrast instances of collaboration with stories of remarkable courage displayed by French citizens and foreigners alike in the face of arrest and deportation. Together, these episodes offer a compelling perspective on one of the most dramatic and contested chapters in Parisian history.' },
+    desc:'Join historian Brad Newfield to explore how Parisians survived the dark years of the German Occupation from 1940 to 1944. Combining stories of daily life with the larger history of the Gestapo, the Resistance, and the Liberation, this tour offers a vivid picture of Paris under occupation. We will see traces of the last street battle fought in Paris and visit the site where General von Choltitz surrendered the German forces. We will also learn about Rose Valland\'s heroic efforts at the Jeu de Paume to save priceless artworks from Nazi plunder. Throughout the tour, Brad will contrast instances of collaboration with stories of remarkable courage displayed by French citizens and foreigners alike in the face of arrest and deportation. Together, these episodes offer a compelling perspective on one of the most dramatic and contested chapters in Parisian history.' },
 
   { date:'2026-10-22', photo_url: CASSATT_IMG, name:'Mary Cassatt at the Orsay', month:'October', type:'video', emoji:'🎬',
     meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
@@ -2564,9 +2569,9 @@ const toursMembers = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'ftg.membership@gmail.com',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.musee-orsay.fr/en/program/whats-on/exhibitions/mary-cassatt-choice-independence">musee-orsay.fr: Mary Cassatt, Choice and Independence</a>',
-    desc:'« Independent Mary Cassatt » at the Orsay marks the 100th anniversary of the artist\'s death. Mary Cassatt was particularly proud of being American and independent, and the show, featuring over 80 works, will examine her career through this prism. Mary Cassatt asserted herself as part of the Impressionist movement in an essentially masculine world. Although her paintings of mothers with their children were much in demand, she also painted elegant, vivacious, young women in society, at home or at the theatre. They are modern and independent, and they drew positive attention at the Paris Salon where she exhibited four times! Her financial independence enabled her to purchase a castle in the Oise area, and many colorful, vibrant paintings were done in her garden there. She was even commissioned to paint a huge mural entitled « Modern Women » for the 1893 Chicago World\'s Fair. She played a crucial role in advising her American friends and acquaintances to buy French Impressionist paintings. And she participated in the struggle for women\'s right to vote, even organizing an exhibition to fund the movement. Join Chris Boicos on this video talk about the decidedly independent Mary Cassatt.' },
+    desc:'« Independent Mary Cassatt » at the Orsay marks the 100th anniversary of the artist\'s death. Mary Cassatt was particularly proud of being American and independent, and the show, featuring over 80 works, will examine her career through this prism. Cassatt asserted herself as part of the Impressionist movement in an essentially masculine world. Although her paintings of mothers with their children were much in demand, she also painted elegant, vivacious young women in society, at home or at the theatre. Modern and independent, they drew positive attention at the Paris Salon, where she exhibited four times! Her financial independence enabled her to purchase a château in the Oise, where many colorful, vibrant paintings were done in her garden. She was even commissioned to paint the huge mural « Modern Women » for the 1893 Chicago World\'s Fair. Cassatt played a crucial role in advising her American friends and acquaintances to buy French Impressionist paintings. She also participated in the struggle for women\'s right to vote, even organizing an exhibition to fund the movement. Join Chris Boicos for this video talk about the decidedly independent Mary Cassatt.' },
 
   // NOVEMBER 2026
   { date:'2026-11-06', photo_url: MAD_FASHION_IMG, photo_fit:'contain', name:'Look! 40 Years of Fashion', month:'November', type:'museum', emoji:'👗',
@@ -2580,9 +2585,9 @@ const toursMembers = [
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Lee HUBERT',
-    day_contact:'ftg.membership@gmail.com',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'',
-    desc:'MAD is celebrating the 40th anniversary of its Fashion museum by displaying 40 iconic silhouettes from its collection. The show will highlight the know-how and techniques used by fashion houses to transform mere clothes into works of art. The show covers all the steps of creation from the initial sketches all the way to the runway, where fashion shows have become veritable performances. Join Xenia Venikou to see the two lives of these clothes: the phase of creation, and then what happens backstage after they enter the museum\'s collection. Talented artisans document, prepare, restore, display and store this exceptional heritage so it can also be enjoyed by future generations.' },
+    desc:'MAD — the Musée des Arts Décoratifs — is celebrating the 40th anniversary of its Fashion Museum by displaying 40 iconic silhouettes from its collection. The show will highlight the know-how and techniques used by fashion houses to transform clothes into works of art. It covers all the steps of creation, from the initial sketches to the runway, where fashion shows have become veritable performances. Join Xenia Ventikou to discover the two lives of these clothes: first, the creative process that brings them into being, and then what happens behind the scenes after they enter the museum\'s collection. Talented artisans document, prepare, restore, display and store this exceptional heritage so that it can be preserved and enjoyed by future generations. Their work ensures that these remarkable creations—and the craftsmanship behind them—continue to have a life beyond the runway.' },
 
   { date:'2026-11-13', photo_url: CAPA_IMG, photo_fit:'contain', name:'Robert Capa, War Photographer', month:'November', type:'museum', emoji:'📷',
     meet_time:'10h00', start_time:'10h15', finish_time:'—',
@@ -2594,9 +2599,9 @@ const toursMembers = [
     limit:'15', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'ftg.membership@gmail.com',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Robert_Capa">Wikipedia: Robert Capa</a> · <a href="https://www.museeliberation-leclerc-moulin.paris.fr/en">museeliberation-leclerc-moulin.paris.fr</a> · <a href="https://en.wikipedia.org/wiki/Liberation_of_Paris">Wikipedia: Liberation of Paris</a>',
-    desc:'Robert Capa is one of the most recognized and admired war photographers of the 20th century. At the Musée de la Libération, visitors will not only glimpse the Second World War and its resolution through his eyes, but can watch him at work during the Liberation of Paris. Curators have gone through the newsreels of the day and found Capa walking the streets and taking pictures, and matched those moments with his published work. Our visit will begin with this short but very exciting film, and then dive into his life story. Ellen Hampton, our guide, is an expert on the Liberation. In this show about Robert Capa, Ellen has also included some items from her family treasures.<br><br><span style="font-size:0.8em;color:#888;">Photo: Des troupes loyalistes lors d\'une offensive sur le Rio Segre, sur le front d\'Aragon pr&egrave;s du Fraga, Espagne, 7 novembre 1938. &copy; Robert Capa/International Center of Photography/Magnum Photos</span>' },
+    desc:'Robert Capa is one of the most recognized and admired war photographers of the 20th century. At the Musée de la Libération, visitors will not only glimpse the Second World War and its resolution through his eyes, but can watch him at work during the Liberation of Paris. Curators have gone through the newsreels of the day and found Capa walking the streets and taking pictures, and matched those moments with his published work. Our visit will begin with this short but very exciting film, and then dive into his life story. Ellen Hampton, our guide, is an expert on the Liberation. In this show about Robert Capa, Ellen has also included some items from her family treasures.<br><span style="font-size:0.8em;color:#888;">Photo: Des troupes loyalistes lors d\'une offensive sur le Rio Segre, sur le front d\'Aragon pr&egrave;s du Fraga, Espagne, 7 novembre 1938. &copy; Robert Capa/International Center of Photography/Magnum Photos</span>' },
 
   { date:'2026-11-19', photo_url: FALL_FRANCE_IMG, name:'1940 – The Fall of France', month:'November', type:'video', emoji:'🎬',
     meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
@@ -2608,7 +2613,7 @@ const toursMembers = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'ftg.membership@gmail.com',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'',
     desc:'On 10 May 1940, the German army attacked and overwhelmed the French and British forces defending France. The Germans bypassed the heavily fortified Maginot Line facing the German border, and launched their surprise attack through the Ardennes region, moving rapidly through Belgium and northern France. The German onslaught split the Allied army, forcing the evacuation at Dunkirk. The remaining French forces retreated south, unable to stop the German advance. Paris fell on 14 June. On 22 June, the French government capitulated. Incredibly, in the space of just six weeks, the larger and better equipped French army was defeated. The armistice that followed divided the country into the German-occupied zone and the Vichy regime-controlled "Free Zone" in the south. In this presentation we will examine the unexpected reasons why this disaster happened and its consequences.' },
 
@@ -2625,10 +2630,10 @@ const toursMembers = [
     tour_planner:'Barbara TRIMPI',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.imarabe.org/fr/agenda/expositions-musee/grande-aventure-du-savoir-medical">imarabe.org</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1322233/">pmc.ncbi.nlm.nih.gov</a> · <a href="https://en.wikipedia.org/wiki/Medicine_in_the_medieval_Islamic_world">Wikipedia: Medicine in the medieval Islamic world</a>',
-    desc:'Most histories of medicine leave out an entire chapter of discovery — the one written in Arabic. The new exhibition at the Institut du Monde Arabe brings that missing world to life through objects like Al Zahrawi\'s surgical tools, designed for procedures still used today; glassware and measuring instruments that stocked medieval pharmacies; anatomical diagrams that challenged older ideas about how the body worked; and richly illustrated medical encyclopedias that shaped generations of physicians.<br><br>We will see how these doctors worked, how they tested remedies, refined instruments, organized hospitals, and argued over anatomy. Avicenna and Al Razi appear not as unfamiliar names but as pioneers of medical science whose ideas travelled across continents and still echo in the way medicine is taught today.<br><br>Our guide, Noha Escartin, will link these objects to the people behind them, revealing a chapter of medical history that deserves to be remembered.' },
+    desc:'Most histories of medicine leave out an entire chapter of discovery — the one written in Arabic. The new exhibition at the Institut du Monde Arabe brings that missing world to life through objects like Al Zahrawi\'s surgical tools, designed for procedures still used today; glassware and measuring instruments that stocked medieval pharmacies; anatomical diagrams that challenged older ideas about how the body worked; and richly illustrated medical encyclopedias that shaped generations of physicians. We will see how these doctors worked, how they tested remedies, refined instruments, organized hospitals, and argued over anatomy. Avicenna and Al Razi appear not as unfamiliar names but as pioneers of medical science whose ideas travelled across continents and still echo in the way medicine is taught today. Our guide, Noha Escartin, will link these objects to the people behind them, revealing a chapter of medical history that deserves to be remembered.' },
 
-  { date:'2026-12-11', photo_url: BOURDELLE_IMG, photo_fit:'contain', name:'The Fabric of the Artist at the Bourdelle Museum', month:'December', type:'museum', emoji:'🏛️',
-    meet_time:'TBD', start_time:'TBD', finish_time:'—',
+  { date:'2026-12-11', photo_url: BOURDELLE_IMG, name:'The Fabric of the Artist at the Bourdelle Museum', month:'December', type:'museum', emoji:'🏛️',
+    meet_time:'10h00', start_time:'10h30', finish_time:'—',
     meeting:'Musée Bourdelle, 18 rue Antoine-Bourdelle, 75015 Paris',
     transport:'Métro: M6, M12, M13 - Montparnasse-Bienvenüe (Sortie 2, Place Bienvenüe) · M12 - Falguière · Bus: 28, 39, 58, 82, 88, 91, 92, 94, 95, 96',
     guide:'Ingrid HELD',
@@ -2640,36 +2645,36 @@ const toursMembers = [
     tour_planner:'Lee HUBERT',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.bourdelle.paris.fr/visiter/expositions/expositions-venir">bourdelle.paris.fr</a>',
-    desc:'« The Fabric of the Artist » at the Bourdelle Museum presents more than 50 garments, accessories and objects worn by some of the world\'s most emblematic artists from Klimt to Sonia Delaunay. It all started with the discovery of Antoine Bourdelle\'s wardrobe in 2020. The show explores artists\' clothing from a new point of view at the crossroads of art history, sociology and fashion. While many artists dressed in a very conventional way at the end of the 19th century, others chose more elegant attire or wore smocks, overalls or flowing scarves to emphasize their individuality and create an image of the artist at work. Join Ingrid Held who will help us interpret these unique silhouettes, diligently composed by artists to affirm their identity, and which form part of their posterity.<br><br>If you\'ve never visited the Bourdelle Museum you\'re in for a treat: a lovely artist\'s studio in the 15th with a beautiful new underground extension.' },
+    desc:'« The Fabric of the Artist » at the Bourdelle Museum presents more than 50 garments, accessories and objects worn by some of the world\'s most emblematic artists from Klimt to Sonia Delaunay. It all started with the discovery of Antoine Bourdelle\'s wardrobe in 2020. The show explores artists\' clothing from a new point of view at the crossroads of art history, sociology and fashion. While many artists dressed in a very conventional way at the end of the 19th century, others chose more elegant attire or wore smocks, overalls or flowing scarves to emphasize their individuality and create an image of the artist at work. Join Ingrid Held who will help us interpret these unique silhouettes, diligently composed by artists to affirm their identity, and which form part of their posterity. If you\'ve never visited the Bourdelle Museum you\'re in for a treat: a lovely artist\'s studio in the 15th with a beautiful new underground extension.' },
 
   { date:'2026-12-17', photo_url: ANIMALS_ART_IMG, name:'Art with a Twist: Curiosities, Creatures & Clever Illusions – Part 1: Animals in Art', month:'December', type:'video', emoji:'🎬',
     meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Mariska BEEKENKAMP-WLADIMIROF',
+    guide:'Mariska BEEKENKAMP-WLADIMIROFF',
     cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'ftg.membership@gmail.com',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.arthistoricallondon.com">arthistoricallondon.com</a>',
-    desc:'Art with a Twist: Curiosities, Creatures & Clever Illusions. Step into the playful, peculiar, and downright puzzling side of art history. This four-part lecture series explores \'Animals in Art\', the surprising humour of Dutch painters in \'Laughter in Art\', the dazzling tricks of \'Trompe L\'oeil\', and \'A Cabinet of Truly Strange Works\'—from mysterious medieval wall paintings seemingly showing UFOs, figures with three faces and their meaning, to enigmatic figures like Saint Wilgefortis. Along the way, we\'ll uncover the stories, symbolism, and sly wit behind artworks that delight, confuse, and demand a second look and a bit of explaining. \'Animals in Art\' — From noble steeds to sneaky monkeys, art history is absolutely full of animals doing more than just posing politely. This lecture dives into some of the most famous (and sometimes bizarre) creatures in painting, and why on earth artists kept sneaking in monkeys. Along the way, we\'ll meet regal horses, symbolic lambs, dramatic lions, and a whole zoo of unexpected guests hiding in plain sight in well-known masterpieces. Expect a mix of painting from the Western Art Historical canon, visual surprises, and a bit of decoding-as-you-go, as we explore how artists used animals to say things they couldn\'t (or wouldn\'t) spell out directly. Whether they\'re symbols of virtue, vice, power, or pure mischief, these animals prove that art history isn\'t just about people—it\'s a wild kingdom.' },
+    desc:'Art with a Twist: Curiosities, Creatures & Clever Illusions. Step into the playful, peculiar, and downright puzzling side of art history. This four-part lecture series explores \'Animals in Art\', the surprising humour of Dutch painters in \'Laughter in Art\', the dazzling tricks of \'Trompe L\'oeil\', and \'A Cabinet of Truly Strange Works\'—from mysterious medieval wall paintings seemingly showing UFOs and figures with three faces to enigmatic figures like Saint Wilgefortis. \'Animals in Art\' — From noble steeds to sneaky monkeys, art history is full of animals doing more than just posing politely. This lecture dives into some of the most famous (and sometimes bizarre) creatures in painting, and why on earth artists kept sneaking in monkeys. Along the way, we\'ll meet regal horses, symbolic lambs, dramatic lions, and a whole zoo of unexpected guests hiding in well-known masterpieces. Expect visual surprises and a bit of decoding-as-you-go, as we explore how artists used animals to say things they couldn\'t (or wouldn\'t) spell out directly. Whether they\'re symbols of virtue, vice, power, or pure mischief, these animals prove that art history isn\'t just about people—it\'s a wild kingdom.' },
 
   // JANUARY 2027
-  { date:'2027-01-07', photo_url: LAUGHTER_ART_IMG, photo_fit:'contain', name:'Art with a Twist: Curiosities, Creatures & Clever Illusions – Part 2: Laughter in Art', month:'January', type:'video', emoji:'🎬',
+  { date:'2027-01-07', photo_url: LAUGHTER_ART_IMG, photo_fit:'center', name:'Art with a Twist: Curiosities, Creatures & Clever Illusions – Part 2: Laughter in Art', month:'January', type:'video', emoji:'🎬',
     meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Mariska BEEKENKAMP-WLADIMIROF',
+    guide:'Mariska BEEKENKAMP-WLADIMIROFF',
     cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'ftg.membership@gmail.com',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.arthistoricallondon.com">arthistoricallondon.com</a>',
-    desc:'Time to look at Dutch Baroque painting the way it probably always wanted to be seen: as a little bit chaotic, a little bit cheeky, and very funny. In this lively lecture, we\'ll explore 17th-century Dutch art not as stiff "Old Masters," but as a world full of everyday drama, sly jokes, and wonderfully human moments. These paintings are packed with stories: people playing tricks on each other in busy taverns, maids nodding off mid-task, children behaving exactly as children always do (messy, loud, and slightly suspicious), and young lovers so smitten they seem to forget everything else exists. But it doesn\'t stop there. We\'ll also uncover the more mischievous side of Dutch genre painting—those hidden details that reward a second (and third) look: unexpected bare bottoms tucked into corners of the scene, dogs causing chaos in sacred spaces, and parties that feel one step away from getting out of hand. These works are full of visual punchlines, private jokes, and subtle commentary on everyday life. Along the way, we\'ll dive into why this sense of humor mattered so much. In the newly formed Dutch Republic of the 17th century—a place defined by trade, independence, and a booming middle class—art wasn\'t just about status or religion. It was about being honest with yourself—and recognizing that behind all the silliness and humour, there are often deeper moral lessons quietly at work. Join us as we explore how Dutch artists turned ordinary scenes into witty, observant, and often delightfully naughty snapshots of human behaviour—and discover why these paintings still make us smile, centuries later.' },
+    desc:'Time to look at Dutch Baroque painting the way it probably always wanted to be seen: as a little chaotic, a little cheeky, and very funny. In this lively lecture, we\'ll explore 17th-century Dutch art not as stiff "Old Masters," but as a world full of everyday drama, sly jokes, and wonderfully human moments. These paintings are packed with stories: people playing tricks on each other in busy taverns, maids nodding off mid-task, children behaving exactly as children always do, and young lovers so smitten they seem to forget everything else exists. We\'ll also uncover mischievous details that reward a second look: unexpected bare bottoms tucked into corners, dogs causing chaos in sacred spaces, and parties that feel one step away from getting out of hand. In the newly formed Dutch Republic—a place defined by trade, independence, and a booming middle class—art wasn\'t just about status or religion. It was about being honest with yourself, while recognizing that behind the silliness and humour, deeper moral lessons were often quietly at work. Join us to explore how Dutch artists turned ordinary scenes into witty, observant, and often delightfully naughty snapshots of human behaviour.' },
 
   { date:'2027-01-15', photo_url: OPERA_IMG, name:'Backstage at the Paris Opera Bastille', month:'January', type:'museum', emoji:'🏛️',
     meet_time:'TBD', start_time:'TBD', finish_time:'TBD',
@@ -2684,7 +2689,7 @@ const toursMembers = [
     tour_planner:'Dee GAVORA',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.operadeparis.fr/en">operadeparis.fr</a>',
-    desc:'The Opera is a total performance where the director, the sets, the singers, the dancers and the musicians all work together to create a magical experience for the spectator. But what does it take behind the scenes to make everything coalesce into an extravagant production? Come with us on a backstage tour to see the wizardry used to create scenes and special effects. Our Opera Bastille tour guide will show us the jewels of the theatre, some unique stage operations, and where they store and assemble the monumental sets.<br><br>You don\'t have to be an opera fan to come to this tour, but we are sure the opera buffs will really enjoy this backstage view, and we hope they will share their anecdotes and experiences after the tour.' },
+    desc:'The Opera is a total performance where the director, the sets, the singers, the dancers and the musicians all work together to create a magical experience for the spectator. But what does it take behind the scenes to make everything coalesce into an extravagant production? Come with us on a backstage tour to see the wizardry used to create scenes and special effects. Our Opera Bastille tour guide will show us the jewels of the theatre, some unique stage operations, and where they store and assemble the monumental sets. You don\'t have to be an opera fan to come to this tour, but we are sure the opera buffs will really enjoy this backstage view, and we hope they will share their anecdotes and experiences after the tour.' },
 
   { date:'2027-01-22', photo_url: KRAEMER_IMG, name:'Kraemer Gallery', month:'January', type:'museum', emoji:'🖼️',
     meet_time:'14h15', start_time:'14h30', finish_time:'—',
@@ -2698,9 +2703,9 @@ const toursMembers = [
     tour_planner:'Barbara TRIMPI',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.kraemer.fr/en/">kraemer.fr</a>',
-    desc:'Galerie Kraemer has been run by the same family since it was founded in 1875, and they still live and work in the private mansion that houses the collection. From the beginning, the focus has been on 18th century French furniture, a commitment carried on in spite of the disruptions of the Second World War, when the family was displaced and the house looted. After the war they spent more than a decade rebuilding the collection.<br><br>Today, family members often guide visitors themselves, leading guests through salons where furniture by Boulle, Riesener and Jacob sits alongside modern works by Picasso, Chagall and Rothko — the mix that has shaped their own interiors for generations. Many pieces that once passed through these rooms now belong to the Louvre, Versailles, and the Nissim de Camondo museum.<br><br>Over the decades, the gallery has drawn collectors from around the world, including Jackie Kennedy and other Americans with a passion for 18th century French design.<br><br>The Kraemer family has cordially invited Friday Tour Group to see their treasures and hear about the history in situ.' },
+    desc:'Galerie Kraemer has been run by the same family since it was founded in 1875, and they still live and work in the private mansion that houses the collection. From the beginning the focus has been on 18th century French furniture, a commitment carried on despite the disruptions of the Second World War, when the family was displaced and the house looted — after the war they spent more than a decade rebuilding it. Today, family members often guide visitors themselves, leading guests through salons where furniture by Boulle, Riesener and Jacob sits alongside modern works by Picasso, Chagall and Rothko. Many pieces that once passed through these rooms now belong to the Louvre, Versailles, and the Nissim de Camondo museum. The gallery has drawn collectors from around the world, including Jackie Kennedy and other Americans with a passion for 18th century French design. The Kraemer family has cordially invited Friday Tour Group to see their treasures and hear about the history in situ.' },
 
-  { date:'2027-01-27', photo_url: CHOCOLATE_IMG, photo_fit:'contain', name:'The Chocolate Dynasty and the Pharmacy Museum', month:'January', type:'museum', emoji:'🏛️',
+  { date:'2027-01-27', photo_url: CHOCOLATE_IMG, name:'The Chocolate Dynasty and the Pharmacy Museum', month:'January', type:'museum', emoji:'🏛️',
     meet_time:'12h45', start_time:'13h00', finish_time:'',
     meeting:'94 Boulevard de Courcelles, 75017 Paris — in front of Restaurant Le Courcelles',
     transport:'Métro: M2 - Courcelles · Bus: 84, 30 - Courcelles',
@@ -2713,7 +2718,7 @@ const toursMembers = [
     tour_planner:'Barbara TRIMPI',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.artetpatrimoinepharmaceutique.fr/ws/web/app/collection/expo/13">artetpatrimoinepharmaceutique.fr</a> · <a href="https://fr.wikipedia.org/wiki/H%C3%B4tel_Menier">fr.wikipedia.org</a>',
-    desc:'The name Menier is synonymous with chocolate, but the family fortune began in pharmacy, because when it was first introduced, chocolate was used for medicinal purposes. On this visit in Parc Monceau, we\'ll explore the surprising story of the family who created one of the great chocolate empires of 19th-century France.<br><br>Our guide, Thierry Heil, will take us into the Pharmacy Museum to see a fascinating and little-known collection normally closed to the general public. Its historic objects, instruments and beautifully preserved interiors offer a glimpse into the practice of pharmacy before modern medicine—and a curious connection between bitter pills and chocolate.<br><br>We\'ll also discover the distinctive architecture of one of the Menier family\'s hôtels particuliers, with its grandiose staircase, beautiful inner courtyard, and other unexpected details. This visit reveals the intriguing intersection of Parisian architecture, industrial wealth, medicine, history, chocolate and everyday life.<br><br><strong>Note: Exceptionally, this tour is on a Wednesday.</strong>' },
+    desc:'The name Menier is synonymous with chocolate, but the family fortune began in pharmacy, because when it was first introduced, chocolate was used for medicinal purposes. On this visit in Parc Monceau, we\'ll explore the surprising story of the family who created one of the great chocolate empires of 19th-century France. Our guide, Thierry Heil, will take us into the Pharmacy Museum to see a fascinating and little-known collection normally closed to the general public. Its historic objects, instruments and beautifully preserved interiors offer a glimpse into the practice of pharmacy before modern medicine—and a curious connection between bitter pills and chocolate. We\'ll also discover the distinctive architecture of one of the Menier family\'s hôtels particuliers, with its grandiose staircase, beautiful inner courtyard, and other unexpected details. This visit reveals the intriguing intersection of Parisian architecture, industrial wealth, medicine, history, chocolate and everyday life.<br><strong>Note: Exceptionally, this tour is on a Wednesday.</strong>' },
 
   // FEBRUARY 2027
   { date:'2027-02-04', photo_url: DASSIN_IMG, name:'Songs of France – Joe Dassin', month:'February', type:'video', emoji:'🎵',
@@ -2726,23 +2731,23 @@ const toursMembers = [
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'ftg.membership@gmail.com',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Joe_Dassin">Wikipedia: Joe Dassin</a> · <a href="https://www.ericjohnkaiser.com">ericjohnkaiser.com</a>',
-    desc:'Join Eric John Kaiser, French singer and songwriter, for a captivating presentation-concert that brings Francophone music to life. This musical journey is dedicated to a truly unique figure in the history of French chanson, Joe Dassin, one of the most iconic artists of 20th-century popular French music. He performed beloved songs such as Les Champs-Élysées, Et si tu n\'existais pas, and L\'Été indien, and sold millions of records worldwide. Beyond his popular success, Joe Dassin left a lasting mark on Francophone musical culture—his songs are still broadcast and sung around the world today, a testament to their universal appeal and timelessness. Joe Dassin was someone with a singular path since he was born in the United States and later became a true icon in France. His distinctive style, blending American influences with French chanson, has resonated with international audiences across generations. Known as The French Troubadour, Eric John Kaiser, born in Paris, is a singer-songwriter who reinvents Americana music through a French lens. Eric has released six full albums recorded in Paris, Oregon, and Quebec, and has performed in France as well as across North America. He has lived in Portland since 2006.' },
+    desc:'Join Eric John Kaiser, French singer and songwriter, for a captivating presentation-concert that brings Francophone music to life. This musical journey is dedicated to a truly unique figure in the history of French chanson: Joe Dassin, one of the most iconic artists in 20th-century popular French music. He performed beloved songs such as Les Champs-Élysées, Et si tu n\'existais pas, and L\'Été indien, and sold millions of records worldwide. Beyond his popular success, Dassin left a lasting mark on Francophone musical culture. His songs are still broadcast and sung around the world today, a testament to their universal appeal and timelessness. Born in the United States and later becoming a true icon in France, Joe Dassin followed a singular path. His distinctive style blended American influences with French chanson and resonated with audiences across generations. Known as "The French Troubadour," Eric John Kaiser reinvents Americana music through a French lens. Born in Paris and living in Portland since 2006, he has released six albums recorded in Paris, Oregon, and Quebec, and has performed throughout France and North America.' },
 
   { date:'2027-02-25', photo_url: TROMPE_LOEIL_IMG, photo_fit:'contain', name:'Art with a Twist: Curiosities, Creatures & Clever Illusions – Part 3: Trompe L\'oeil', month:'February', type:'video', emoji:'🎬',
     meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Mariska BEEKENKAMP-WLADIMIROF',
+    guide:'Mariska BEEKENKAMP-WLADIMIROFF',
     cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
     tour_planner:'Paul GAVORA',
-    day_contact:'ftg.membership@gmail.com',
+    day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.arthistoricallondon.com">arthistoricallondon.com</a>',
-    desc:'The illusionistic representation of reality—art that plays tricks on the eye—has fascinated viewers since ancient times. From Roman wall paintings that seem to open onto lush gardens and distant landscapes, artists have long experimented with ways to blur the boundary between the real and the imagined. But as techniques evolved, so too did the ambition: painters began to create scenes so convincing they feel almost tangible, inviting us to question what we\'re really seeing. In this visually rich lecture, Mariska takes you on a journey through centuries of artistic illusion—from early experiments in perspective and depth to jaw-dropping trompe-l\'œil works that seem to leap off the canvas. Think painted curtains you want to pull aside, letters you could swear are real, and architectural fantasies that bend space in impossible ways. Along the way, we\'ll uncover the clever tricks artists use to fool us, the cultural moments that sparked these innovations, and the playful spirit behind works that delight in deception. Expect surprising details, visual puzzles, and plenty of "wait, is that actually painted?" moments.' },
+    desc:'Part 3 of \'Art with a Twist: Curiosities, Creatures & Clever Illusions\' looks at trompe-l\'œil — the illusionistic representation of reality that has fascinated viewers since ancient times. From Roman wall paintings that seem to open onto lush gardens and distant landscapes, artists have long experimented with ways to blur the real and the imagined. As techniques evolved, so did the ambition: painters began creating scenes so convincing they feel almost tangible, inviting us to question what we\'re really seeing. In this visually rich lecture, Mariska takes you through centuries of artistic illusion — from early experiments in perspective to jaw-dropping trompe-l\'œil works that seem to leap off the canvas. Think painted curtains you want to pull aside, letters you\'d swear are real, and architectural fantasies that bend space in impossible ways. Along the way we\'ll uncover the clever tricks artists use to fool us, the cultural moments that sparked these innovations, and the playful spirit behind works that delight in deception.' },
 
   // MARCH 2027
   { date:'2027-03-05', month:'March', type:'placeholder', placeholder:true, combined:true, name:'Save the Date',
@@ -3357,7 +3362,7 @@ function renderMemberTours() {
         card.innerHTML =
           // TOP HERO
           '<div class="slide-top">'
-          + '<div class="slide-photo-panel"><img src="' + photoSrc + '" alt="' + t.name + '" class="' + (t.photo_fit==='contain' ? 'portrait-photo' : '') + '"></div>'
+          + '<div class="slide-photo-panel"><img src="' + photoSrc + '" alt="' + t.name + '" class="' + (t.photo_fit==='contain' ? 'portrait-photo' : t.photo_fit==='center' ? 'center-crop' : '') + '"></div>'
           + '<div class="slide-title-panel">'
           + '<div class="slide-date-chip">' + dateStr + '</div>'
           + '<div class="slide-title">' + t.name + '</div>'
