@@ -1,10 +1,9 @@
-
-      }<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fridays in Paris – 2025–2026</title>
+<title>Fridays in Paris – 2026–2027</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -459,6 +458,14 @@
     grid-template-columns: 1fr 1fr;
     gap: 2rem 2.5rem;
     align-items: start;
+  }
+  .public-savedate-card {
+    grid-column: 1 / -1;
+    background: #FDFDFC;
+    border: 1px solid #D4AF37;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.08), 0 1px 6px rgba(0,0,0,0.05);
+    border-radius: 2px;
+    overflow: visible;
   }
   .tour-card-pub {
     background: var(--white);
@@ -1120,7 +1127,7 @@
 <nav>
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <span id="nav-site-title">Fridays in Paris</span>
-    <span>2025–2026</span>
+    <span>2026–2027</span>
   </a>
   <ul class="nav-links">
     <li><button class="visitors-nav-btn" onclick="showPublicTab('about')">About Us</button></li>
@@ -1139,7 +1146,7 @@
       <p>Here is our calendar of tours through museums, galleries, iconic neighborhoods and gardens, from famous landmarks to the hidden corners of Paris and beyond... with expert guides.<br><br>No two Fridays are the same.</p>
     </div>
     <div class="hero-season">
-      <div class="yr">2025<br>2026</div>
+      <div class="yr">2026<br>2027</div>
       <div class="lbl">Current Season</div>
     </div>
   </div>
@@ -1407,7 +1414,7 @@
         </table>
         </div>
 
-        <div class="section-title">Leadership Team 2025–2026</div>
+        <div class="section-title">Leadership Team 2026–2027</div>
         <div style="overflow-x:auto;">
         <table class="ftg-table">
           <thead><tr><th style="width:15%">Position</th><th style="width:20%">Name</th><th style="width:40%">Responsibilities</th><th style="width:25%">Contact</th></tr></thead>
@@ -1464,7 +1471,7 @@
         <p style="font-size:1rem;color:#2C343E;line-height:1.85;margin-bottom:1.5rem;"><strong>Perspectives &amp; Opinions:</strong> FTG does not necessarily endorse the individual opinions of guides or speakers. Their views are their own and do not represent the views of the Friday Tour Group.</p>
 
         <div class="contacts-box">
-          <h4>Leadership Team 2025–2026</h4>
+          <h4>Leadership Team 2026–2027</h4>
           <p>
             <strong>Co-Directors</strong><br>
             Paul GAVORA<br>
@@ -2021,454 +2028,62 @@ const MEDICINE_ARAB_IMG = 'photos/photo55.jpg';
 const KRAEMER_IMG = 'photos/photo56.jpg';
 
 const tours = [
-  // SEPTEMBER 2025
-  { date:'2025-09-12', photo_url: RUSSIAN_CHURCH_IMG, name:'Russian Heritage in Paris', month:'September', type:'walking', emoji:'⛪',
-    meet_time:'13h45', start_time:'14h00', finish_time:'',
-    meeting:'Metro M9 Alma-Marceau, near top of staircase of Sortie 1, rue Montaigne',
-    transport:'Métro: M9 - Alma-Marceau · RER: C, Pont d\'Alma plus walking over bridge to M9 sortie · Bus: 63, 72, 93',
-    guide:'Thierry HEIL',
-    cost_regular:'free', cost_waitlist:'15€', cost_guest:'25€',
-    note:'(includes guide/museum fees) New members will get a joining membership partial refund',
-    limit:'25', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://centrerusbranly.mid.ru/about/history/">https://centrerusbranly.mid.ru/about/history/</a> · <a href="https://tocqueville21.com/books/after-romanovs-russian-exiles-paris/">https://tocqueville21.com/books/after-romanovs-russian-exiles-paris/</a>',
-    desc:'Discover the Russian side of Paris with an expert guide. This tour explores landmarks shaped by migration, art, and culture. Highlights include a conservatory where émigrés arriving after 1917 preserved Russian musical and dance traditions, influencing generations of artists. We will pass by a famous bridge over the Seine, its gilded sculptures and inscriptions quietly recalling a historic Franco-Russian alliance. The visit also includes a modern cathedral that serves as both sacred space and cultural venue, hosting concerts, exhibitions, and lectures. Along the way, streets, theaters, and buildings reveal traces of diplomacy, artistic exchange, and émigré life, often overlooked by passersby. This tour uncovers the stories behind familiar landmarks, offering a perspective on Paris rarely experienced. It is a journey through history, creativity, and the enduring marks of Russian heritage in the French capital.' },
-
-  { date:'2025-09-19', photo_url: MAILLOL_IMG, name:'Robert Doisneau\'s Iconic Photos at the Musée Maillol', month:'September', type:'museum', emoji:'📷',
-    meet_time:'10h00', start_time:'10h15', finish_time:'',
-    meeting:'Musee Maillol, 59-61 rue de Grenelle, 75007 Paris. Meet in front of the museum. We have to go in as a group.',
-    transport:'Métro: M-12 Rue du Bac · M-4 Saint-Sulpice · M-10 Sèvres-Babylone · Bus: 39, 63, 68, 69, 83, 84, 86, 87, 70, 94, 95, 96 (near crossroads Bd Raspail & rue du Bac)',
-    guide:'Ingrid HELD',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'25', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://museemaillol.com/en/expositions/robert-doisneau-instants-donnes-2/">museemaillol.com</a> · <a href="https://en.wikipedia.org/wiki/Robert_Doisneau">Wikipedia: Robert Doisneau</a>',
-    desc:'Whether you\'ve heard of Robert Doisneau or not, you are in for a lovely surprise. An iconic photographer of everyday life in France in the mid 20th century, Robert Doisneau had a unique vision of the human being in multiple environments. Children amazed and fascinated him. Painters, sculptors and writers allowed him into their studios and offices. He worked for Vogue and explored fashion and luxury goods and even did some work in advertising. But his work never neglects social context, and his honest gaze reflects his solidarity with the world around him. For this show Doisneau\'s daughters chose 350 photographs out of his corpus of over 450,000 works, some very familiar, some less so. Our guide will help us understand how Doisneau\'s work is a unique illustration of French life.' },
-
-  { date:'2025-09-26', photo_url: VINCENNES_IMG, name:'Listening for Bird Song – Part Two', month:'September', type:'walking', emoji:'🐦',
-    meet_time:'10h15', start_time:'10h30', finish_time:'',
-    meeting:'For entry to Chateau de Vincennes, sortie 2 from Metro M1',
-    transport:'Métro: M-1 Chateau de Vincennes - Sortie 2 · Bus: 118, 124 · Tram: Port de Vincennes plus a 20 min walk · RER A: Vincennes plus a 8 min walk',
-    guide:'Jacky LIBAUD',
-    cost_regular:'free', cost_waitlist:'15€', cost_guest:'25€',
-    note:'(includes guide)',
-    limit:'25', walk_level:'Medium walk, may be long',
-    walk_dots: [true,true,true,false,false],
-    tour_planner:'Dee GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="http://www.baladesauxjardins.fr">www.baladesauxjardins.fr</a>',
-    desc:'Our walk in the Bois de Boulogne last spring proved so popular that we are doing it again this fall but on the other side of Paris in the Bois de Vincennes. In Gallo-Roman times, this was part of the ancient forest surrounding the town of Lutecia and was called Vilcena, thus the origin of the present name. We\'ll hear stories about the history of the forest and the people who shaped it over time. And we\'ll be watching for raptors such as the kestrels that live on the chateau, as well as small migrating falcons called hobbies and sparrowhawks. Our route will take us by the park\'s ornithological reserve, which will also let us observe numerous perching birds and maybe spot one of the five species of woodpeckers that live in the park.' },
-
-  // OCTOBER 2025
-  { date:'2025-10-03', photo_url: POIRET_FASHION_IMG, name:'Paul Poiret: Fashion is a Feast!', month:'October', type:'museum', emoji:'👗',
-    meet_time:'10h00', start_time:'10h15', finish_time:'~12h15',
-    meeting:'Musée des Arts Décoratifs, 107-111 rue de Rivoli, 75001 Paris. Meet on the garden side.',
-    transport:'Metro: M-1 - Palais Royal or Tuileries · M-7 - Pyramides or Palais Royal · Bus: 21, 27, 39, 48, 68, 69, 72, 81, 95',
-    guide:'Xenia VENTIKOU',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'20', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://madparis.fr/Paul-Poiret-La-mode-est-une-fete">madparis.fr</a>',
-    desc:'Join us at the Arts Décoratifs for the first ever exhibit of Paul Poiret, the most outstanding figure of Parisian high fashion at the beginning of the 20th century. He did something we can all be grateful for – he got rid of the corset and liberated women. From the Belle Epoque to the roaring \'20s Paul Poiret showcased his genius in fashion, decorative arts, perfume, parties and gastronomy. Our guide will help us get to know Paul Poiret, see his work, and understand his legacy, which has influenced many a designer from Christian Dior in 1948 to Alphonse Maîtrepierre in 2024.' },
-
-  { date:'2025-10-03', photo_url: CLEOPATRA_IMG, name:'The Mystery of Cleopatra', month:'October', type:'museum', emoji:'👑',
-    meet_time:'15h45', start_time:'16h00', finish_time:'~18h00',
-    meeting:'Institut du Monde Arabe, 1, rue des Fosses Saint Bernard, Place Mohammed V, 75236 Paris. Meet in front of main entrance.',
-    transport:'Metro: M7, M10 - Jussieu, or M10 Cardinal-Lemoine · Bus: 63, 67, 86, 87, 89',
-    guide:'Noha ESCARTIN',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/museum fees)',
-    limit:'20', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://explorethearchive.com/cleopatra-books">explorethearchive.com</a> · <a href="https://www.imarabe.org/fr/agenda/expositions-musee/mystere-cleopatre">imarabe.org</a> · <a href="https://en.wikipedia.org/wiki/Cleopatra">Wikipedia: Cleopatra</a>',
-    desc:'What do we really know about Cleopatra? Was she the seductive femme fatale immortalized in film, or a cruel and ruthless ruler? What have archaeologists and historians actually uncovered? Our guide will help us separate fact from fiction as we tour The Mystery of Cleopatra at the Institut du Monde Arabe. The exhibition begins with coins, papyri, and other artifacts that bring Cleopatra VII Philopator into sharper focus. Far from the image crafted by Roman propaganda, Cleopatra emerges as a brilliant strategist, skilled diplomat, and reformer who enriched Egypt\'s economy, strengthened its navy, and commissioned grand temples. Set against the vibrant backdrop of Alexandria, the Hellenistic world\'s cultural and commercial hub, the exhibition explores how passion, politics, and power intertwined, and how a queen became a myth which continues to fascinate.' },
-
-  { date:'2025-10-10', photo_url: SEWER_IMG, name:'The City under the City – Paris Sewers', month:'October', type:'museum', emoji:'🚇',
-    meet_time:'10h15', start_time:'10h30', finish_time:'',
-    meeting:'Musée des égouts - Pont de l\'Alma - Esplanade Habib Bourguiba. On the southeast side of the river.',
-    transport:'Métro: M-9 Alma-Marceau · M8 or M13 Invalides · RER: C Alma-Marceau · Bus: 42, 63, 80, 92 station Bosquet-Rapp',
-    guide:'Chris SPENCE',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'25 plus guide', walk_level:'May be slippery and cool underground. Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://musee-egouts.paris.fr/venir/">musee-egouts.paris.fr</a>',
-    desc:'We take modern conveniences for granted today, but did you ever think about how water and waste are handled in a big city? Below our feet there is literally another city with streets and circulation channels with 2600 km of galleries and gutters. Some 300 million cubic meters of rainwater and wastewater pass through them every year, hurtling down the pipes of this singular network before being directed to power plants to be treated and cleaned. The sewers also house other networks: drinking water, non-drinking water and even fiberoptics networks! The sewers of Paris designed more than a century ago remain pertinent and are an outstanding industrial heritage of engineering genius. Join us to visit the recently renovated museum to learn more about the fascinating history of the Paris sewer system.' },
-
-  { date:'2025-10-16', photo_url: BAYEUX_IMG, name:'The Bayeux Tapestry', month:'October', type:'video', emoji:'🎬',
-    meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
-    meeting:'World Wide Web – of course!',
-    transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Ken NESBITT',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'N/A', walk_level:'Video tour',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Bayeux_Tapestry">Wikipedia: Bayeux Tapestry</a>',
-    desc:'The Bayeux Tapestry is a remarkable example of medieval art and is a unique historical artifact. The Tapestry tells the story of the main events leading up to and including the Norman Conquest of England in 1066. From the reign of English King Edward the Confessor to the Norman victory at the battle of Hastings, the tapestry (actually an embroidery) blends Norman styles and Anglo-Saxon art into a sequential narrative and clever piece of propaganda about William the Conqueror\'s great victory. In this presentation we review this important time in medieval history, investigate the key scenes of the tapestry, and address some of the mysteries in the images that remain unsolved.' },
-
-  { date:'2025-10-17', photo_url: CARD_MUSEUM_IMG, name:'French Museum of Playing Cards', month:'October', type:'museum', emoji:'🃏',
-    meet_time:'12h30', start_time:'12h45', finish_time:'',
-    meeting:'Meet at metro stop Mairie d\'Issy on M-12. Take Sortie 2 - Avenue de la République. The exit has an escalator.',
-    transport:'Métro: M-12 Mairie d\'Issy · Bus: 169, 290, 323 · Tram: T2 Jacques-Henri Lartigue plus a 5 min walk',
-    guide:'Jean-Manuel TRAIMOND',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'25', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Dee GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://fr.wikipedia.org/wiki/Musee_francais_de_la_carte_a_jouer">Wikipedia (fr)</a> · <a href="https://www.museecarteajouer.com/en">museecarteajouer.com</a>',
-    desc:'Card games have long held a certain allure. Images range from innocent children\'s games to sophisticated casino gamblers or Western poker games played in bars. And of course, we can\'t forget the magical power of cards. Have you ever wondered about cards - where they came from or how games developed? Thankfully two interested collectors pooled their resources in 1986 and created the Musée Français de la Carte à Jouer, which won the European Museum of the Year award in 1999. Today the museum contains nearly 6500 playing cards (someone counted!) from around the world dating from the 15th to the 20th century. Exhibits focus on the art of the cards, different production techniques and the players universe. There\'s even a surprising collection of cards from the Reign of Terror where Phrygian caps replaced crowns on the cards.' },
-
-  // NOVEMBER 2025
-  { date:'2025-11-07', photo_url: HOTEL_GAILLARD_IMG, name:'Hôtel Gaillard and the Cité de l\'Économie', month:'November', type:'museum', emoji:'🏛️',
-    meet_time:'09h45', start_time:'10h00', finish_time:'~12h15',
-    meeting:'In front of the Cité de l\'économie, 1 place du Général Catroux, 75017, Paris',
-    transport:'Métro: M2 - Villiers, Monceau · M3 - Villiers, Malesherbes · Bus: 20, 93 - Place General Catroux · 30 - Malesherbes-Courcelles',
-    guide:'In house guides',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/museum fees)',
-    limit:'25', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://www.citeco.fr">citeco.fr</a>',
-    desc:'Step inside the extraordinary Hôtel Gaillard in Paris\'s 17th arrondissement and discover Citéco – the Cité de l\'Économie, a museum unlike any other. Behind its neo-Renaissance façade lies both a historic mansion and a modern exploration of economics. Our guided tour begins with the story of the building itself—an opulent residence built for a banker, later transformed into a Banque de France branch, complete with ornate salons, stained glass, and even a fortified vault. In the second part, we turn to the museum\'s captivating section on the history of economic crises, from market crashes to global recessions, and the lessons they continue to offer today. This two-part visit offers a rare mix of Parisian heritage and economic insight—a cultural experience not to miss.' },
-
-  { date:'2025-11-14', photo_url: CITE_ARCHI_IMG, name:'Cité de l\'Architecture et du Patrimoine', month:'November', type:'museum', emoji:'🏗️',
-    meet_time:'14h15', start_time:'14h30', finish_time:'',
-    meeting:'Outside of entrance to Musée Cité de l\'Architecture, 1 Place du Trocadero, 75116 Paris, France',
-    transport:'Métro: M6, M9 - Trocadero · Bus: 22, 30, 32, 63',
-    guide:'Jean-Manuel TRAIMOND',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'20', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Dee GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://www.citedelarchitecture.fr/en">citedelarchitecture.fr</a>',
-    desc:'The Cité de l\'architecture et du patrimoine, the largest museum devoted to architecture in the world, presents the history of French architecture and national monuments from the Middle Ages to the present day. Its origins are rooted in the work of Eugène Viollet-le-Duc, who idealized and modified France\'s medieval architecture, including Notre Dame. Today the museum houses full-size plaster replicas or detailed miniatures thus we can walk through chapels and crypts from all over France while simultaneously passing from the 12th to the 20th centuries - all without leaving the heart of Paris. Highlights include models of world-famous monuments and buildings as well as a replica of a Le Corbusier apartment from the Cité Radieuse in Marseille. As a bonus, the museum\'s location in the Palais de Chaillot provides stunning views of the Eiffel Tower with the surrounding city unfolding around it.' },
-
-  { date:'2025-11-20', photo_url: MARIE_THERESE_IMG, name:'Marie-Thérèse Charlotte of France', month:'November', type:'video', emoji:'👸',
-    meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
-    meeting:'World Wide Web – of course!',
-    transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Thierry HEIL',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'N/A', walk_level:'Video tour',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://www.factinate.com/people/facts-queen-marie-therese">factinate.com</a>',
-    desc:'This presentation explores the incredible, yet tragic life of Marie-Thérèse Charlotte of France. Marie-Thérèse, first born of Marie-Antoinette and Louis XVI, entered the world under the shadow of expectation—she was not the male heir the monarchy desired, yet quickly became the apple of her father\'s eye. The early loss of two younger siblings foreshadowed a life marked by tragedy, as the French Revolution shattered her world. Against all odds, she escaped the guillotine and, years later, would again walk the halls of Versailles. The presentation traces the extraordinary life of the last Dauphine of France - from her royal childhood to forced exile, where revolution and political upheaval dictated her every move.' },
-
-  { date:'2025-11-21', photo_url: ART_DECO_IMG, name:'1925–2025: 100 Years of Art Deco', month:'November', type:'museum', emoji:'🎨',
-    meet_time:'10h00', start_time:'10h15', finish_time:'',
-    meeting:'Musée des Arts Décoratifs, 107-111 rue de Rivoli, 75001 Paris. Meet on the garden side.',
-    transport:'Metro: M1 - Palais Royal or Tuileries · M7 - Pyramides or Palais Royal · Bus: 21, 27, 39, 48, 68, 69, 72, 81, 95',
-    guide:'Xenia VENTIKOU',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'20', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://madparis.fr/1925-2025-Cent-ans-d-Art-deco">madparis.fr</a> · <a href="https://en.wikipedia.org/wiki/Art_Deco">Wikipedia: Art Deco</a>',
-    desc:'This exhibit celebrates the 100th anniversary of the famous 1925 Art déco show in Paris. An aesthetic and artistic trend born before the First World War, Art Deco flourished in the 1920s, coinciding with the emergence of a new way of life. Speed, movement and freedom were now the watchwords of society, breaking with the previous decades. The furniture and objects used the most precious techniques of craftsmanship and were reserved for the wealthiest, without concern for their application to the greater number. Our guide will take us through this exhibition which celebrates the movement in all its facets and contradictions from its beginnings in the 1910s to its contemporary reinterpretations.' },
-
-  // DECEMBER 2025
-  { date:'2025-12-05', photo_url: CLUNY_IMG, name:'Medieval Art in the 19th Century at the Cluny Museum', month:'December', type:'museum', emoji:'🏰',
-    meet_time:'10h15', start_time:'10h30', finish_time:'',
-    meeting:'Musée Cluny, 28 rue du Sommerard, 75005 Paris. Meet in courtyard outside entrance to museum.',
-    transport:'Métro: M10 - Cluny-La Sorbonne · M4 - Odeon or St Michel Notre-Dame · RER: B - St Michel Notre-Dame · Bus: 21, 27, 38-Blvd St Michel · 63, 86, 87-Blvd Saint Germain or rue des Ecoles',
-    guide:'Noha ESCARTIN',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'20', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://www.musee-moyenage.fr/collection/dossiers-thematiques/huit-questions-sur-le-musee.html">musee-moyenage.fr</a>',
-    desc:'Join us as we explore the themes of authenticity, revival and reinvention in this exhibit featuring priceless works of gold, enamel, ivory and textiles from private and public collections around the world. Our guide will lead us as we compare and contrast the new creations from the 19th century plus original objects from the Middle Ages, as well as the counterfeits they inspired. From the 1830s to the First World War, the Paris art market was the epicenter of trade where serious collectors, unscrupulous dealers and elites met. Our guide will walk us through the period when the demand for medieval art exploded and show us all the alluring mix of precious arts collected for this special exhibit.' },
-
-  { date:'2025-12-12', photo_url: SARGENT_IMG, name:'John Singer Sargent: the Parisian Years', month:'December', type:'museum', emoji:'🖼️',
-    meet_time:'13h15', start_time:'13h45', finish_time:'',
-    meeting:'Musée d\'Orsay, 1 rue de la Légion d\'Honneur, 75007 Paris. Group entrance Esplanade Valéry Giscard d\'Estaing',
-    transport:'Metro: M12-Solférino + a 5 min walk · RER: C - Musée d\'Orsay · Bus: 63, 68, 69, 73, 83, 84, 87, 94',
-    guide:'Ingrid HELD',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'25', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://www.musee-orsay.fr/en/whats-on/exhibitions/sargent-paris-years-1874-1884">musee-orsay.fr</a> · <a href="https://en.wikipedia.org/wiki/John_Singer_Sargent">Wikipedia: John Singer Sargent</a>',
-    desc:'John Singer Sargent is one of the most famous American artists of his generation. He came to Paris in 1874 at the age of 18 to study with Carolus-Durand, and it was in Paris that he forged his style. He excelled at portraiture and surpassed his teachers and painted on a par with the great masters. His technical skill, vibrant brush stroke, luscious colors and provocative assurance troubled the public but seduced the critics who declared him to be the worthy heir of Velazquez. However, his portrait of Virginie Gautreau created a scandal at the Salon, and Sargent left to work in London. Today that portrait is the pride and joy of the Metropolitain Museum in New York, and it is on display in Paris for the first time since 1884. Our guide will help us understand the climate of the 19th century where society was changing as old European aristocracy mingled with money from the new world.' },
-
-  { date:'2025-12-18', photo_url: BERTHE_WEILL_IMG, name:'Berthe Weill, the Forgotten Gallery Owner', month:'December', type:'video', emoji:'🎬',
-    meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
-    meeting:'World Wide Web – of course!',
-    transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Chris BOICOS',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'N/A', walk_level:'Video tour',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://www.musee-orangerie.fr/fr/agenda/visites-et-ateliers/berthe-weill-une-femme-pionniere">musee-orangerie.fr</a>',
-    desc:'In 1901 Berthe Weill opened an art gallery in Paris in the Pigalle quarter. She was committed to sponsoring young artists. She sold pictures for Picasso before she even opened her gallery. She was the only one to exhibit Modigliani while he was still alive in 1917. She helped establish Fauvism by regularly showing the works of Matisse\'s students. She showed the Cubists and painters from the school of Paris, fighting against both conservatives and xenophobia. She was also one of the first to show numerous female artists including Suzanne Valadon. In over a hundred shows, she exhibited more than 300 young and upcoming artists, but today she is all but forgotten. Join us for a video presentation of this exhibit currently showing at the Orangerie museum which aims to revive interest in this dynamic gallery owner.' },
-
-  // JANUARY 2026
-  { date:'2026-01-08', photo_url: SELF_PORTRAITS_IMG, name:'The Self Portraits of Four Master Artists', month:'January', type:'video', emoji:'🎬',
-    meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
-    meeting:'World Wide Web – of course!',
-    transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Mariska BEEKENKAMP-WLADIMIROFF',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'N/A', walk_level:'Video tour',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Vincent_van_Gogh">Wikipedia: Vincent van Gogh</a>',
-    desc:'We hope you will join us for a 4-part series of artists who were known for their many self portraits! Van Gogh, Edvard Munch, Frida Kahlo, and Artemisia Gentileschi. There are many reasons why artists do these self portraits: because they themselves are free models, because they want to show their skills in the genre of portraiture to potential patrons, they do it as a marketing tool to spread their fame, but for some it is also done in an almost therapeutic way. The first session covers Vincent Van Gogh: within the space of just 3.5 years, Dutch artist Vincent van Gogh created 35 self portraits. Convinced he would become a portraitist, he set about teaching himself by using his own likeness. This talk will show how these self-portraits were essential in the evolution of Van Gogh\'s art and development as an artist.' },
-
-  { date:'2026-01-23', photo_url: MONTPARNASSE_IMG, name:'Montparnasse: Private Studios and Defining Legacies', month:'January', type:'walking', emoji:'🎭',
-    meet_time:'10h45', start_time:'11h00', finish_time:'',
-    meeting:'RER-B Port Royal, Sortie - Street level entry area to station for RER-B, Port Royal',
-    transport:'RER-B: Port Royal · Metro: M4 - Vavin + long walk · M12 - Notre Dame des Champs + long walk · Bus: 38, 82, 83, 91',
-    guide:'Thierry HEIL',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/atelier fee) Lunch – self purchase',
-    limit:'20', walk_level:'Easy, a little bit long, few staircases',
-    walk_dots: [true,true,false,false,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Ann%C3%A9es_folles">Wikipedia: Années folles</a> · <a href="https://autour-de-paris.com/dossiers/que-reste-t-il-du-montparnasse-boheme-des-annees-20">autour-de-paris.com</a> · <a href="https://www.bbc.co.uk/history/historic_figures/moulin_jean.shtml">BBC: Jean Moulin</a>',
-    desc:'This tour is set in the vibrant Montparnasse artists\' district, where our expert guide will show us two exclusive home-ateliers. We\'ll start at a spectacular 1930s Art Deco building, where an acclaimed international photographer opens her remarkable duplex workshop—the only entirely original one remaining in the building. We\'ll see her work and collection and hear the fascinating story of her apartment, once the Parisian hideout of WWII resistance hero Jean Moulin. We\'ll then head to the legendary brasserie Le Bullier for lunch (on your own, not included) before walking to our next studio for a rare glimpse into the life and work of a pioneering female sculptor. Her granddaughter will guide us through the space, sharing the artist\'s life, her mastery of cement sculpture, and her evolution alongside other Montparnasse masters. Her work is displayed as in a museum and is also available for purchase.' },
-
-  { date:'2026-01-29', photo_url: PIAF_IMG, name:'The Songs of France – Edith Piaf', month:'January', type:'video', emoji:'🎵',
-    meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
-    meeting:'World Wide Web – of course!',
-    transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Eric John KAISER',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'N/A', walk_level:'Video tour',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Edith_Piaf">Wikipedia: Edith Piaf</a> · <a href="https://www.ericjohnkaiser.com">ericjohnkaiser.com</a>',
-    desc:'Édith Piaf is one of France\'s most iconic singers, known for her powerful voice and deeply emotional songs. Born in Paris in 1915, she overcame a difficult childhood to become the voice of French chanson. Her music explores themes of love, loss, and longing, with timeless classics like La Vie en Rose, Non, je ne regrette rien, and Hymne à l\'amour. Often called "the Little Sparrow," Piaf left a lasting mark on French culture and the world. Join us as our guide pays tribute to Édith Piaf in words and entertains us with her unforgettable songs and talks about her unique life and legacy.' },
-
-  // FEBRUARY 2026
-  { date:'2026-02-06', photo_url: FOSSILS_IMG, name:'A Passion for Fossils', month:'February', type:'walking', emoji:'🦕',
-    meet_time:'10h15 (AM) / 14h00 (PM)', start_time:'10h30 (AM) / 14h15 (PM)', finish_time:'~12h00 (AM) / ~15h45 (PM)',
-    meeting:'Metro M3-Saint-Maur, sortie 1 rue Servan',
-    transport:'Métro: M3 - Saint-Maur · Bus: 46, Parmentier-République · 96, Saint-Maur, Jean Aicard',
-    guide:'Chris SPENCE',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'10 per session maximum', walk_level:'In person lecture',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'',
-    desc:'"A childhood passion was re-awakened some 30 years ago in Normandy when I came across tiny pyritized ammonites in clay beds on the beach. The spell was cast, and over the years my collection has expanded with fossils dating back to the Jurassic Period. I have also developed links with the paleontological world and like-minded fossil geeks which I will tell you about. You are invited to come and see some of my treasures recovered from many stormy days tramping in muddy fields, on mountains and sea cliffs in France. My collection mostly centres on Jurassic ammonites from Normandy and Paleolithic stone tools from a quarry near Paris. A self-confessed amateur fossil hunter, I will try to communicate the wonder of my finds, the thrill of the hunt, and what these petrified objects tell us about the world as it used to be." – Our expert guide' },
-
-  { date:'2026-02-13', photo_url: BRIDGES_IMG, name:'Bridges of Paris – Café Lecture', month:'February', type:'walking', emoji:'🌉',
-    meet_time:'15h15', start_time:'15h45', finish_time:'~18h00',
-    meeting:'Brasserie Le Standard, 1, Blvd du Montparnasse, 75006 Paris',
-    transport:'Métro: M13 - Duroc · Bus: 28, 82',
-    guide:'Thierry HEIL',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/coffee, tea, dessert)',
-    limit:'25+', walk_level:'Café Lecture',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://parisianfields.com/2014/03/09/paris-bridges-mirrors-of-history/">parisianfields.com</a> · <a href="https://www.parisinsidersguide.com/paris-bridges.html">parisinsidersguide.com</a>',
-    desc:'Discover the hidden history of Paris\'s iconic bridges in this captivating Café Lecture. This isn\'t just a list of famous landmarks; it\'s a journey through centuries of architectural marvels and untold stories. We\'ll explore the city\'s evolution, from the medieval bridges once lined with houses to the stunning structures that stand today. Beyond their beauty, these bridges are silent witnesses to Parisian life and innovation. You\'ll learn about bridges that were never built, and hear fascinating anecdotes about the people and events that shaped them. From the Pont de la Concorde, built with stones from the demolished Bastille, to the double-decker Pont de Bir-Hakeim that carries both cars and the Metro, each bridge tells a unique tale of fashion, technology, and endless expansion. Coffee/Tea and Dessert included!' },
-
-  { date:'2026-02-19', photo_url: MUNCH_IMG, name:'The Self Portraits by Edvard Munch', month:'February', type:'video', emoji:'🎬',
-    meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
-    meeting:'World Wide Web – of course!',
-    transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Mariska BEEKENKAMP-WLADIMIROFF',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'N/A', walk_level:'Video tour',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Edvard_Munch">Wikipedia: Edvard Munch</a>',
-    desc:'Edvard Munch lived for 80 years, his life covering world wars and huge changes within the European art scene. Most people only know his Scream, painted during a productive but troubled period in his life, living in Germany. Munch strongly believed in the possibility of picking up emotions and the personality of people through the colors they radiate, some of it is shown in the Scream. However, it is in his self portraits that we see him truly trying to make the invisible visible, using colors and lines to show a person\'s inner being - just like the new X-rays could.' },
-
-  // MARCH 2026
-  { date:'2026-03-13', photo_url: ORIGINS_WRITING_IMG, name:'The Origins of Writing', month:'March', type:'museum', emoji:'📜',
-    meet_time:'15h00', start_time:'15h30', finish_time:'',
-    meeting:'Musée Louvre, 99 rue de Rivoli, 75001 Paris. Group meeting point in Main Hall.',
-    transport:'Metro: M1 - Palais Royal · M7 - Pyramids or Palais Royal · M14 - Pyramides · Bus: 21, 27, 39, 48, 68, 69, 72, 81, 95',
-    guide:'Noha ESCARTIN',
-    cost_regular:'10€ + entry', cost_waitlist:'20€ + entry', cost_guest:'25€ + entry',
-    note:'(includes guide and entry tickets) Note: The Louvre has changed ticket processes for groups. FTG must buy museum entry tickets (28€ each). Please do not buy your own ticket. Amis du Louvre or Paris Musée pass holders enter free.',
-    limit:'20', walk_level:'Easy, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/History_of_writing">Wikipedia: History of writing</a> · <a href="https://www.getty.edu/news/where-did-writing-come-from/">getty.edu</a>',
-    desc:'Join us as we return to the Louvre\'s Antiquities section for a much-anticipated tour focused on the Origins of Writing. We will examine how early societies transformed everyday practices—counting, trade, and ritual—into systems of marks that could be read, copied, and preserved. The tour highlights key developments in the evolution of script, from the earliest tokens and pictographs to more complex inscriptions, showing how writing shaped administration, communication, and culture. Through careful attention to the objects themselves, we trace the steps by which abstract signs became tools for organizing information and recording human activity, offering a window into the ancient societies that created them.' },
-
-  { date:'2026-03-20', photo_url: NOTRE_DAME_IMG, name:'Notre Dame de Paris Cathedral', month:'March', type:'walking', emoji:'⛩️',
-    meet_time:'10h15', start_time:'10h45', finish_time:'',
-    meeting:'6 place Jean-Paul II, Parvis Notre-Dame, 75004 Paris, France. Exact location for meeting on the parvis will be sent for attendees.',
-    transport:'Métro: M4 - Cite or Saint Michel Notre-Dame · Bus: 47, 75, 87 Quai de Montbello · 21, 24, 27, 38, 47, 85, 96 Saint-Michel Notre Dame, short walk · RER B, C: Saint Michel Notre-Dame',
-    guide:'Mary Ellen GOGEL',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes headphones) Note: Any resulting monies after fees paid will be donated to the Cathedral.',
-    limit:'20', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Notre-Dame_de_Paris">Wikipedia: Notre-Dame de Paris</a>',
-    desc:'Join one of our own members, who is a volunteer guide, for a visit to the Cathedral of Notre Dame de Paris, which rose from tragedy to triumph. Beginning with the dramatic fire the night of April 15, 2019, when flames threatened to silence eight centuries of prayer, you will learn about resilience, faith, and the glory of a remarkable reconstruction. We will also see the extraordinary results of the coordination of skilled craftsmen and engineers who rebuilt the cathedral. We will tour the inside, looking at its soaring arches, luminous stained glass, its centuries of history, and discover not only the art and architecture of a world icon but also the spirit of those who rebuilt it through faith and devotion to God and to the Virgin Mary. For those who are interested at the end of our tour inside, our guide can continue outside and also tell us about the façade and its iconography.' },
-
-  { date:'2026-03-26', photo_url: FRIDA_IMG, name:'The Self Portraits by Frida Kahlo', month:'March', type:'video', emoji:'🎬',
-    meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
-    meeting:'World Wide Web – of course!',
-    transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Mariska BEEKENKAMP-WLADIMIROFF',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'N/A', walk_level:'Video tour',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Frida_Kahlo">Wikipedia: Frida Kahlo</a>',
-    desc:'Kahlo famously stated, "I paint myself because I am so often alone and because I am the subject I know best." Her paintings are like a diary with her most intimate thoughts, fears and desires. Criticized in her time for creating "unsophisticated, naive and primitive" paintings, these works are now seen as hugely imaginative and brave, exploring both her physical and emotional pain, her femininity and Mexican identity.' },
-
-  // APRIL 2026
-  { date:'2026-04-03', photo_url: RUE_FAUBOURG_IMG, name:'A Naturalist\'s Walk in Faubourg Saint Martin', month:'April', type:'walking', emoji:'🌿',
-    meet_time:'10h00', start_time:'10h15', finish_time:'',
-    meeting:'Meet outside of main entry to Gare de l\'Est. We\'ll take a short walk to starting point of the naturalist\'s walk. 75010 Paris, France',
-    transport:'Métro: M4, 5, 7 - Gare de l\'Est · RER: E - Gare de l\'Est · Bus: 31, 32, 38, 39, 46, 54, 91',
-    guide:'Jacky LIBAUD',
-    cost_regular:'free', cost_waitlist:'15€', cost_guest:'25€',
-    note:'(includes guide)',
-    limit:'25+', walk_level:'Medium long city and small park walk',
-    walk_dots: [true,true,true,false,false],
-    tour_planner:'Dee GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="http://www.baladesauxjardins.fr">www.baladesauxjardins.fr</a>',
-    desc:'Our guide will take us through modern Faubourg Saint Martin looking for traces of the past while enjoying the flora and fauna in the canals and gardens that exist today. The faubourgs around Paris were born in the 14th century when artisans, gardeners, and winegrowers began to leave the city. They formed small suburban villages, such as Faubourg Saint Martin, located outside the city walls, and today Paris\' street names recall these ancient villages. In our search for the past, we\'ll visit the Saint Laurent church, founded at the end of the 5th century to welcome pilgrims on their way to the abbey of Saint-Denis. And in contrast, we\'ll visit a new addition to the area, the Marielle Franco garden. Placed along the railway tracks, it offers green relief in an area of steel and stone.' },
-
-  { date:'2026-04-10', photo_url: PLACE_VENDOME_IMG, name:'The Vendôme Square and its Luxury Brands', month:'April', type:'walking', emoji:'💎',
-    meet_time:'10h15', start_time:'10h30', finish_time:'',
-    meeting:'Place Vendome. Around the Column in the middle of the square.',
-    transport:'Metro: M1 - Tuileries · M3, 7, 8 - Opera · M8, 12, 14 - Madeleine · RER-A: Auber · Bus: 42, 45, 52, 84, 94 - Madeleine · 20, 21, 27, 29, 68, 95 - Opera-4 Sept',
-    guide:'Xenia VENTIKOU',
-    cost_regular:'free', cost_waitlist:'15€', cost_guest:'25€',
-    note:'(includes guide)',
-    limit:'25', walk_level:'Easy, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Place_Vend%C3%B4me">Wikipedia: Place Vendôme</a>',
-    desc:'The Vendôme Square is a world-wide reference for its luxury shops. Its story began in the 17th century as one of the royal squares in Paris attracting the greatest noble families of the kingdom. That all changed at the French Revolution, but soon after it became the preferred destination of wealthy tourists and the address for the major jewelry houses. This tour describes the beginnings and the history of Mellerio, Cartier, Van Cleef & Arpels, Boucheron and Chaumet along with the fashion and luxury goods houses like Schiaparelli, Louis Vuitton and Goyard that are still in or near the Place Vendôme.' },
-
-  { date:'2026-04-16', photo_url: ARTEMISIA_IMG, name:'The Self Portraits by Artemisia Gentileschi', month:'April', type:'video', emoji:'🎬',
-    meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
-    meeting:'World Wide Web – of course!',
-    transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
-    guide:'Mariska BEEKENKAMP-WLADIMIROFF',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
-    note:'(includes guide fee)',
-    limit:'N/A', walk_level:'Video tour',
-    walk_dots: [false,false,false,false,false],
-    tour_planner:'Paul GAVORA',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Artemisia_Gentileschi">Wikipedia: Artemisia Gentileschi</a>',
-    desc:'Painting strong, heroic and virtuous women throughout her life, especially Old Testament heroines, Artemisia often inserted her own likeness into the depiction of these saints and heroines. Trying to forge her way in a man\'s world, Artemisia used her art and her likeness to show off her identity as a professional artist challenging traditional gender roles. Becoming the poster girl for a successful, strong and determined woman, her self portraits are also an example for other girls and women, creating a sisterhood of possibility.' },
-
-  // MAY 2026
-  { date:'2026-05-08', photo_url: PALAIS_ROYAL_IMG, name:'The Palais Royal and its Gardens', month:'May', type:'walking', emoji:'🌿',
-    meet_time:'10h00', start_time:'10h15', finish_time:'',
-    meeting:'Meet at the new Palais Royal metro entrance designed by Jean-Michel Othoniel which is across from the Comédie Française and the Café Le Nemours',
-    transport:'Metro: M1 - Palais Royal · M7 - Pyramides or Palais Royal · M14 - Pyramides · Bus: 21, 27, 39, 48, 68, 69, 72, 81, 95',
-    guide:'Ingrid HELD',
-    cost_regular:'free', cost_waitlist:'15€', cost_guest:'25€',
-    note:'(includes guide)',
-    limit:'25', walk_level:'Easy, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://en.wikipedia.org/wiki/Palais-Royal">Wikipedia: Palais-Royal</a>',
-    desc:'The history of the Palais Royal is amazing. As an architectural space, it is the quintessence of French neo-classical values, which have very ancient Latin roots. Built by Cardinal Richelieu in 1628, it was later the place of residence of many royals. In 1780 the space was enclosed by the Duc d\'Orléans, and shops, cafés, restaurants, and other attractions were created. So this lovely space also holds a more ambiguous story about the very lucrative activities of prostitution and gambling. At the time of the Revolution it became a veritable forum where patriots and radicals met and debated before becoming a space for various administrations in the 19th century. Join us as our guide makes this incredible space and its delightful gardens come alive.' },
-
-  { date:'2026-05-22', photo_url: MEUDON_IMG, name:'An Afternoon in Meudon', month:'May', type:'walking', emoji:'🔭',
-    meet_time:'13h15', start_time:'13h30', finish_time:'~17h00 near RER station',
-    meeting:'Transilien Station: Gare de Bellevue, Meudon - Pl du Souvenir Français',
-    transport:'Train: Transilien N - Montparnasse to Gare de Bellevue · Tram: T2 - Meudon-sur-Seine, then 12 min walk to Gare · Bus: 169 - From M9 Pont de Sèvres to the Gare, or from M8 Balard to the Gare',
-    guide:'Thierry HEIL',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide and entrance fees)',
-    limit:'20', walk_level:'Medium walk with uphill sections — will be a long walk',
-    walk_dots: [true,true,true,true,false],
-    tour_planner:'Barbara TRIMPI',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://observatoiredeparis.psl.eu/le-chateau-de-meudon.html">Observatoire de Paris: Château de Meudon</a> · <a href="https://musee.meudon.fr/">Musée d\'Art et d\'Histoire de Meudon</a>',
-    desc:'Join us as we explore the town of Meudon, just southwest of Paris. Our tour, starting at Gare Bellevue, will allow us to take a close look at some unique experimental modern homes from the 1950s, including works by Jean Prouvé and André Bloc, pioneers of prefabrication and sculptural concrete which they tested on these steep plots overlooking Paris. From there we climb to the site of the Château de Meudon, acquired in 1695 for Louis XIV\'s son and destroyed during the Franco-Prussian War in 1871. Today, the Meudon Observatory, home to the Grande Coupole telescope, now crowns the terrace, offering expansive views over Paris and the Seine valley. We will then descend through former royal hunting grounds before concluding our tour in the town center at the Musée d\'Art et d\'Histoire de Meudon, which features works by Rodin, Carpeaux, and 19th-century regional artists.' },
-
-  { date:'2026-05-29', photo_url: CHATEAU_SCEAUX_IMG, name:'Walking Garden Tour & Season-Ending Luncheon – Parc de Sceaux', month:'May', type:'walking', emoji:'🌸',
-    meet_time:'10h15', start_time:'10h30', finish_time:'',
-    meeting:'RER-B Station: Parc de Sceaux',
-    transport:'RER-B to Parc de Sceaux (End point Saint-Remy-les-Chevreuse)',
-    guide:'Amy KUPEC-LARUE',
-    cost_regular:'tbd', cost_waitlist:'tbd', cost_guest:'tbd',
-    note:'(includes guide and luncheon)',
-    limit:'25+', walk_level:'Easy, few staircases, but will be a long walk in the Parc de Sceaux',
-    walk_dots: [true,true,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://www.theparisianguide.com/s/parc-de-sceaux/">theparisianguide.com</a> · <a href="https://tourisme.sceaux.fr/discover-sceaux">tourisme.sceaux.fr</a>',
-    desc:'The Parc de Sceaux was created in the late 17th century as a prestigious country estate by Louis 14th\'s finance minister, Jean-Baptiste Colbert, who brought together some of the greatest artists of the time. André Le Nôtre\'s genius is displayed in the immense perspectives, terraces, water features and parterres that were beautifully restored in 2013. The estate was greatly expanded by Colbert\'s son before changing hands many times. It remained a place of power, productivity and pleasure until the French Revolution. Colbert also commissioned an office outside of the chateau which still stands today with its original allegorical ceiling by Charles Le Brun. Today, the park blends formal French gardens with ecologically-managed forests and open lawns and many classical statues. Join us for a tour of some of the iconic features and perspectives before lunch in the park.' },
-
-  // JUNE 2026
-  { date:'2026-06-05', photo_url: MANOR_IMG, name:'A Day in an 18th Century French Manor House', month:'June', type:'museum', emoji:'🏰',
-    meet_time:'09h45', start_time:'10h00', finish_time:'~12h15',
-    meeting:'Musée des Arts Décoratifs, 107-111 rue de Rivoli, 75001 Paris. Meet on the garden side.',
-    transport:'Metro: M1 - Palais Royal or Tuileries · M7 - Pyramides or Palais Royal · Bus: 21, 27, 39, 48, 68, 69, 72, 81, 95',
-    guide:'Xenia VENTIKOU',
-    cost_regular:'10€', cost_waitlist:'20€', cost_guest:'25€',
-    note:'(includes guide/entrance fees)',
-    limit:'20', walk_level:'Easy walk, few staircases',
-    walk_dots: [true,false,false,false,false],
-    tour_planner:'Lee HUBERT',
-    day_contact:'Paul GAVORA · Lee HUBERT',
-    read_ahead:'<a href="https://madparis.fr/">madparis.fr</a>',
-    desc:'Who hasn\'t dreamed of being transported back in time? At the current show at the Museum of Decorative Arts, it is almost possible since we are invited to visit an 18th century manor dating from 1780. We will see furniture, sculpted wood panels, wallpaper, ceramics, silverware, clothes and accessories, toys and jewelry as we go from room to room. We will be like privileged guests in a house complete with sounds and smells from the time. Join us as our guide takes us through this exhibit with over 550 different objects, mostly from the museum\'s collection, and be transported back to the 18th century.' },
+  // SEPTEMBER 2026
+  { date:'2026-09-11', photo_url: KICKOFF_IMG, name:'Kick-off Meeting and Welcome Back Lunch', month:'September', type:'walking', emoji:'🥂',
+    public_desc:'Start the new season by reconnecting with fellow members, meeting newcomers, and previewing the year’s program. After a brief introduction to our updated website and community resources, we take a short neighborhood walk and share lunch together.' },
+  { date:'2026-09-18', photo_url: CHAMPS_ELYSEES_IMG, photo_fit:'contain', name:'Gardens and Birds of l\'Avenue des Champs-Élysées', month:'September', type:'walking', emoji:'🚶',
+    public_desc:'A naturalist‑led walk through the historic gardens lining the Champs‑Élysées, from fountains and statues to a hidden English‑style garden behind the Grand Palais. Along the way, we observe the birds and nature that thrive in these green pockets of the city.' },
+  { date:'2026-09-25', photo_url: MONTMARTRE_TREES_IMG, photo_fit:'contain', name:'Trees in Montmartre', month:'September', type:'walking', emoji:'🌳',
+    public_desc:'Explore Montmartre’s surprising arboreal diversity on a walk across the Butte, from narrow lanes to shaded squares. This tour includes a stop in the Saint‑Vincent cemetery to see lesser‑known species adapted to the site’s microclimate.' },
+  // OCTOBER 2026
+  { date:'2026-10-02', photo_url: SAINT_GERMAIN_IMG, name:'Église Saint-Germain l\'Auxerrois', month:'October', type:'walking', emoji:'🔔',
+    public_desc:'Discover a church deeply woven into Parisian history, from its debated role in the St. Bartholomew’s Day Massacre to its remarkable stained glass and layered architecture. The walk continues through the surrounding historic quarter facing the Louvre.' },
+  { date:'2026-10-09', photo_url: GRAND_GALERIE_IMG, name:'The Grand Galerie de l\'Évolution', month:'October', type:'museum', emoji:'🏛️',
+    public_desc:'A spectacular museum in the Jardin des Plantes tracing the evolution of life through thousands of animal specimens. The visit explores how centuries of scientific discovery shaped our understanding of biodiversity.' },
+  { date:'2026-10-16', photo_url: OCCUPATION_IMG, name:'Paris During the Occupation and Liberation', month:'October', type:'walking', emoji:'🎖️',
+    public_desc:'Walk through sites connected to daily life under German occupation, the Resistance, and the dramatic final days of Liberation. Stories of courage, collaboration, and survival bring this period of Parisian history into sharp focus.' },
+  { date:'2026-10-22', photo_url: CASSATT_IMG, name:'Mary Cassatt at the Orsay', month:'October', type:'video', emoji:'🎬',
+    public_desc:'A video presentation marking the centenary of Mary Cassatt’s death, exploring her independence, her role within Impressionism, and her influence on American collectors. The talk highlights more than 80 works from the Orsay’s major exhibition.' },
+  // NOVEMBER 2026
+  { date:'2026-11-06', photo_url: MAD_FASHION_IMG, photo_fit:'contain', name:'Look! 40 Years of Fashion', month:'November', type:'museum', emoji:'👗',
+    public_desc:'The Musée des Arts Décoratifs celebrates four decades of its Fashion Museum with forty iconic silhouettes. This tour reveals how designers and artisans transform sketches into runway pieces and how museums preserve them.' },
+  { date:'2026-11-13', photo_url: CAPA_IMG, photo_fit:'contain', name:'Robert Capa, War Photographer', month:'November', type:'museum', emoji:'📷',
+    public_desc:'At the Musée de la Libération, see rare footage of Capa photographing the Liberation of Paris and explore his life through images of conflict and resilience. The exhibition pairs newsreels with his published work for a vivid portrait of a legendary photographer.' },
+  { date:'2026-11-19', photo_url: FALL_FRANCE_IMG, name:'1940 – The Fall of France', month:'November', type:'video', emoji:'🎬',
+    public_desc:'A video lecture examining the rapid collapse of France in 1940, from the Ardennes breakthrough to the fall of Paris. The talk explains the strategic missteps and political consequences of this tumultuous six‑week turning point.' },
+  // DECEMBER 2026
+  { date:'2026-12-04', photo_url: MEDICINE_ARAB_IMG, name:'The Great Adventure of Medicine in the Arab World', month:'December', type:'museum', emoji:'⚕️',
+    public_desc:'At the Institut du Monde Arabe, explore the scientific achievements of medieval physicians whose tools, diagrams, and encyclopedias shaped medical practice across continents. The exhibition highlights innovations that still echo in modern medicine.' },
+  { date:'2026-12-11', photo_url: BOURDELLE_IMG, photo_fit:'contain', name:'The Fabric of the Artist at the Bourdelle Museum', month:'December', type:'museum', emoji:'🏛️',
+    public_desc:'This exhibition presents garments and accessories worn by artists from Klimt to Delaunay, revealing how clothing expressed identity and creative persona. The visit includes the atmospheric Bourdelle studio and its new extension.' },
+  { date:'2026-12-17', photo_url: ANIMALS_ART_IMG, photo_fit:'contain', name:'Art with a Twist: Curiosities, Creatures & Clever Illusions – Part 1: Animals in Art', month:'December', type:'video', emoji:'🎬',
+    public_desc:'A lively video lecture exploring how artists used animals—from regal horses to mischievous monkeys—to convey symbolism, humor, and hidden meaning. The session uncovers surprising details tucked into well‑known masterpieces.' },
+  // JANUARY 2027
+  { date:'2027-01-07', photo_url: LAUGHTER_ART_IMG, photo_fit:'contain', name:'Art with a Twist: Curiosities, Creatures & Clever Illusions – Part 2: Laughter in Art', month:'January', type:'video', emoji:'🎬',
+    public_desc:'This lively video tour explores the humor tucked into Dutch Baroque painting, from tavern pranks to mischievous details hidden in everyday scenes. It reveals how artists used wit, chaos, and gentle satire to capture human behavior with remarkable insight.' },
+  { date:'2027-01-15', photo_url: OPERA_IMG, name:'Backstage at the Paris Opera Bastille', month:'January', type:'museum', emoji:'🏛️',
+    public_desc:'Go behind the scenes at the Opera Bastille to see how sets, lighting, and stagecraft come together to create a full theatrical world. This tour offers a rare look at the workshops, machinery, and backstage spaces that make grand opera possible.' },
+  { date:'2027-01-22', photo_url: KRAEMER_IMG, name:'Kraemer Gallery', month:'January', type:'museum', emoji:'🖼️',
+    public_desc:'Visit a historic private mansion where generations of the Kraemer family have lived and worked, assembling one of Paris’s finest collections of 18th‑century French furniture. Masterpieces by Boulle, Riesener, and Jacob sit alongside modern works, creating a dialogue between centuries of artistry.' },
+  { date:'2027-01-27', photo_url: CHOCOLATE_IMG, photo_fit:'contain', name:'The Chocolate Dynasty and the Pharmacy Museum', month:'January', type:'museum', emoji:'🏛️',
+    public_desc:'Explore the surprising story of the Menier family, who created a chocolate empire from a pharmacy business and medicinal chocolate. This visit includes access to a rarely opened section of the elegant family mansion that houses historic instruments, and objects that illuminate early pharmaceutical practice.' },
+  // FEBRUARY 2027
+  { date:'2027-02-04', photo_url: DASSIN_IMG, name:'Songs of France – Joe Dassin', month:'February', type:'video', emoji:'🎵',
+    public_desc:'A musical video presentation celebrating Joe Dassin, whose songs became classics of French popular culture. This session blends biography, musical history, and performance to explore why his work continues to resonate across generations.' },
+  { date:'2027-02-25', photo_url: TROMPE_LOEIL_IMG, photo_fit:'contain', name:'Art with a Twist: Curiosities, Creatures & Clever Illusions – Part 3: Trompe L\'oeil', month:'February', type:'video', emoji:'🎬',
+    public_desc:'This video lecture explores how artists use perspective and precision to create images that seem almost real. From ancient wall paintings to astonishing modern illusions, it reveals the playful tricks behind art designed to deceive the eye.' },
+  // MARCH 2027
+  { date:'2027-03-05', month:'March', type:'placeholder', placeholder:true, combined:true, name:'Save the Date',
+    monthDates: ['March 5','March 11','March 19','March 26'] },
+  // APRIL 2027
+  { date:'2027-04-01', month:'April', type:'placeholder', placeholder:true, combined:true, name:'Save the Date',
+    monthDates: ['April 1','April 23','April 30'] },
+  // MAY 2027
+  { date:'2027-05-07', month:'May', type:'placeholder', placeholder:true, combined:true, name:'Save the Date',
+    monthDates: ['May 7','May 21','May 29 (Season-Ending)'] },
 ];
 
-// 2026-27 SEASON — Members Tour Details only, for now.
-// The public calendar (renderPublicCalendar) intentionally keeps reading
-// from `tours` above (2025-26, untouched) until the season swap happens.
+// 2026-27 SEASON — Members Tour Details (full descriptions, meeting info, etc.)
 const toursMembers = [
   // SEPTEMBER 2026
   { date:'2026-09-11', photo_url: KICKOFF_IMG, name:'Kick-off Meeting and Welcome Back Lunch', month:'September', type:'walking', emoji:'🥂',
@@ -3036,6 +2651,25 @@ function renderPublicCalendar() {
     group.innerHTML = '<div class="month-label">' + month + ' ' + monthYear + ' <span>' + mt.length + ' event' + (mt.length>1?'s':'') + '</span></div><div class="tours-grid"></div>';
     const grid = group.querySelector('.tours-grid');
     mt.forEach(t => {
+      if (t.placeholder && t.combined && t.monthDates) {
+        const n = t.monthDates.length;
+        const monthLabel = t.month + ' ' + new Date(t.date).getFullYear();
+        const card0 = document.createElement('div');
+        card0.className = 'public-savedate-card';
+        card0.innerHTML =
+          '<div class="slide-top" style="grid-template-columns:42% 58%;height:auto;">'
+          + '<div style="background:var(--purple);padding:2rem 1.5rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:0.6rem;border-right:1px solid #D4AF37;">'
+          + '<div style="color:#fff;font-family:system-ui,sans-serif;font-size:1.15rem;font-weight:700;line-height:1.3;">' + n + ' great tours coming in</div>'
+          + '<div style="color:#D4AF37;font-family:system-ui,sans-serif;font-size:1.4rem;font-weight:700;line-height:1.25;">' + monthLabel + '</div>'
+          + '</div>'
+          + '<div style="background:#FDFDFC;padding:2rem 1.8rem;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:0.7rem;">'
+          + '<div style="font-family:\'Playfair Display\',serif;font-size:2rem;font-weight:700;color:#000;">Save the date' + (n>1?'s':'') + '!</div>'
+          + '<div style="font-family:system-ui,sans-serif;font-size:0.9rem;color:#444;">' + t.monthDates.join(' &middot; ') + '</div>'
+          + '<div style="border:1.5px dashed #D4AF37;color:#8a7220;font-family:system-ui,sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.5rem 1.1rem;border-radius:2px;margin-top:0.2rem;">Details coming soon</div>'
+          + '</div></div>';
+        grid.appendChild(card0);
+        return;
+      }
       const d = new Date(t.date);
       const dayNum = d.getDate();
       const dayMo = d.toLocaleDateString('en-GB',{month:'long'}).toUpperCase();
