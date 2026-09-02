@@ -1208,7 +1208,7 @@
 <div id="page-members" class="page">
   <div id="members-header">
     <h1>Friday Tour Group</h1>
-    <p>Full tour details &nbsp;&middot;&nbsp; Season 2025&#8211;2026</p>
+    <p>Full tour details &nbsp;&middot;&nbsp; Season 2026&#8211;2027</p>
   </div>
   <div class="members-tabs">
     <button class="members-tab active" onclick="membersTab('tours', this)">Tour Details</button>
@@ -1949,9 +1949,9 @@
   </div>
 </div>
 
-<button class="floating-reserve-btn" id="floating-reserve" onclick="openReserveModal()">Reserve a Spot &#8599;</button>
+<button class="floating-reserve-btn" id="floating-reserve" style="display:none" onclick="openReserveModal()">Reserve a Spot &#8599;</button>
 <footer>
-  <span id="footer-name">Fridays in Paris</span> &nbsp;&middot;&nbsp; Season 2025&#8211;2026 &nbsp;&middot;&nbsp; <span id="footer-email"></span>
+  <span id="footer-name">Fridays in Paris</span> &nbsp;&middot;&nbsp; Season 2026&#8211;2027 &nbsp;&middot;&nbsp; <span id="footer-email"></span>
 </footer>
 
 <script>
@@ -2570,6 +2570,8 @@ function showPage(name, fromPopState) {
     fetchTourCounts().then(function() { patchAvailLines(); });
   }
   const onMembers = (name === 'members');
+  const fReserve = document.getElementById('floating-reserve');
+  if (fReserve) fReserve.style.display = onMembers ? '' : 'none';
   document.getElementById('btn-members').style.display = onMembers ? 'none' : '';
   document.getElementById('btn-home').style.display = onMembers ? '' : 'none';
   document.querySelector('nav').style.background = onMembers ? '#2d3748' : 'var(--purple)';
