@@ -377,20 +377,6 @@
   }
   .home-hero h1 em { font-style: italic; color: var(--gold); }
   .home-hero p { color: rgba(255,255,255,0.85); line-height: 1.7; max-width: 52ch; font-size: 0.93rem; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
-  .hero-highlights-link {
-    display: inline-block;
-    margin-top: 1.6rem;
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 1.05rem;
-    color: var(--gold);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(201,168,76,0.55);
-    padding-bottom: 0.2rem;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.4);
-    transition: opacity 0.2s, border-color 0.2s;
-  }
-  .hero-highlights-link:hover { opacity: 0.82; border-color: var(--gold); }
   .hero-season { text-align: right; position: relative; }
   .hero-season .yr { font-family: 'Playfair Display', serif; font-size: 3.8rem; color: rgba(255,255,255,0.42); line-height: 1; }
   .hero-season .lbl { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
@@ -1158,7 +1144,6 @@
     <div>
       <h1>Exploring Paris,<br><em>one Friday</em><br>at a time.</h1>
       <p>Here is our calendar of tours through museums, galleries, iconic neighborhoods and gardens, from famous landmarks to the hidden corners of Paris and beyond... with expert guides.<br><br>No two Fridays are the same.</p>
-      <a href="#" class="hero-highlights-link" onclick="showPublicTab('highlights'); return false;">Past Season Highlights &#8594;</a>
     </div>
     <div class="hero-season">
       <div class="yr">2026<br>2027</div>
@@ -1212,36 +1197,6 @@
       <p class="vol-body">This website was created and is maintained entirely by volunteers too.</p>
       <p class="vol-body">Interested in learning more, or becoming a member?<br>
       Click the <button class="visitors-nav-btn" onclick="openVisitorsModal()" style="font-size:0.85rem; padding:0.35rem 0.9rem; vertical-align:middle;">Visitors</button> button and we'll get back to you.</p>
-    </div>
-    <div style="text-align:center; margin-top:2.5rem; padding-bottom:2rem;">
-      <button onclick="showPublicTab('home')" style="background:none; border:1px solid #1A3A2A; color:#1A3A2A; padding:0.5rem 1.4rem; font-family:'DM Sans',sans-serif; font-size:0.85rem; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer;">&#8592; Home</button>
-    </div>
-  </div>
-</div>
-
-<!-- PAST SEASON HIGHLIGHTS PAGE -->
-<div id="page-highlights" class="page">
-  <div class="vol-page" style="padding-top:0;">
-    <div class="vol-page-header">
-      <h1 class="vol-page-h1">Past Season Highlights</h1>
-      <p class="vol-page-sub">A look back at the 2025&#8211;2026 season</p>
-    </div>
-    <div class="vol-content">
-      <img src="photos/photospastseason-collage.png" alt="Collage of photos from the 2025-2026 Friday Tour Group season" style="width:100%; height:auto; display:block; border-radius:4px; margin-bottom:2rem;">
-      <p class="vol-body">Last season offered 12 museum tours, 11 outdoor walking tours, and 8 video presentations, and among its many highlights was our luminous visit to Notre&#8209;Dame Cathedral, where one of our own members&#8212;a longtime volunteer&#8212;guided us through what has changed since the reopening and what is yet to come. Another standout was our tour at the Mus&eacute;e d'Orsay, tracing John Singer Sargent's development in Paris from lesser&#8209;known works to his celebrated masterpieces. We stepped inside the restored H&ocirc;tel Gaillard for a look at the Cit&eacute; de l'&Eacute;conomie, followed a master story-teller and historian through Place Vend&ocirc;me to uncover its layered history, and spent a memorable day in Montparnasse visiting two private artists' studios. At the Mus&eacute;e de Cluny we explored how medieval art was rediscovered and copied by later centuries, while in Meudon we explored the sweeping views over Paris by the Observatory and discovered to its charming art museum and outdoor sculpture garden. Beneath the city, we learned how the sewer system evolved into an engineering landmark at the Sewer Museum, and at the Louvre our guide used the Antiquities collection to chart the development of writing across ancient civilizations. At Parc de Sceaux, we celebrated a successful season with a tour and lunch led by our favorite French garden specialist, whose deep knowledge of flowers, trees, and landscape history helped us see the park in a new light before one final goodbye at the Mus&eacute;e des Arts D&eacute;coratifs with yet another fascinating tour of their exhibit on 18th Century Manor Houses.</p>
-      <h2 style="color:#1A3A2A; font-family:'Playfair Display',serif; font-weight:700; font-size:1.3rem; margin-top:2rem; margin-bottom:1rem;">The 2025&#8211;26 Season of Tours &#8211; Month by Month</h2>
-      <p class="vol-body" style="line-height:1.95;">
-        <strong>September:</strong> Russian Heritage walking tour in Paris &middot; Robert Doisneau at the Mus&eacute;e Maillol &middot; Listening for Bird Song in Parc Vincennes.&nbsp;&nbsp;
-        <strong>October:</strong> Paul Poiret at the Mus&eacute;e des Arts D&eacute;coratifs (MAD) &middot; The Mystery of Cleopatra at the Institut du Monde Arabe &middot; The City under the City &#8211; Paris Sewers &middot; The Bayeux Tapestry video tour &middot; The French Museum of Playing Cards.&nbsp;&nbsp;
-        <strong>November:</strong> H&ocirc;tel Gaillard and the Cit&eacute; de l'&Eacute;conomie &middot; Cit&eacute; de l'Architecture et du Patrimoine &middot; Marie-Th&eacute;r&egrave;se Charlotte of France video tour &middot; 100 Years of Art Deco at MAD.&nbsp;&nbsp;
-        <strong>December:</strong> Medieval Art at the Cluny Museum &middot; John Singer Sargent as Mus&eacute;e Orsay &middot; Berthe Weill video tour.&nbsp;&nbsp;
-        <strong>January:</strong> Self Portraits video tour &middot; Montparnasse: Private Studios walking tour &middot; Edith Piaf video tour.&nbsp;&nbsp;
-        <strong>February:</strong> A Passion for Fossils private tour &middot; The Bridges of Paris Caf&eacute; Lecture &middot; Self Portraits by Edvard Munch video tour.&nbsp;&nbsp;
-        <strong>March:</strong> The Origins of Writing at the Louvre &middot; Notre Dame de Paris Cathedral &middot; Self Portraits by Frida Kahlo video tour.&nbsp;&nbsp;
-        <strong>April:</strong> A Naturalist's Walk in Faubourg Saint Martin &middot; The Vend&ocirc;me Square walking tour &middot; Self Portraits by Artemisia Gentileschi video tour.&nbsp;&nbsp;
-        <strong>May:</strong> The Palais Royal walking tour &middot; An Afternoon in Meudon walking tour &middot; Parc de Sceaux Garden Tour &amp; Luncheon&nbsp;&nbsp;
-        <strong>June:</strong> The 18th Century French Manor House at MAD.
-      </p>
     </div>
     <div style="text-align:center; margin-top:2.5rem; padding-bottom:2rem;">
       <button onclick="showPublicTab('home')" style="background:none; border:1px solid #1A3A2A; color:#1A3A2A; padding:0.5rem 1.4rem; font-family:'DM Sans',sans-serif; font-size:0.85rem; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer;">&#8592; Home</button>
