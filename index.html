@@ -1559,6 +1559,14 @@
 
 
 
+          <div class="guide-card" id="guide-ellen-hampton">
+            <img src="guides/ellen_hampton.jpg" alt="Ellen Hampton" class="guide-photo" onerror="this.style.visibility='hidden'">
+            <div class="guide-body">
+              <h3 class="guide-name">Ellen Hampton</h3>
+              <p class="guide-bio">PhD historian, author, editor, former professor and lecturer at the Paris Institute of Political Science, and occasional journalist. Her book, <em>Women of Valor: The Rochambelles on the WWII Front</em>, is available on Amazon in Kindle or paper formats. The French edition, <em>Les Rochambelles</em>, published in April 2022 by Tallandier, is available at the museum or in Paris bookstores.</p>
+            </div>
+          </div>
+
           <div class="guide-card" id="guide-thierry-heil">
             <img src="guides/thierry_heil.jpg" alt="Thierry Heil" class="guide-photo">
             <div class="guide-body">
@@ -2530,8 +2538,10 @@ function goToGuide(id) {
 function makeGuideLink(guideName) {
   const guideIdMap = {
     'Amy KUPEC-LARUE': 'guide-amy-kupec-larue',
+    'Brad NEWFIELD': 'guide-brad-newfield',
     'Chris BOICOS': 'guide-chris-boicos',
     'Chris SPENCE': 'guide-chris-spence',
+    'Ellen HAMPTON': 'guide-ellen-hampton',
     'Eric John KAISER': 'guide-eric-kaiser',
     'Ingrid HELD': 'guide-ingrid-held',
     'Jacky LIBAUD': 'guide-jacky-libaud',
@@ -3533,11 +3543,14 @@ function downloadVideoICS(date) {
   const dtStart = year + pad(month) + pad(day) + 'T' + pad(meetH) + pad(meetM) + '00';
   const endH = meetH + 2;
   const dtEnd = year + pad(month) + pad(day) + 'T' + pad(endH) + pad(meetM) + '00';
+  const dtStamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//FTG Paris//Video Tour//EN',
     'BEGIN:VEVENT',
+    'UID:' + t.date + '-' + t.name.replace(/\s/g,'') + '-video@ftgparis.com',
+    'DTSTAMP:' + dtStamp,
     'DTSTART:' + dtStart,
     'DTEND:' + dtEnd,
     'SUMMARY:' + t.name + ' – FTG Video Tour',
@@ -3560,6 +3573,7 @@ function downloadVideoICS(date) {
 function downloadICS() {
   const reservedTours = window._lastReservedTours || [];
   if (!reservedTours.length) return;
+  const dtStamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
   let icsContent = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//FTG Paris//ftgparis.com//EN\r\nCALSCALE:GREGORIAN\r\n';
   reservedTours.forEach(tv => {
     const [dateStr, tourName] = tv.split('|');
@@ -3590,6 +3604,7 @@ function downloadICS() {
     icsContent +=
       'BEGIN:VEVENT\r\n' +
       'UID:' + dateStr + '-' + tourName.replace(/\s/g,'') + '@ftgparis.com\r\n' +
+      'DTSTAMP:' + dtStamp + '\r\n' +
       'DTSTART:' + dtStart + '\r\n' +
       'DTEND:' + dtEnd + '\r\n' +
       'SUMMARY:FTG – ' + tourName + '\r\n' +
