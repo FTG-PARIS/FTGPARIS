@@ -1973,6 +1973,8 @@ let plannerToken = null; // raw password sent as token on every API call
 let plannerSubTab = 'signup'; // 'signup' | 'attendance' | 'mobile' | 'videolog' | 'tool'
 let attendanceData = []; // confirmed list for mobile view
 let attendanceTourInfo = {}; // {name, date, rmFee, wlFee, guestFee}
+let attendanceFinalLocked = false; // true once this tour has been Marked Final
+let attendanceSavedSnapshot = null; // last saved/loaded progress snapshot (for resume + the locked read-only view)
 let rosterData = []; // loaded from Apps Script for autocomplete
 let videoLogEntries = {}; // key → [{firstName, lastName, memberId, type, email}]
 let videoLogSubmitted = []; // keys already submitted this session
@@ -3664,6 +3666,8 @@ function plannerLogout() {
   plannerToken = null;
   attendanceData = [];
   attendanceTourInfo = {};
+  attendanceFinalLocked = false;
+  attendanceSavedSnapshot = null;
   document.getElementById('planner-workspace').style.display = 'none';
   document.getElementById('planner-login-prompt').style.display = 'block';
 }
@@ -3799,9 +3803,11 @@ function plannerSubTabSwitch(tab) {
 }
 
 // --- MARK TOUR READY FOR TOUR DAY (Admin only) ---
-function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, signups) {
+function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, signups, resumeState, isFinalState) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
   attendanceTourInfo = {name: tourName, date: tourDate, rmFee: rmFee, wlFee: wlFee, guestFee: guestFee, tourType: tourType || 'walking'};
+  attendanceFinalLocked = !!isFinalState;
+  attendanceSavedSnapshot = resumeState || null;
   // Build attendanceData from confirmed signups + all non-cancelled guests
   attendanceData = signups
     .filter(s => {
@@ -3831,6 +3837,10 @@ function markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourTyp
 
   renderAttendanceSheet();
   renderMobileAttendance();
+  // If resuming saved (non-final) progress, re-apply it on top of the
+  // freshly-rendered view — matched by person, not by row position, so
+  // it stays correct even if new sign-ups shifted everyone's order.
+  if (resumeState && !isFinalState) applyAttendanceSnapshot(resumeState);
   plannerSubTabSwitch('attendance');
 }
 
@@ -3889,6 +3899,10 @@ function renderMobileAttendance() {
   const c = document.getElementById('mobile-att-container');
   if (!attendanceTourInfo.name || !attendanceData.length) {
     c.innerHTML = '<div style="color:rgba(255,255,255,0.5);font-size:0.9rem;font-style:italic;text-align:center;padding:2rem;">No tour ready yet. Go to Attendance Sheet and set up the tour first.</div>';
+    return;
+  }
+  if (attendanceFinalLocked) {
+    renderMobileAttendanceLocked_(c);
     return;
   }
   const ti = attendanceTourInfo;
@@ -4076,6 +4090,11 @@ function renderMobileAttendance() {
           <span class="mob-grand-label">GRAND TOTAL</span>
           <span class="mob-grand-val" id="mob-tot-grand">€0</span>
         </div>
+        <button id="mob-save-progress-btn"
+                onclick="saveAttendanceProgress()"
+                style="margin-top:1rem;width:100%;padding:0.7rem;background:transparent;color:#D4AF37;font-weight:700;font-size:0.9rem;border:1px solid #D4AF37;border-radius:8px;cursor:pointer;letter-spacing:0.05em;">💾 Save Progress</button>
+        <div style="color:rgba(255,255,255,0.45);font-size:0.75rem;margin-top:0.35rem;text-align:center;">Saves everything on this screen so far — safe to tap any time, as often as you like.</div>
+
         <button id="mob-submit-att-btn"
                 onclick="submitAttendance()"
                 style="margin-top:1rem;width:100%;padding:0.85rem;background:#D4AF37;color:#1A3A2A;font-weight:800;font-size:1rem;border:none;border-radius:8px;cursor:pointer;letter-spacing:0.05em;">💾 Submit Attendance</button>
@@ -4095,6 +4114,13 @@ function renderMobileAttendance() {
           <button onclick="submitCashCount()"
                   style="margin-top:0.75rem;width:100%;padding:0.75rem;background:#27ae60;color:#fff;font-weight:800;font-size:0.95rem;border:none;border-radius:8px;cursor:pointer;">💾 Save Cash Count</button>
           <div id="mob-cash-saved-msg" style="display:none;color:#27ae60;text-align:center;margin-top:0.5rem;font-size:0.9rem;">✅ Cash count saved</div>
+        </div>
+
+        <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.15);">
+          <button id="mob-mark-final-btn"
+                  onclick="markAttendanceFinal()"
+                  style="width:100%;padding:0.85rem;background:transparent;color:#fff;font-weight:800;font-size:0.95rem;border:2px solid #C00000;border-radius:8px;cursor:pointer;letter-spacing:0.05em;">🔒 Mark Final (locks this tour)</button>
+          <div style="color:rgba(255,255,255,0.45);font-size:0.75rem;margin-top:0.35rem;text-align:center;">Only tap once everything above — including cash count, if any — is done. Locks the record; only Barb can unlock it afterward.</div>
         </div>
       </div>
     </div>`;
@@ -4279,7 +4305,8 @@ async function submitCashCount() {
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: 'saveattendance', token: plannerToken || '', rows: [row] })
+      body: JSON.stringify({ action: 'saveattendance', token: plannerToken || '', rows: [row],
+                             tourKey: ti.date + '|' + ti.name, tourDate: ti.date, tourName: ti.name })
     });
     const data = await resp.json();
     if (data.success) {
@@ -4554,6 +4581,7 @@ function mobWalkinTick(n) {
 // --- SUBMIT ATTENDANCE TO APPS SCRIPT (writes to Attendance_History tab) ---
 async function submitAttendance() {
   if (!plannerUser || plannerUser.role !== 'admin') return;
+  if (attendanceFinalLocked) { alert('This tour is already finalized and locked. Ask Barb to unlock it first.'); return; }
   const ti = attendanceTourInfo;
   if (!ti.name) { alert('No tour loaded.'); return; }
   if (!confirm('Submit attendance for ' + ti.name + ' (' + ti.date + ')?\n\nThis will save the record to the Attendance_History tab. Paul can review before updating the master roster.')) return;
@@ -4607,14 +4635,19 @@ async function submitAttendance() {
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ action: 'saveattendance', token: plannerToken || '', rows })
+      body: JSON.stringify({ action: 'saveattendance', token: plannerToken || '', rows,
+                             tourKey: ti.date + '|' + ti.name, tourDate: ti.date, tourName: ti.name })
     });
     const data = await resp.json();
     if (data.success) {
       if (btn) { btn.textContent = '✅ Saved!'; btn.disabled = true; }
       const cashSection = document.getElementById('mob-cash-count-section');
       if (cashSection) cashSection.style.display = 'block';
-      alert('Attendance saved — ' + rows.length + ' rows written.\n\nCount the cash and enter the total below when ready.');
+      // Also save this as the latest progress snapshot, so if the
+      // browser closes before Mark Final, reopening this tour offers
+      // to resume from exactly this point rather than losing it.
+      saveAttendanceProgress();
+      alert('Attendance saved — ' + rows.length + ' rows written.\n\nCount the cash and enter the total below when ready, then tap 🔒 Mark Final once everything is done.');
     } else {
       if (btn) { btn.disabled = false; btn.textContent = '💾 Submit Attendance'; }
       alert('Error saving: ' + (data.error || 'Unknown error'));
@@ -4623,6 +4656,271 @@ async function submitAttendance() {
     if (btn) { btn.disabled = false; btn.textContent = '💾 Submit Attendance'; }
     alert('Could not connect. Please check connection and try again.');
   }
+}
+
+// ============================================================
+// MOBILE ATTENDANCE PERSISTENCE — Save Progress / resume / Mark
+// Final / Unlock. Added Sep 2026 to fix data loss when the app
+// or tab closes before the final submit.
+// ============================================================
+
+// Reads everything currently on screen (taps, ticks, diff amounts,
+// walk-ins, cash-in-hand) into one plain snapshot object. Used both
+// by Save Progress and, for the read-only locked view, by Mark Final.
+function buildAttendanceSnapshot() {
+  const people = attendanceData.map((p, i) => {
+    const arrivedBtn = document.getElementById('mob-arrive-btn-'+i);
+    const feeTick = document.getElementById('mob-fee-tick-'+i);
+    const feeDiffInput = document.querySelector('#mob-fee-diff-'+i+' .mob-diff-input');
+    const extraTick = document.getElementById('mob-extra-tick-'+i);
+    const extraDiffInput = document.querySelector('#mob-extra-diff-'+i+' .mob-diff-input');
+    const extraDiffReasonInput = document.querySelector('#mob-extra-diff-'+i+' .mob-diff-reason');
+    const unexpAmt = document.getElementById('mob-unexp-amt-'+i);
+    const unexpReason = document.getElementById('mob-unexp-reason-'+i);
+    return {
+      id: p.id||'', email: p.email||'', firstName: p.firstName||'', lastName: p.lastName||'',
+      arrived: !!(arrivedBtn && arrivedBtn.classList.contains('tapped')),
+      feeTicked: !!(feeTick && feeTick.classList.contains('ticked')),
+      feeDiffValue: feeDiffInput ? feeDiffInput.value : '',
+      extraTicked: !!(extraTick && extraTick.classList.contains('ticked')),
+      extraDiffValue: extraDiffInput ? extraDiffInput.value : '',
+      extraDiffReason: extraDiffReasonInput ? extraDiffReasonInput.value : '',
+      unexpAmt: unexpAmt ? unexpAmt.value : '',
+      unexpReason: unexpReason ? unexpReason.value : ''
+    };
+  });
+
+  const walkins = [1,2,3].map(n => {
+    const tickEl = document.getElementById('wi'+n+'-tick');
+    return {
+      first:   (document.getElementById('wi'+n+'-first')  || {}).value || '',
+      last:    (document.getElementById('wi'+n+'-last')   || {}).value || '',
+      type:    (document.getElementById('wi'+n+'-type')   || {}).value || '',
+      ticked:  !!(tickEl && tickEl.classList.contains('ticked')),
+      extra:   (document.getElementById('wi'+n+'-extra')  || {}).value || '',
+      reason:  (document.getElementById('wi'+n+'-reason') || {}).value || '',
+      email:   (document.getElementById('wi'+n+'-email')  || {}).value || '',
+      phone:   (document.getElementById('wi'+n+'-phone')  || {}).value || '',
+      invited: (document.getElementById('wi'+n+'-invited')|| {}).value || ''
+    };
+  });
+
+  const cashin = (document.getElementById('mob-cashin') || {}).value || '';
+
+  return { people, walkins, cashin };
+}
+
+// Finds a person's current index in attendanceData by identity
+// (member ID, then email, then name) — NOT by saved position, since
+// new sign-ups since the last save can shift everyone's row order.
+function findAttendanceIndex_(entry) {
+  if (entry.id) {
+    const i = attendanceData.findIndex(p => p.id && p.id === entry.id);
+    if (i !== -1) return i;
+  }
+  if (entry.email) {
+    const i = attendanceData.findIndex(p => p.email && p.email.toLowerCase() === entry.email.toLowerCase());
+    if (i !== -1) return i;
+  }
+  return attendanceData.findIndex(p => p.firstName === entry.firstName && p.lastName === entry.lastName);
+}
+
+// Re-applies a saved snapshot on top of a freshly rendered Mobile
+// Attendance view — reuses the existing tap functions (mobArrive,
+// mobTickFee, mobTickExtra, mobWalkinTick) so the same code path that
+// handles a real tap also handles a restored one.
+function applyAttendanceSnapshot(state) {
+  if (!state) return;
+  (state.people || []).forEach(entry => {
+    const i = findAttendanceIndex_(entry);
+    if (i === -1) return; // person no longer in the list — skip safely
+
+    const feeDiffInput = document.querySelector('#mob-fee-diff-'+i+' .mob-diff-input');
+    if (feeDiffInput && entry.feeDiffValue) feeDiffInput.value = entry.feeDiffValue;
+
+    const extraDiffRow = document.getElementById('mob-extra-diff-'+i);
+    if (extraDiffRow) {
+      const valInp = extraDiffRow.querySelector('.mob-diff-input');
+      const reasonInp = extraDiffRow.querySelector('.mob-diff-reason');
+      if (valInp && entry.extraDiffValue) valInp.value = entry.extraDiffValue;
+      if (reasonInp && entry.extraDiffReason) reasonInp.value = entry.extraDiffReason;
+    }
+
+    const unexpAmtEl = document.getElementById('mob-unexp-amt-'+i);
+    if (unexpAmtEl && entry.unexpAmt) unexpAmtEl.value = entry.unexpAmt;
+    const unexpReasonEl = document.getElementById('mob-unexp-reason-'+i);
+    if (unexpReasonEl && entry.unexpReason) unexpReasonEl.value = entry.unexpReason;
+
+    const arrivedBtn = document.getElementById('mob-arrive-btn-'+i);
+    if (entry.arrived && arrivedBtn && !arrivedBtn.classList.contains('tapped')) mobArrive(i);
+
+    const feeBtn = document.getElementById('mob-fee-tick-'+i);
+    if (entry.feeTicked && feeBtn && !feeBtn.classList.contains('ticked')) mobTickFee(i);
+
+    const extraBtn = document.getElementById('mob-extra-tick-'+i);
+    if (entry.extraTicked && extraBtn && !extraBtn.classList.contains('ticked')) mobTickExtra(i);
+
+    mobUpdatePersonTotal(i);
+  });
+
+  (state.walkins || []).forEach((w, idx) => {
+    if (!w) return;
+    const n = idx + 1; // walk-in slots are 1-indexed in the DOM ids
+    const firstEl  = document.getElementById('wi'+n+'-first');
+    const lastEl   = document.getElementById('wi'+n+'-last');
+    const typeEl   = document.getElementById('wi'+n+'-type');
+    const extraEl  = document.getElementById('wi'+n+'-extra');
+    const reasonEl = document.getElementById('wi'+n+'-reason');
+    const emailEl  = document.getElementById('wi'+n+'-email');
+    const phoneEl  = document.getElementById('wi'+n+'-phone');
+    const invEl    = document.getElementById('wi'+n+'-invited');
+    if (firstEl  && w.first)  firstEl.value  = w.first;
+    if (lastEl   && w.last)   lastEl.value   = w.last;
+    if (typeEl   && w.type)   { typeEl.value = w.type; mobWalkinFee(n); }
+    if (extraEl  && w.extra)  extraEl.value  = w.extra;
+    if (reasonEl && w.reason) reasonEl.value = w.reason;
+    if (emailEl  && w.email)  emailEl.value  = w.email;
+    if (phoneEl  && w.phone)  phoneEl.value  = w.phone;
+    if (invEl    && w.invited) invEl.value   = w.invited;
+    const tickBtn = document.getElementById('wi'+n+'-tick');
+    if (w.ticked && tickBtn && !tickBtn.classList.contains('ticked')) mobWalkinTick(n);
+  });
+
+  const cashinEl = document.getElementById('mob-cashin');
+  if (cashinEl && state.cashin) cashinEl.value = state.cashin;
+
+  mobUpdateTotals();
+}
+
+// Save Progress button handler — safe to tap as often as needed.
+async function saveAttendanceProgress() {
+  if (!plannerUser || plannerUser.role !== 'admin') return;
+  if (attendanceFinalLocked) return;
+  const ti = attendanceTourInfo;
+  if (!ti.name) return;
+  const btn = document.getElementById('mob-save-progress-btn');
+  const state = buildAttendanceSnapshot();
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Saving…'; }
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'saveattendanceprogress', token: plannerToken || '',
+        tourKey: ti.date + '|' + ti.name, tourDate: ti.date, tourName: ti.name,
+        state: state
+      })
+    });
+    const data = await resp.json();
+    attendanceSavedSnapshot = state;
+    if (data.success) {
+      if (btn) { btn.disabled = false; btn.textContent = '✅ Progress saved'; }
+      setTimeout(() => { if (btn) btn.textContent = '💾 Save Progress'; }, 2000);
+    } else {
+      if (btn) { btn.disabled = false; btn.textContent = '💾 Save Progress'; }
+      alert('Could not save progress: ' + (data.error || 'Unknown error'));
+    }
+  } catch(err) {
+    if (btn) { btn.disabled = false; btn.textContent = '💾 Save Progress'; }
+    // Non-fatal on purpose — everything entered is still right here on
+    // screen, it just didn't reach the server this time.
+  }
+}
+
+// Mark Final button handler — locks the tour. Separate from Submit
+// Attendance on purpose, so the cash-count step (which reuses Submit's
+// same save action) always keeps working, locked or not.
+async function markAttendanceFinal() {
+  if (!plannerUser || plannerUser.role !== 'admin') return;
+  const ti = attendanceTourInfo;
+  if (!ti.name) return;
+  if (!confirm('Mark ' + ti.name + ' (' + ti.date + ') as Final?\n\nThis locks the record — only Barb will be able to unlock it afterward. Make sure Submit Attendance (and Save Cash Count, if used) are already done.')) return;
+
+  const btn = document.getElementById('mob-mark-final-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Locking…'; }
+  const state = buildAttendanceSnapshot();
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'markattendancefinal', token: plannerToken || '',
+        tourKey: ti.date + '|' + ti.name, tourDate: ti.date, tourName: ti.name,
+        state: state
+      })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      attendanceFinalLocked = true;
+      attendanceSavedSnapshot = state;
+      renderMobileAttendance();
+    } else {
+      if (btn) { btn.disabled = false; btn.textContent = '🔒 Mark Final (locks this tour)'; }
+      alert('Could not mark final: ' + (data.error || 'Unknown error'));
+    }
+  } catch(err) {
+    if (btn) { btn.disabled = false; btn.textContent = '🔒 Mark Final (locks this tour)'; }
+    alert('Could not connect. Please try again.');
+  }
+}
+
+// Unlock button handler — Barb only (also enforced server-side).
+async function unlockAttendance() {
+  if (!plannerUser || plannerUser.name !== 'Barb') return;
+  const ti = attendanceTourInfo;
+  if (!ti.name) return;
+  if (!confirm('Unlock ' + ti.name + ' (' + ti.date + ') for editing?\n\nThe existing finalized numbers are only replaced once you Submit Attendance again — unlocking alone changes nothing yet.')) return;
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'unlockattendance', token: plannerToken || '', tourKey: ti.date + '|' + ti.name })
+    });
+    const data = await resp.json();
+    if (data.success) {
+      attendanceFinalLocked = false;
+      renderMobileAttendance();
+      // Pre-fill the now-editable view with the finalized values, so
+      // fixing one mistake doesn't mean re-entering everyone by hand.
+      if (attendanceSavedSnapshot) applyAttendanceSnapshot(attendanceSavedSnapshot);
+    } else {
+      alert('Could not unlock: ' + (data.error || 'Unknown error'));
+    }
+  } catch(err) {
+    alert('Could not connect. Please try again.');
+  }
+}
+
+// Read-only view shown once a tour has been Marked Final.
+function renderMobileAttendanceLocked_(c) {
+  const ti = attendanceTourInfo;
+  const snap = attendanceSavedSnapshot || { people: [], walkins: [], cashin: '' };
+  const isBarb = plannerUser && plannerUser.name === 'Barb';
+
+  const rows = (snap.people || []).map(p => {
+    const name = (p.lastName||'') + ', ' + (p.firstName||'');
+    const arrived = p.arrived ? '✓ Arrived' : '— Not arrived';
+    const fee = p.feeTicked ? 'Paid' : (p.feeDiffValue ? '€'+p.feeDiffValue : 'Not marked');
+    const extra = p.extraTicked ? 'Extra paid' : (p.extraDiffValue ? '€'+p.extraDiffValue+' extra' : '');
+    return '<tr><td>'+name+'</td><td>'+arrived+'</td><td>'+fee+(extra?' · '+extra:'')+'</td></tr>';
+  }).join('');
+
+  const walkinRows = (snap.walkins || []).filter(w => w && (w.first || w.last)).map(w => {
+    return '<tr><td>'+w.first+' '+w.last+' (walk-in)</td><td>'+(w.ticked?'✓ Arrived':'—')+'</td><td>'+(w.extra?'€'+w.extra:'')+'</td></tr>';
+  }).join('');
+
+  c.innerHTML = `
+    <div class="att-tour-header">
+      <div class="att-tour-name">🔒 ${ti.name} — Finalized</div>
+      <div class="att-tour-meta">${ti.date}</div>
+    </div>
+    <div style="color:#D4AF37;font-size:0.85rem;margin-bottom:0.75rem;">This attendance record has been submitted and locked. ${isBarb ? 'You can unlock it below to make changes.' : 'Ask Barb if this needs to be changed.'}</div>
+    <table class="att-table">
+      <thead><tr><th>Name</th><th>Arrived</th><th>Fee / Extra</th></tr></thead>
+      <tbody>${rows}${walkinRows}</tbody>
+    </table>
+    ${snap.cashin ? '<div style="margin-top:0.75rem;color:rgba(255,255,255,0.7);font-size:0.85rem;">Cash in hand recorded: €'+snap.cashin+'</div>' : ''}
+    <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+      ${isBarb ? '<button class="ready-tour-btn" onclick="unlockAttendance()">🔓 Unlock for editing</button>' : ''}
+      <button class="ready-tour-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.3);" onclick="plannerSubTabSwitch('signup')">← Back to Sign-up Sheet</button>
+    </div>`;
 }
 
 // --- TOUR PLANNERS SIGNUP LISTS ---
@@ -4641,16 +4939,16 @@ async function loadSignupLists() {
       if (!grouped[key]) grouped[key] = { rows: [] };
       grouped[key].rows.push(s);
     });
+    // No date cutoff — a tour stays reachable here indefinitely, so
+    // "Mark Ready for Tour Day" never becomes unreachable once its date
+    // passes (that was the root cause of Mobile Attendance vanishing).
+    // Sorted by closeness to today (soonest/most recent first) rather
+    // than strict date order, so the list stays usable as past tours
+    // accumulate over the season.
     const futureTours = toursMembers.filter(t => {
-      if (t.cancelled || t.placeholder) return false;
-      const d = new Date(t.date); d.setHours(0,0,0,0);
-      if (t.type === 'video') {
-        const cutoff = new Date(d); cutoff.setDate(cutoff.getDate() + 30);
-        return cutoff >= today;
-      }
-      return d >= today;
-    }).sort((a,b) => new Date(a.date) - new Date(b.date));
-    if (futureTours.length === 0) { container.innerHTML = '<div class="signup-loading">No upcoming tours.</div>'; return; }
+      return !t.cancelled && !t.placeholder;
+    }).sort((a,b) => Math.abs(new Date(a.date) - today) - Math.abs(new Date(b.date) - today));
+    if (futureTours.length === 0) { container.innerHTML = '<div class="signup-loading">No tours found.</div>'; return; }
     container.innerHTML = '';
     futureTours.forEach(t => {
       const key = t.date + '|' + t.name;
@@ -4841,7 +5139,7 @@ async function adminUpdateExtraDue(input, email, tourDate, tourName) {
   }
 }
 
-function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, btn) {
+async function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, btn) {
   if (!plannerUser || plannerUser.role !== 'admin') return;
   // Scrape the rendered table
   const rows = btn.closest('div').previousElementSibling
@@ -4891,7 +5189,32 @@ function adminReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourTy
       }
     }
   });
-  markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, signups);
+  // Check for saved progress (or a finalized/locked record) before
+  // building the view fresh, so reopening this tour never silently
+  // wipes out work already entered — this is the actual fix for
+  // Barb's "everything disappeared" problem.
+  btn.textContent = 'Checking for saved progress…';
+  const tourKey = tourDate + '|' + tourName;
+  let resumeState = null;
+  let isFinalState = false;
+  try {
+    const progResp = await fetch(APPS_SCRIPT_URL + '?action=getattendanceprogress&token=' + encodeURIComponent(plannerToken || '') + '&tourKey=' + encodeURIComponent(tourKey));
+    const progData = await progResp.json();
+    if (progData.success && progData.found) {
+      isFinalState = !!progData.isFinal;
+      if (isFinalState) {
+        resumeState = progData.state;
+        alert('This tour was already finalized' + (progData.lastSavedBy ? ' by ' + progData.lastSavedBy : '') + (progData.lastSavedAt ? ' on ' + progData.lastSavedAt : '') + '.\n\nOpening the locked record. Only Barb can unlock it to make changes.');
+      } else if (confirm('Saved progress found' + (progData.lastSavedAt ? ' from ' + progData.lastSavedAt : '') + (progData.lastSavedBy ? ' (' + progData.lastSavedBy + ')' : '') + '.\n\nResume where you left off?\n\nChoose Cancel to start fresh from the current sign-up list instead — this will NOT delete the saved progress, you can still resume it later.')) {
+        resumeState = progData.state;
+      }
+    }
+  } catch (progErr) {
+    // Non-fatal — if this check fails, just proceed and build fresh
+    // from the current sign-up list, exactly like before this fix.
+  }
+
+  markReadyForTourDay(tourName, tourDate, rmFee, wlFee, guestFee, tourType, signups, resumeState, isFinalState);
   btn.textContent = '✅ Ready! Opening attendance view…';
   btn.disabled = true;
 }
