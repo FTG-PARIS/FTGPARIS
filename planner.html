@@ -1853,9 +1853,9 @@ function applyTourTypeUI(type) {
   document.getElementById('rm-default-hint').textContent =
     isMuseum ? 'default: 15€' : isZoom ? 'default: 0€' : 'default: 0€ (free)';
   document.getElementById('wl-default-hint').textContent =
-    isMuseum ? 'default: 25€' : isZoom ? 'default: 0€' : 'default: 15€';
+    isMuseum ? 'default: 20€' : isZoom ? 'default: 0€' : 'default: 15€';
   document.getElementById('guest-default-hint').textContent =
-    isMuseum ? 'default: 35€' : isZoom ? 'default: 20€' : 'default: 25€';
+    isMuseum ? 'default: 30€' : isZoom ? 'default: 20€' : 'default: 25€';
   document.getElementById('noshow-default-hint').textContent =
     isMuseum ? 'default: 20€' : 'default: 15€';
 
@@ -1889,10 +1889,10 @@ function applyTourTypeUI(type) {
 function applyCostDefaults(type, replaceStale) {
   const D = {
     walk:   { rm:'0',  wl:'15', guest:'25' },
-    museum: { rm:'15', wl:'25', guest:'35' },
+    museum: { rm:'15', wl:'20', guest:'30' },
     zoom:   { rm:'0',  wl:'0',  guest:'20' }
   };
-  const STALE = { rm:['0','15'], wl:['0','15','25'], guest:['20','25','35'] };
+  const STALE = { rm:['0','15'], wl:['0','15','20','25'], guest:['20','25','30','35'] };
   const d = D[type] || D.walk;
   ['rm','wl','guest'].forEach(k => {
     const id = 'f-cost-' + k;
