@@ -1236,6 +1236,10 @@
         <button class="members-pill" onclick="filterMembers('June', this)">Jun</button>
         <button class="members-pill video-pill" onclick="filterMembers('video', this)">&#128250; Video Only</button>
         <button class="next-upcoming-btn" onclick="scrollToMembersNextUpcoming()" style="margin-left:0.5rem;">↓ Next upcoming</button>
+        <button id="save-all-video-btn" onclick="downloadAllVideoICS()" style="display:none;margin-left:0.5rem;background:#1A3A2A;color:#fff;border:none;padding:0.55rem 1.2rem;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:0.78rem;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;">Save All Videos to Calendar</button>
+      </div>
+      <div id="save-all-video-msg" style="display:none;margin:0.6rem 0 0.8rem;padding:0.65rem 0.8rem;background:#fdf8e8;border-left:3px solid #D4AF37;border-radius:4px;font-size:0.82rem;color:#666;line-height:1.5;">
+        &#8505;&#65039; No need to sign up for video tours. You'll automatically receive the Zoom link on the day of the tour.
       </div>
       <div id="member-tours-list"></div>
     </div>
@@ -2159,8 +2163,8 @@ const toursMembers = [
     meeting:'36 rue Geoffroy Saint-Hilaire, 75005 Paris — go into the courtyard, enter through security, and meet at the Information sign/desk',
     transport:'Métro: M5 - Gare d\'Austerlitz · M7 - Censier Daubenton · M10 - Jussieu or Gare d\'Austerlitz · RER: RER C - Gare d\'Austerlitz · Bus: 24, 57, 61, 63, 67, 89, 91',
     guide:'Jean-Manuel TRAIMOND',
-    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'35€',
-    no_show:'25€',
+    cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
+    no_show:'20€',
     note:'(includes guide/entrance fees)',
     limit:'25', walk_level:'Easy walk, few staircases',
     walk_dots: [true,true,false,false,false],
@@ -2189,7 +2193,7 @@ const toursMembers = [
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
     guide:'Chris BOICOS',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
+    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'20€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
@@ -2204,8 +2208,8 @@ const toursMembers = [
     meeting:'Musée des Arts Décoratifs, 107-111 rue de Rivoli, 75001 Paris – Garden side',
     transport:'Métro: M1 - Tuileries or Palais Royal Musée du Louvre, M7 - Pyramides or Palais Royal · Bus: 21, 39, 68, 69, 72 - Palais Royal or Musée du Louvre',
     guide:'Xenia VENTIKOU',
-    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'35€',
-    no_show:'25€',
+    cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
+    no_show:'20€',
     note:'(includes guide/entrance fees)',
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
@@ -2219,7 +2223,8 @@ const toursMembers = [
     meeting:'Musée de la Libération de Paris, 4 avenue du Colonel Henri Rol-Tanguy, 75014 Paris (Place Denfert-Rochereau)',
     transport:'Métro: M4 & M6 - Denfert-Rochereau (Sortie 1) · RER: RER B - Denfert-Rochereau · Bus: 38, 68, 88, 216 - Denfert-Rochereau',
     guide:'Ellen HAMPTON',
-    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'35€',
+    cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
+    no_show:'20€',
     note:'(includes guide/entrance fees)',
     limit:'15', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
@@ -2233,7 +2238,7 @@ const toursMembers = [
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
     guide:'Ken NESBITT',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
+    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'20€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
@@ -2248,7 +2253,8 @@ const toursMembers = [
     meeting:'In front of the Institut du monde arabe, 1, rue des Fossés Saint-Bernard Place Mohammed V, Paris, 75005',
     transport:'Métro: M7 - Jussieu, M10 - Cardinal Lemoine · Bus: 63, 67, 86, 87, 89',
     guide:'Noha ESCARTIN',
-    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'35€',
+    cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
+    no_show:'20€',
     note:'(includes guide/entrance fees)',
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,false,false,false,false],
@@ -2262,7 +2268,7 @@ const toursMembers = [
     meeting:'Musée Bourdelle, 18 rue Antoine-Bourdelle, 75015 Paris',
     transport:'Métro: M6, M12, M13 - Montparnasse-Bienvenüe (Sortie 2, Place Bienvenüe) · M12 - Falguière · Bus: 28, 39, 58, 82, 88, 91, 92, 94, 95, 96',
     guide:'Ingrid HELD',
-    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'30€',
+    cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
     no_show:'20€',
     note:'(includes guide/entrance fees)',
     limit:'20', walk_level:'Easy walk, few staircases',
@@ -2277,7 +2283,7 @@ const toursMembers = [
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
     guide:'Mariska BEEKENKAMP-WLADIMIROFF',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
+    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'20€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
@@ -2292,7 +2298,7 @@ const toursMembers = [
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
     guide:'Mariska BEEKENKAMP-WLADIMIROFF',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
+    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'20€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
@@ -2306,8 +2312,8 @@ const toursMembers = [
     meeting:'Opera Bastille, 120 rue de Lyon, 75012 Paris — meet at the entry door for the Backstage Tour, about 80 meters to the right of the main entrance (130 rue de Lyon). Look for the signs BOOKSTORE – INFORMATION.',
     transport:'Métro: M1, M5, M8 - Bastille (follow signs to Opera) · M1, M14 - Gare de Lyon, plus a short walk · RER: Gare de Lyon (Line A), plus a short walk · Bus: 29, 69, 76, 86, 87, 91',
     guide:'Provided by Opera Bastille',
-    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'30€',
-    no_show:'25€',
+    cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
+    no_show:'20€',
     note:'(includes guide/entrance fees) Times and capacity still to be confirmed by the Opera.',
     limit:'20', walk_level:'Easy walk, few staircases',
     walk_dots: [true,true,false,false,false],
@@ -2335,7 +2341,7 @@ const toursMembers = [
     meeting:'94 Boulevard de Courcelles, 75017 Paris — in front of Restaurant Le Courcelles',
     transport:'Métro: M2 - Courcelles · Bus: 84, 30 - Courcelles',
     guide:'Thierry HEIL',
-    cost_regular:'15€', cost_waitlist:'25€', cost_guest:'35€',
+    cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
     no_show:'20€',
     note:'(includes guide fees, entrance fees) — Note: this tour is on a WEDNESDAY, not the usual Friday.',
     limit:'20', walk_level:'Easy walk, few staircases',
@@ -2351,7 +2357,7 @@ const toursMembers = [
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
     guide:'Eric John KAISER',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
+    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'20€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
@@ -2365,7 +2371,7 @@ const toursMembers = [
     meeting:'World Wide Web – of course!',
     transport:'Via video conference. Specific log-in information will be sent prior to video conference.',
     guide:'Mariska BEEKENKAMP-WLADIMIROFF',
-    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'25€',
+    cost_regular:'Free', cost_waitlist:'Free', cost_guest:'20€',
     note:'(includes guide fee)',
     limit:'N/A', walk_level:'Video tour',
     walk_dots: [false,false,false,false,false],
@@ -2728,6 +2734,13 @@ function filterMembers(filter, btn) {
   document.querySelectorAll('.members-pill').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
 
+  const videoBtn = document.getElementById('save-all-video-btn');
+  if (videoBtn) videoBtn.style.display = (filter === 'video') ? '' : 'none';
+  if (filter !== 'video') {
+    const msg = document.getElementById('save-all-video-msg');
+    if (msg) msg.style.display = 'none';
+  }
+
   if (filter === 'all') {
     // Restore all hidden elements, scroll to top of list
     document.querySelectorAll('#member-tours-list .members-month-head, #member-tours-list .detail-card')
@@ -2739,7 +2752,9 @@ function filterMembers(filter, btn) {
     document.querySelectorAll('#member-tours-list .detail-card').forEach(card => {
       card.style.display = card.classList.contains('video') ? '' : 'none';
     });
-    document.getElementById('member-tours-list').scrollIntoView({behavior:'smooth', block:'start'});
+    // Scroll to the filter bar itself (not the list) so the Save All Videos button
+    // is the first thing visible — scrolling into the list overshoots into the first card.
+    document.querySelector('.members-filter-bar').scrollIntoView({behavior:'smooth', block:'start'});
   } else {
     // Month pill: restore everything if hidden, then just scroll — no trapping
     document.querySelectorAll('#member-tours-list .members-month-head, #member-tours-list .detail-card')
@@ -3570,6 +3585,48 @@ function downloadVideoICS(date) {
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+function downloadAllVideoICS() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const videoTours = (toursMembers || []).filter(t => {
+    if (t.type !== 'video' || t.cancelled) return false;
+    const d = new Date(t.date); d.setHours(0,0,0,0);
+    return d >= today;
+  }).sort((a,b) => new Date(a.date) - new Date(b.date));
+  if (!videoTours.length) return;
+  const pad = n => String(n).padStart(2,'0');
+  const dtStamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+  let icsContent = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//FTG Paris//Video Tours//EN\r\nCALSCALE:GREGORIAN\r\n';
+  videoTours.forEach(t => {
+    const [year, month, day] = t.date.split('-').map(Number);
+    const [meetH, meetM] = (t.meet_time||'16h45').replace('h',':').split(':').map(Number);
+    const dtStart = year + pad(month) + pad(day) + 'T' + pad(meetH) + pad(meetM) + '00';
+    const endH = meetH + 2;
+    const dtEnd = year + pad(month) + pad(day) + 'T' + pad(endH) + pad(meetM) + '00';
+    icsContent +=
+      'BEGIN:VEVENT\r\n' +
+      'UID:' + t.date + '-' + t.name.replace(/\s/g,'') + '-video@ftgparis.com\r\n' +
+      'DTSTAMP:' + dtStamp + '\r\n' +
+      'DTSTART:' + dtStart + '\r\n' +
+      'DTEND:' + dtEnd + '\r\n' +
+      'SUMMARY:' + t.name + ' – FTG Video Tour\r\n' +
+      'DESCRIPTION:Guide: ' + (t.guide||'') + '\\nThe video conference link will be sent to you prior to the event.\r\n' +
+      'LOCATION:World Wide Web\r\n' +
+      'END:VEVENT\r\n';
+  });
+  icsContent += 'END:VCALENDAR';
+  const blob = new Blob([icsContent], {type:'text/calendar'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'FTG-Video-Tours.ics';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const msg = document.getElementById('save-all-video-msg');
+  if (msg) msg.style.display = '';
 }
 
 function downloadICS() {
