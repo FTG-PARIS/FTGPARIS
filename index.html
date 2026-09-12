@@ -3564,6 +3564,30 @@ function tourCalendarInfo(dateStr, meetTimeRaw, defaultMeet) {
   return { dtStart, dtEnd, titlePrefix };
 }
 
+// Full Europe/Paris DST rule, embedded in every .ics so calendar apps don't
+// have to resolve the bare zone name themselves — some (Outlook desktop
+// included) get that resolution wrong and land an hour off.
+const FTG_VTIMEZONE_PARIS = [
+  'BEGIN:VTIMEZONE',
+  'TZID:Europe/Paris',
+  'X-LIC-LOCATION:Europe/Paris',
+  'BEGIN:DAYLIGHT',
+  'TZOFFSETFROM:+0100',
+  'TZOFFSETTO:+0200',
+  'TZNAME:CEST',
+  'DTSTART:19700329T020000',
+  'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU',
+  'END:DAYLIGHT',
+  'BEGIN:STANDARD',
+  'TZOFFSETFROM:+0200',
+  'TZOFFSETTO:+0100',
+  'TZNAME:CET',
+  'DTSTART:19701025T030000',
+  'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU',
+  'END:STANDARD',
+  'END:VTIMEZONE'
+].join('\r\n');
+
 function downloadVideoICS(date) {
   const t = toursMembers.find(x => x.date === date);
   if (!t) return;
@@ -3573,6 +3597,7 @@ function downloadVideoICS(date) {
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//FTG Paris//Video Tour//EN',
+    FTG_VTIMEZONE_PARIS,
     'BEGIN:VEVENT',
     'UID:' + t.date + '-' + t.name.replace(/\s/g,'') + '-video@ftgparis.com',
     'DTSTAMP:' + dtStamp,
@@ -3604,7 +3629,7 @@ function downloadAllVideoICS() {
   }).sort((a,b) => new Date(a.date) - new Date(b.date));
   if (!videoTours.length) return;
   const dtStamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
-  let icsContent = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//FTG Paris//Video Tours//EN\r\nCALSCALE:GREGORIAN\r\n';
+  let icsContent = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//FTG Paris//Video Tours//EN\r\nCALSCALE:GREGORIAN\r\n' + FTG_VTIMEZONE_PARIS + '\r\n';
   videoTours.forEach(t => {
     const { dtStart, dtEnd, titlePrefix } = tourCalendarInfo(t.date, t.meet_time, '16h45');
     icsContent +=
@@ -3636,7 +3661,7 @@ function downloadICS() {
   const reservedTours = window._lastReservedTours || [];
   if (!reservedTours.length) return;
   const dtStamp = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
-  let icsContent = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//FTG Paris//ftgparis.com//EN\r\nCALSCALE:GREGORIAN\r\n';
+  let icsContent = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//FTG Paris//ftgparis.com//EN\r\nCALSCALE:GREGORIAN\r\n' + FTG_VTIMEZONE_PARIS + '\r\n';
   reservedTours.forEach(tv => {
     const [dateStr, tourName] = tv.split('|');
     const tour = toursMembers.find(t => t.date === dateStr && t.name === tourName) || toursMembers.find(t => t.date === dateStr);
