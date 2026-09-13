@@ -1553,7 +1553,13 @@
             </div>
           </div>
 
-
+          <div class="guide-card" id="guide-maud-hacker">
+            <img src="guides/maud_hacker.jpg" alt="Maud Hacker" class="guide-photo">
+            <div class="guide-body">
+              <h3 class="guide-name">Maud Hacker</h3>
+              <p class="guide-bio">Maud Hacker has been leading guided tours in Paris since 2006. Trained at the École du Louvre and the Sorbonne, she specializes in French fashion and luxury heritage, having worked with houses including Chanel, Louis Vuitton, Cartier, and Hermès. She is the author of <em>Les Belles Manières</em> (Éditions du Chêne) and teaches at The School of Life Paris.</p>
+            </div>
+          </div>
 
           <div class="guide-card" id="guide-ellen-hampton">
             <img src="guides/ellen_hampton.jpg" alt="Ellen Hampton" class="guide-photo" onerror="this.style.visibility='hidden'">
@@ -2071,8 +2077,8 @@ const tours = [
     public_desc:'Go behind the scenes at the Opera Bastille to see how sets, lighting, and stagecraft come together to create a full theatrical world. This tour offers a rare look at the workshops, machinery, and backstage spaces that make grand opera possible.' },
   { date:'2027-01-22', photo_url: KRAEMER_IMG, name:'Kraemer Gallery', month:'January', type:'museum', emoji:'🖼️',
     public_desc:'Visit a historic private mansion where generations of the Kraemer family have lived and worked, assembling one of Paris’s finest collections of 18th‑century French furniture. Masterpieces by Boulle, Riesener, and Jacob sit alongside modern works, creating a dialogue between centuries of artistry.' },
-  { date:'2027-01-27', photo_url: CHOCOLATE_IMG, photo_fit:'contain', name:'The Chocolate Dynasty and the Pharmacy Museum', month:'January', type:'museum', emoji:'🏛️',
-    public_desc:'Explore the surprising story of the Menier family, who created a chocolate empire from a pharmacy business and medicinal chocolate. This visit includes access to a rarely opened section of the elegant family mansion that houses historic instruments, and objects that illuminate early pharmaceutical practice.' },
+  { date:'2027-01-27', photo_url: CHOCOLATE_IMG, photo_fit:'contain', name:'The Chocolate Dynasty and the Pharmacy Museum', month:'January', type:'museum', emoji:'🏛️', exceptional_day:true,
+    public_desc:'Explore the surprising story of the Menier family, who created a chocolate empire from a pharmacy business and medicinal chocolate. This visit includes access to a rarely opened section of the elegant family mansion that houses historic instruments, and objects that illuminate early pharmaceutical practice.<br><strong>*Exceptionally, this tour is on a Wednesday, not the usual Friday.</strong>' },
   // FEBRUARY 2027
   { date:'2027-02-04', photo_url: DASSIN_IMG, name:'Songs of France – Joe Dassin', month:'February', type:'video', emoji:'🎵',
     public_desc:'A musical video presentation celebrating Joe Dassin, whose songs became classics of French popular culture. This session blends biography, musical history, and performance to explore why his work continues to resonate across generations.' },
@@ -2136,7 +2142,7 @@ const toursMembers = [
     desc:'Did you know that Paris was one of the most wooded capitals in Europe? Paris had 200,000 trees planted along its streets, and in its parks, gardens and cemeteries in 2019. An additional planting project will raise this number to 370,000 by the end of 2026. Despite the absence of any large parks, Montmartre and the 18th arrondissement account for more than 10,000 trees. Join Amy Kupec-Larue for a bucolic walk on the top of the Butte to discover the trees of this neighborhood, from narrow alleys to shady squares. While many of the typical Parisian trees can be found in Montmartre, the arboreal heritage of the Butte is also quite varied. Our stop at the cemetery Saint-Vincent will allow us to see many lesser-known tree species as well as others well adapted to the constraints of this site and climate change.' },
 
   { date:'2026-10-02', photo_url: SAINT_GERMAIN_IMG, name:'Église Saint-Germain l\'Auxerrois', month:'October', type:'walking', emoji:'🔔',
-    meet_time:'TBD', start_time:'TBD', finish_time:'—',
+    meet_time:'10h15', start_time:'10h30', finish_time:'—',
     meeting:'In front of the church, 2 place du Louvre 75001 Paris',
     transport:'Métro: M7 - Pont Neuf, M1 - Louvre Rivoli · Bus: 69 - Pont Neuf; 21, 67, 74/85 - Louvre-Rivoli',
     guide:'Maud HACKER',
@@ -2300,14 +2306,14 @@ const toursMembers = [
     desc:'Time to look at Dutch Baroque painting the way it probably always wanted to be seen: as a little chaotic, a little cheeky, and very funny. In this lively lecture, we\'ll explore 17th-century Dutch art not as stiff "Old Masters," but as a world full of everyday drama, sly jokes, and wonderfully human moments. These paintings are packed with stories: people playing tricks on each other in busy taverns, maids nodding off mid-task, children behaving exactly as children always do, and young lovers so smitten they seem to forget everything else exists. We\'ll also uncover mischievous details that reward a second look: unexpected bare bottoms tucked into corners, dogs causing chaos in sacred spaces, and parties that feel one step away from getting out of hand. In the newly formed Dutch Republic—a place defined by trade, independence, and a booming middle class—art wasn\'t just about status or religion. It was about being honest with yourself, while recognizing that behind the silliness and humour, deeper moral lessons were often quietly at work. Join us to explore how Dutch artists turned ordinary scenes into witty, observant, and often delightfully naughty snapshots of human behaviour.' },
 
   { date:'2027-01-15', photo_url: OPERA_IMG, name:'Backstage at the Paris Opera Bastille', month:'January', type:'museum', emoji:'🏛️',
-    meet_time:'TBD', start_time:'TBD', finish_time:'TBD',
+    meet_time:'11h45', start_time:'12h00', finish_time:'14h00',
     meeting:'Opera Bastille, 120 rue de Lyon, 75012 Paris — meet at the entry door for the Backstage Tour, about 80 meters to the right of the main entrance (130 rue de Lyon). Look for the signs BOOKSTORE – INFORMATION.',
     transport:'Métro: M1, M5, M8 - Bastille (follow signs to Opera) · M1, M14 - Gare de Lyon, plus a short walk · RER: Gare de Lyon (Line A), plus a short walk · Bus: 29, 69, 76, 86, 87, 91',
     guide:'Provided by Opera Bastille',
     cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
     no_show:'20€',
-    note:'(includes guide/entrance fees) Times and capacity still to be confirmed by the Opera.',
-    limit:'20', walk_level:'Easy walk, few staircases',
+    note:'(includes guide/entrance fees)',
+    limit:'19', walk_level:'Easy walk, few staircases',
     walk_dots: [true,true,false,false,false],
     tour_planner:'Dee GAVORA',
     day_contact:'Paul GAVORA · Lee HUBERT',
@@ -2328,7 +2334,7 @@ const toursMembers = [
     read_ahead:'<a href="https://www.kraemer.fr/en/">kraemer.fr</a>',
     desc:'Galerie Kraemer has been run by the same family since it was founded in 1875, and they still live and work in the private mansion that houses the collection. From the beginning the focus has been on 18th century French furniture, a commitment carried on despite the disruptions of the Second World War, when the family was displaced and the house looted — after the war they spent more than a decade rebuilding it. Today, family members often guide visitors themselves, leading guests through salons where furniture by Boulle, Riesener and Jacob sits alongside modern works by Picasso, Chagall and Rothko. Many pieces that once passed through these rooms now belong to the Louvre, Versailles, and the Nissim de Camondo museum. The gallery has drawn collectors from around the world, including Jackie Kennedy and other Americans with a passion for 18th century French design. The Kraemer family has cordially invited Friday Tour Group to see their treasures and hear about the history in situ.' },
 
-  { date:'2027-01-27', photo_url: CHOCOLATE_IMG, photo_fit:'contain', name:'The Chocolate Dynasty and the Pharmacy Museum', month:'January', type:'museum', emoji:'🏛️',
+  { date:'2027-01-27', photo_url: CHOCOLATE_IMG, photo_fit:'contain', name:'The Chocolate Dynasty and the Pharmacy Museum', month:'January', type:'museum', emoji:'🏛️', exceptional_day:true,
     meet_time:'12h45', start_time:'13h00', finish_time:'',
     meeting:'94 Boulevard de Courcelles, 75017 Paris — in front of Restaurant Le Courcelles',
     transport:'Métro: M2 - Courcelles · Bus: 84, 30 - Courcelles',
@@ -2341,7 +2347,7 @@ const toursMembers = [
     tour_planner:'Barbara TRIMPI',
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://www.artetpatrimoinepharmaceutique.fr/ws/web/app/collection/expo/13">artetpatrimoinepharmaceutique.fr</a> · <a href="https://fr.wikipedia.org/wiki/H%C3%B4tel_Menier">fr.wikipedia.org</a>',
-    desc:'The name Menier is synonymous with chocolate, but the family fortune began in pharmacy, because when it was first introduced, chocolate was used for medicinal purposes. On this visit in Parc Monceau, we\'ll explore the surprising story of the family who created one of the great chocolate empires of 19th-century France. Our guide, Thierry Heil, will take us into the Pharmacy Museum to see a fascinating and little-known collection normally closed to the general public. Its historic objects, instruments and beautifully preserved interiors offer a glimpse into the practice of pharmacy before modern medicine—and a curious connection between bitter pills and chocolate. We\'ll also discover the distinctive architecture of one of the Menier family\'s hôtels particuliers, with its grandiose staircase, beautiful inner courtyard, and other unexpected details. This visit reveals the intriguing intersection of Parisian architecture, industrial wealth, medicine, history, chocolate and everyday life.<br><strong>Note: Exceptionally, this tour is on a Wednesday.</strong>' },
+    desc:'The name Menier is synonymous with chocolate, but the family fortune began in pharmacy, because when it was first introduced, chocolate was used for medicinal purposes. On this visit in Parc Monceau, we\'ll explore the surprising story of the family who created one of the great chocolate empires of 19th-century France. Our guide, Thierry Heil, will take us into the Pharmacy Museum to see a fascinating and little-known collection normally closed to the general public. Its historic objects, instruments and beautifully preserved interiors offer a glimpse into the practice of pharmacy before modern medicine—and a curious connection between bitter pills and chocolate. We\'ll also discover the distinctive architecture of one of the Menier family\'s hôtels particuliers, with its grandiose staircase, beautiful inner courtyard, and other unexpected details. This visit reveals the intriguing intersection of Parisian architecture, industrial wealth, medicine, history, chocolate and everyday life.<br><strong>*Exceptionally, this tour is on a Wednesday, not the usual Friday.</strong>' },
 
   // FEBRUARY 2027
   { date:'2027-02-04', photo_url: DASSIN_IMG, name:'Songs of France – Joe Dassin', month:'February', type:'video', emoji:'🎵',
@@ -2698,7 +2704,7 @@ function renderPublicCalendar() {
         '<div class="tcp-body">' +
           '<div class="tcp-top">' +
             '<div class="tcp-badge"><div class="day-num">' + dayNum + '</div><div class="day-mo">' + dayMo + '</div></div>' +
-            '<div class="tcp-title">' + t.name + '</div>' +
+            '<div class="tcp-title">' + t.name + (t.exceptional_day ? ' *' : '') + '</div>' +
           '</div>' +
           '<div class="tcp-footer">' +
             '<span class="tcp-type-label">' + ti.icon + ti.label + '</span>' +
@@ -3020,7 +3026,7 @@ function renderMemberTours() {
           + '<div class="slide-photo-panel"><img src="' + photoSrc + '" alt="' + t.name + '" class="' + (t.photo_fit==='contain' ? 'portrait-photo' : t.photo_fit==='center' ? 'center-crop' : '') + '"></div>'
           + '<div class="slide-title-panel">'
           + '<div class="slide-date-chip">' + dateStr + '</div>'
-          + '<div class="slide-title">' + t.name + '</div>'
+          + '<div class="slide-title">' + t.name + (t.exceptional_day ? ' *' : '') + '</div>'
           + (t.guide ? '<div class="slide-subtitle">Guide &nbsp;·&nbsp; ' + makeGuideLink(t.guide) + '</div>' : '')
           + '<div class="slide-meet-time">MEET TIME: ' + (t.meet_time||'16h45') + '</div>'
           + '<div class="slide-cta-row">'
@@ -3545,7 +3551,7 @@ async function submitReserveForm(e) {
 
 // Shared helper: returns a Europe/Paris-anchored DTSTART/DTEND pair (so
 // reminders and imports are never "floating" time) plus a plain-language
-// "FTG Fri 15 Jan 13:00 Paris" title prefix that stays correct even if a
+// "FTG 15 Jan 13:00 Paris" title prefix that stays correct even if a
 // calendar app displays the time converted to the viewer's own zone.
 function tourCalendarInfo(dateStr, meetTimeRaw, defaultMeet) {
   const [year, month, day] = dateStr.split('-').map(Number);
@@ -3557,10 +3563,8 @@ function tourCalendarInfo(dateStr, meetTimeRaw, defaultMeet) {
   const pad = n => String(n).padStart(2, '0');
   const dtStart = 'TZID=Europe/Paris:' + year + pad(month) + pad(day) + 'T' + pad(meetH) + pad(meetM) + '00';
   const dtEnd   = 'TZID=Europe/Paris:' + year + pad(month) + pad(day) + 'T' + pad(endH)  + pad(meetM) + '00';
-  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const dayName = dayNames[new Date(year, month - 1, day).getDay()];
-  const titlePrefix = 'FTG ' + dayName + ' ' + day + ' ' + monthNames[month - 1] + ' ' + pad(meetH) + ':' + pad(meetM) + ' Paris';
+  const titlePrefix = 'FTG ' + day + ' ' + monthNames[month - 1] + ' ' + pad(meetH) + ':' + pad(meetM) + ' Paris';
   return { dtStart, dtEnd, titlePrefix };
 }
 
