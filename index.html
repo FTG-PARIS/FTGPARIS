@@ -5019,6 +5019,12 @@ async function loadSignupLists() {
       if (!grouped[key]) grouped[key] = { rows: [] };
       grouped[key].rows.push(s);
     });
+    // Tours already Marked Final on Mobile Attendance — added 14 Sep 2026
+    // for the Collapse Finalized Tours feature. These are left out of the
+    // list below entirely: once Finalized, there's no need to reach a
+    // tour's signups here again (fixes on the rare tours needing them are
+    // made directly on the Google Sheet instead).
+    const finalizedSet = new Set(data.finalizedTourKeys || []);
     // No date cutoff — a tour stays reachable here indefinitely, so
     // "Mark Ready for Tour Day" never becomes unreachable once its date
     // passes (that was the root cause of Mobile Attendance vanishing).
@@ -5026,7 +5032,7 @@ async function loadSignupLists() {
     // than strict date order, so the list stays usable as past tours
     // accumulate over the season.
     const futureTours = toursMembers.filter(t => {
-      return !t.cancelled && !t.placeholder;
+      return !t.cancelled && !t.placeholder && !finalizedSet.has(t.date + '|' + t.name);
     }).sort((a,b) => Math.abs(new Date(a.date) - today) - Math.abs(new Date(b.date) - today));
     if (futureTours.length === 0) { container.innerHTML = '<div class="signup-loading">No tours found.</div>'; return; }
     container.innerHTML = '';
