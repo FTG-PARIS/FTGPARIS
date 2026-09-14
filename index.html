@@ -2665,13 +2665,13 @@ function renderPublicCalendar() {
     const group = document.createElement('div');
     group.className = 'month-group';
     group.dataset.month = month;
-    const monthYear = new Date(mt[0].date).getFullYear();
+    const monthYear = ftgLocalDate(mt[0].date).getFullYear();
     group.innerHTML = '<div class="month-label">' + month + ' ' + monthYear + ' <span>' + mt.length + ' event' + (mt.length>1?'s':'') + '</span></div><div class="tours-grid"></div>';
     const grid = group.querySelector('.tours-grid');
     mt.forEach(t => {
       if (t.placeholder && t.combined && t.monthDates) {
         const n = t.monthDates.length;
-        const monthLabel = t.month + ' ' + new Date(t.date).getFullYear();
+        const monthLabel = t.month + ' ' + ftgLocalDate(t.date).getFullYear();
         const card0 = document.createElement('div');
         card0.className = 'public-savedate-card';
         card0.innerHTML =
@@ -2688,7 +2688,7 @@ function renderPublicCalendar() {
         grid.appendChild(card0);
         return;
       }
-      const d = new Date(t.date);
+      const d = ftgLocalDate(t.date);
       const dayNum = d.getDate();
       const dayMo = d.toLocaleDateString('en-GB',{month:'long'}).toUpperCase();
       const ti = getTypeIcon(t.type);
@@ -2852,13 +2852,13 @@ function renderMemberTours() {
     if (!mt.length) return;
     const h = document.createElement('div');
     h.className = 'members-month-head';
-    const mYear = new Date(mt[0].date).getFullYear();
+    const mYear = ftgLocalDate(mt[0].date).getFullYear();
     const eventCount = mt.reduce((sum,x)=> sum + (x.combined && x.monthDates ? x.monthDates.length : 1), 0);
     h.innerHTML = month + ' ' + mYear + ' <span>' + eventCount + ' event' + (eventCount>1?'s':'') + '</span>';
     list.appendChild(h);
     mt.forEach(t => {
       if (t.placeholder) {
-        const d0 = new Date(t.date);
+        const d0 = ftgLocalDate(t.date);
         const card0 = document.createElement('div');
         card0.className = 'detail-card slide-card';
         card0.id = 'tour-' + t.date + t.name.replace(/\s/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
@@ -2896,7 +2896,7 @@ function renderMemberTours() {
         list.appendChild(card0);
         return;
       }
-      const d = new Date(t.date);
+      const d = ftgLocalDate(t.date);
       const ti = getTypeIcon(t.type);
       const card = document.createElement('div');
       card.className = 'detail-card' + (t.type==='video'?' video':'') + (t.cancelled?' cancelled':'');
@@ -3548,6 +3548,34 @@ async function submitReserveForm(e) {
     btn.disabled = false; btn.textContent = 'Reserve My Spot(s)';
   }
 }
+
+// Shared helper: parses a 'YYYY-MM-DD' tour date as a LOCAL calendar date
+// (year, month, day) instead of letting `new Date(dateStr)` treat it as UTC
+// midnight. Plain `new Date(dateStr)` rolls back to the previous day for any
+// viewer whose timezone is behind UTC (all of the Americas) once you read
+// .getDate()/.getDay()/.toLocaleDateString() back out of it. Use this for
+// anything that just DISPLAYS the tour's date.
+function ftgLocalDate(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+// Self-check, runs once on page load: flags any tour whose stored `month`
+// field doesn't match what its `date` actually computes to (the same kind
+// of mismatch the old CSV uploader could introduce). Console-only — nothing
+// shown to visitors, nothing blocked, no visitor-facing behavior changed.
+// Open the browser console (F12) after adding new tours to check for warnings.
+function ftgDateSelfCheck() {
+  const allTours = [].concat(tours || [], toursMembers || []);
+  allTours.forEach(function(t) {
+    if (!t.date || !t.month || t.placeholder) return;
+    const actualMonth = ftgLocalDate(t.date).toLocaleDateString('en-GB', {month:'long'});
+    if (t.month !== actualMonth) {
+      console.warn('[FTG date check] "' + t.name + '" (' + t.date + ') is stored with month "' + t.month + '" but the date is actually in ' + actualMonth + '.');
+    }
+  });
+}
+ftgDateSelfCheck();
 
 // Shared helper: returns a Europe/Paris-anchored DTSTART/DTEND pair (so
 // reminders and imports are never "floating" time) plus a plain-language
@@ -4437,7 +4465,7 @@ async function renderVideoLog() {
     const key = t.date + '|' + t.name;
     const isDone = videoLogSubmitted.includes(key);
     if (!videoLogEntries[key]) videoLogEntries[key] = [];
-    const tourDate = new Date(t.date);
+    const tourDate = ftgLocalDate(t.date);
     const dateStr = tourDate.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'long'});
     const block = document.createElement('div');
     block.className = 'vlog-tour-block';
@@ -5057,7 +5085,7 @@ async function loadSignupLists() {
       const countLabel = confirmedCount > 0
         ? confirmedCount + ' confirmed' + (totalCount > confirmedCount ? ' / ' + totalCount + ' total' : '')
         : totalCount + ' signed up';
-      const tourDate = new Date(t.date);
+      const tourDate = ftgLocalDate(t.date);
       const dateStr = tourDate.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'long'});
       const daysOut = Math.round((tourDate - today) / (1000*60*60*24));
       const block = document.createElement('div');
