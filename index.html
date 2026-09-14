@@ -2775,7 +2775,7 @@ function scrollToNextUpcoming() {
     const groupTours = (activeFilter === 'all' ? tours : tours.filter(t => activeFilter==='video'?t.type==='video':t.month===activeFilter))
       .filter(t => t.month === month);
     for (let i = 0; i < groupTours.length; i++) {
-      const td = new Date(groupTours[i].date); td.setHours(0,0,0,0);
+      const td = ftgLocalDate(groupTours[i].date); td.setHours(0,0,0,0);
       if (td >= today) {
         const cardEls = group.querySelectorAll('.tour-card-pub');
         if (cardEls[i]) {
@@ -2799,7 +2799,7 @@ function scrollToMembersNextUpcoming() {
   for (const card of cards) {
     const dateAttr = card.dataset.date;
     if (!dateAttr) continue;
-    const td = new Date(dateAttr); td.setHours(0,0,0,0);
+    const td = ftgLocalDate(dateAttr); td.setHours(0,0,0,0);
     if (td >= today) {
       card.scrollIntoView({behavior:'smooth', block:'center'});
       card.style.outline = '2px solid var(--gold)';
@@ -3002,7 +3002,7 @@ function renderMemberTours() {
         var availLine = '';
         var tourLimit = parseInt(t.limit);
         var today2 = new Date(); today2.setHours(0,0,0,0);
-        var tourDateObj = new Date(t.date); tourDateObj.setHours(0,0,0,0);
+        var tourDateObj = ftgLocalDate(t.date); tourDateObj.setHours(0,0,0,0);
         var isUpcoming = tourDateObj >= today2;
         var isVideo = (t.type === 'video');
         var isCancelled = !!t.cancelled;
@@ -3190,7 +3190,7 @@ function updateDaysCountdown() {
     const cardId = 'days-tour-' + (t.date+t.name).replace(/[^a-zA-Z0-9]/g,'_');
     const el = document.getElementById(cardId);
     if (!el) return;
-    const tourDate = new Date(t.date); tourDate.setHours(0,0,0,0);
+    const tourDate = ftgLocalDate(t.date); tourDate.setHours(0,0,0,0);
     const diff = Math.round((tourDate - today) / 86400000);
     if (diff > 0) el.textContent = diff + ' days away';
     else if (diff === 0) el.textContent = '✦ Today!';
@@ -3263,7 +3263,7 @@ function patchAvailLines() {
     if (t.type === 'video' || t.cancelled || t.placeholder) return;
     var tourLimit = parseInt(t.limit);
     if (isNaN(tourLimit) || tourLimit <= 0) return;
-    var tourDateObj = new Date(t.date); tourDateObj.setHours(0,0,0,0);
+    var tourDateObj = ftgLocalDate(t.date); tourDateObj.setHours(0,0,0,0);
     if (tourDateObj < today2) return;
     var availId = 'avail-' + t.date + '-' + t.name.replace(/[^a-zA-Z0-9]/g,'_');
     var el = document.getElementById(availId);
@@ -3435,7 +3435,7 @@ function buildTourChecklist() {
   toursMembers.forEach(t => {
     if (t.cancelled || t.placeholder) return;
     if (t.type === 'video') return; // no sign-up needed for video tours
-    const tourDate = new Date(t.date); tourDate.setHours(0,0,0,0);
+    const tourDate = ftgLocalDate(t.date); tourDate.setHours(0,0,0,0);
     if (tourDate < today) return; // skip past tours entirely
     hasUpcoming = true;
     const dateStr = tourDate.toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
@@ -3656,7 +3656,7 @@ function downloadAllVideoICS() {
   const today = new Date(); today.setHours(0,0,0,0);
   const videoTours = (toursMembers || []).filter(t => {
     if (t.type !== 'video' || t.cancelled) return false;
-    const d = new Date(t.date); d.setHours(0,0,0,0);
+    const d = ftgLocalDate(t.date); d.setHours(0,0,0,0);
     return d >= today;
   }).sort((a,b) => new Date(a.date) - new Date(b.date));
   if (!videoTours.length) return;
@@ -3809,7 +3809,7 @@ async function openAdminAddModal() {
   const today = new Date(); today.setHours(0,0,0,0);
   toursMembers.forEach(t => {
     if (t.cancelled || t.placeholder) return;
-    const td = new Date(t.date); td.setHours(0,0,0,0);
+    const td = ftgLocalDate(t.date); td.setHours(0,0,0,0);
     if (td < today) return;
     const opt = document.createElement('option');
     opt.value = t.date + '|' + t.name;
@@ -4450,7 +4450,7 @@ async function renderVideoLog() {
   // Show video tours from past 30 days through future
   const videoTours = (toursMembers || []).filter(t => {
     if (t.type !== 'video' || t.cancelled) return false;
-    const d = new Date(t.date); d.setHours(0,0,0,0);
+    const d = ftgLocalDate(t.date); d.setHours(0,0,0,0);
     const cutoff = new Date(d); cutoff.setDate(cutoff.getDate() + 30);
     return cutoff >= today;
   }).sort((a,b) => new Date(a.date) - new Date(b.date));
@@ -5061,7 +5061,7 @@ async function loadSignupLists() {
     // accumulate over the season.
     const futureTours = toursMembers.filter(t => {
       return !t.cancelled && !t.placeholder && !finalizedSet.has(t.date + '|' + t.name);
-    }).sort((a,b) => Math.abs(new Date(a.date) - today) - Math.abs(new Date(b.date) - today));
+    }).sort((a,b) => Math.abs(ftgLocalDate(a.date) - today) - Math.abs(ftgLocalDate(b.date) - today));
     if (futureTours.length === 0) { container.innerHTML = '<div class="signup-loading">No tours found.</div>'; return; }
     container.innerHTML = '';
     futureTours.forEach(t => {
