@@ -2065,7 +2065,7 @@ const tours = [
   // NOVEMBER 2026
   { date:'2026-11-06', photo_url: MAD_FASHION_IMG, photo_fit:'contain', name:'Look! 40 Years of Fashion', month:'November', type:'museum', emoji:'👗',
     public_desc:'The Musée des Arts Décoratifs celebrates four decades of its Fashion Museum with forty iconic silhouettes. This tour reveals how designers and artisans transform sketches into runway pieces and how museums preserve them.' },
-  { date:'2026-11-13', photo_url: CAPA_IMG, photo_fit:'contain', name:'Robert Capa, War Photographer', month:'November', type:'museum', emoji:'📷',
+  { date:'2026-11-13', photo_url: CAPA_IMG, photo_fit:'contain', name:'Robert Capa, War Photographer - Just added a 2nd Afternoon Tour!', month:'November', type:'museum', emoji:'📷',
     public_desc:'At the Musée de la Libération, see rare footage of Capa photographing the Liberation of Paris and explore his life through images of conflict and resilience. The exhibition pairs newsreels with his published work for a vivid portrait of a legendary photographer.' },
   { date:'2026-11-19', photo_url: FALL_FRANCE_IMG, name:'1940 – The Fall of France', month:'November', type:'video', emoji:'🎬',
     public_desc:'A video lecture examining the rapid collapse of France in 1940, from the Ardennes breakthrough to the fall of Paris. The talk explains the strategic missteps and political consequences of this tumultuous six‑week turning point.' },
@@ -2223,6 +2223,7 @@ const toursMembers = [
     desc:'MAD — the Musée des Arts Décoratifs — is celebrating the 40th anniversary of its Fashion Museum by displaying 40 iconic silhouettes from its collection. The show will highlight the know-how and techniques used by fashion houses to transform clothes into works of art. It covers all the steps of creation, from the initial sketches to the runway, where fashion shows have become veritable performances. Join Xenia Ventikou to discover the two lives of these clothes: first, the creative process that brings them into being, and then what happens behind the scenes after they enter the museum\'s collection. Talented artisans document, prepare, restore, display and store this exceptional heritage so that it can be preserved and enjoyed by future generations. Their work ensures that these remarkable creations—and the craftsmanship behind them—continue to have a life beyond the runway.' },
 
   { date:'2026-11-13', photo_url: CAPA_IMG, photo_fit:'contain', name:'Robert Capa, War Photographer', month:'November', type:'museum', emoji:'📷',
+    session_banner:'TOUR A - MORNING',
     meet_time:'10h00', start_time:'10h15', finish_time:'—',
     meeting:'Musée de la Libération de Paris, 4 avenue du Colonel Henri Rol-Tanguy, 75014 Paris (Place Denfert-Rochereau)',
     transport:'Métro: M4 & M6 - Denfert-Rochereau (Sortie 1) · RER: RER B - Denfert-Rochereau · Bus: 38, 68, 88, 216 - Denfert-Rochereau',
@@ -2236,6 +2237,22 @@ const toursMembers = [
     day_contact:'Paul GAVORA · Lee HUBERT',
     read_ahead:'<a href="https://en.wikipedia.org/wiki/Robert_Capa">Wikipedia: Robert Capa</a> · <a href="https://www.museeliberation-leclerc-moulin.paris.fr/en">museeliberation-leclerc-moulin.paris.fr</a> · <a href="https://en.wikipedia.org/wiki/Liberation_of_Paris">Wikipedia: Liberation of Paris</a>',
     desc:'Robert Capa is one of the most recognized and admired war photographers of the 20th century. At the Musée de la Libération, visitors will not only glimpse the Second World War and its resolution through his eyes, but can watch him at work during the Liberation of Paris. Curators have gone through the newsreels of the day and found Capa walking the streets and taking pictures, and matched those moments with his published work. Our visit will begin with this short but very exciting film, and then dive into his life story. Ellen Hampton, our guide, is an expert on the Liberation. In this show about Robert Capa, Ellen has also included some items from her family treasures.<br><span style="font-size:0.8em;color:#888;">Photo: Des troupes loyalistes lors d\'une offensive sur le Rio Segre, sur le front d\'Aragon pr&egrave;s du Fraga, Espagne, 7 novembre 1938. &copy; Robert Capa/International Center of Photography/Magnum Photos</span>' },
+
+  { date:'2026-11-13', photo_url: CAPA_IMG, photo_fit:'contain', name:'Robert Capa, War Photographer Tour B', month:'November', type:'museum', emoji:'📷',
+    session_banner:'TOUR B - AFTERNOON',
+    meet_time:'13h00', start_time:'13h15', finish_time:'—',
+    meeting:'Musée de la Libération de Paris, 4 avenue du Colonel Henri Rol-Tanguy, 75014 Paris (Place Denfert-Rochereau)',
+    transport:'Métro: M4 & M6 - Denfert-Rochereau (Sortie 1) · RER: RER B - Denfert-Rochereau · Bus: 38, 68, 88, 216 - Denfert-Rochereau',
+    guide:'Ellen HAMPTON',
+    cost_regular:'15€', cost_waitlist:'20€', cost_guest:'30€',
+    no_show:'20€',
+    note:'(includes guide/entrance fees)',
+    limit:'15', walk_level:'Easy walk, few staircases',
+    walk_dots: [true,false,false,false,false],
+    tour_planner:'Paul GAVORA',
+    day_contact:'Paul GAVORA · Lee HUBERT',
+    read_ahead:'<a href="https://en.wikipedia.org/wiki/Robert_Capa">Wikipedia: Robert Capa</a> · <a href="https://www.museeliberation-leclerc-moulin.paris.fr/en">museeliberation-leclerc-moulin.paris.fr</a> · <a href="https://en.wikipedia.org/wiki/Liberation_of_Paris">Wikipedia: Liberation of Paris</a>',
+    desc:'This afternoon session was added due to the popularity of this tour. It is the same tour as the morning session — for the full description, see Tour A.<br><br>If you already signed up for the morning session but prefer the afternoon slot, you can sign up here — but please send an email to <a href="mailto:ftg.membership@gmail.com">ftg.membership@gmail.com</a> to cancel your morning reservation.' },
 
   { date:'2026-11-19', photo_url: FALL_FRANCE_IMG, name:'1940 – The Fall of France', month:'November', type:'video', emoji:'🎬',
     meet_time:'16h45', start_time:'17h00', finish_time:'18h15',
@@ -3036,6 +3053,7 @@ function renderMemberTours() {
           + (t.guide ? '<div class="slide-subtitle">Guide &nbsp;·&nbsp; ' + makeGuideLink(t.guide) + '</div>' : '')
           + '<div class="slide-meet-time">MEET TIME: ' + (t.meet_time||'16h45') + '</div>'
           + (t.time_changed ? '<div class="slide-time-note">Note: the time for this tour has changed.</div>' : '')
+          + (t.session_banner ? '<div class="slide-time-note">' + t.session_banner + '</div>' : '')
           + '<div class="slide-cta-row">'
           + (t.type === 'video'
             ? '<button class="slide-cta-btn video-cal-btn" onclick="downloadVideoICS(\'' + t.date + '\')"><svg width="13" height="13" viewBox="0 0 24 24" style="vertical-align:-1px;margin-right:5px;"><rect x="3" y="4" width="18" height="17" rx="2" fill="none" stroke="#C9A030" stroke-width="2"/><line x1="16" y1="2" x2="16" y2="6" stroke="#C9A030" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="#C9A030" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="9" x2="21" y2="9" stroke="#C9A030" stroke-width="2"/></svg>Mark Your Calendar</button>'
